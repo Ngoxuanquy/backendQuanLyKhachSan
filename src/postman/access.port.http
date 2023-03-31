@@ -1,0 +1,68 @@
+### signup
+
+POST  http://localhost:3000/v1/api/signup
+Content-Type: application/json
+x-api-key: 39f8ce1821db1e064b572883583c4a5222954149ba4e6e6c90b9251d15f93221b2e66d5e1a2d3252d1df30a6c47aa50b3cd5c37b4bfde240c3c3bcf9138b57a0
+
+{
+    "email": "quy11",
+    "password": "18122002"
+}
+
+###
+POST  http://localhost:3000/v1/api/login
+Content-Type: application/json
+x-api-key: 39f8ce1821db1e064b572883583c4a5222954149ba4e6e6c90b9251d15f93221b2e66d5e1a2d3252d1df30a6c47aa50b3cd5c37b4bfde240c3c3bcf9138b57a0
+
+{
+    "email": "quy11",
+    "password": "18122002"
+}
+
+
+###
+POST  http://localhost:3000/v1/api/product
+Content-Type: application/json
+x-api-key: 39f8ce1821db1e064b572883583c4a5222954149ba4e6e6c90b9251d15f93221b2e66d5e1a2d3252d1df30a6c47aa50b3cd5c37b4bfde240c3c3bcf9138b57a0
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJxdXkxMSIsImlhdCI6MTY4MDEzOTc5NCwiZXhwIjoxNjgwMzEyNTk0fQ.VbTkjDlFd1iIjVBaPgZc3yFJJPeLddZohFF4Jw5-Jjo
+x-client-id : 1
+
+{
+    "product_name": "test1",
+      "product_thumb": "123", 
+    "product_description": "a",
+    "product_price": 6,
+    "product_type": "Clothing",
+    "product_quantity": "6",
+    "product_attributes": ""
+}
+
+
+###
+POST  http://localhost:3000/v1/api/orders/create
+Content-Type: application/json
+x-api-key: 39f8ce1821db1e064b572883583c4a5222954149ba4e6e6c90b9251d15f93221b2e66d5e1a2d3252d1df30a6c47aa50b3cd5c37b4bfde240c3c3bcf9138b57a0
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJxdXkxMSIsImlhdCI6MTY4MDEzOTc5NCwiZXhwIjoxNjgwMzEyNTk0fQ.VbTkjDlFd1iIjVBaPgZc3yFJJPeLddZohFF4Jw5-Jjo
+x-client-id : 1
+
+{
+    "product_id": 1,
+    "status": "abc1", 
+    "published": true
+}
+
+
+###
+POST  http://localhost:3000/v1/api/handlerRefreshToken
+Content-Type: application/json
+x-api-key:  39f8ce1821db1e064b572883583c4a5222954149ba4e6e6c90b9251d15f93221b2e66d5e1a2d3252d1df30a6c47aa50b3cd5c37b4bfde240c3c3bcf9138b57a0
+x-client-id : 1
+refeshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJxdXkxMSIsImlhdCI6MTY4MDEwMjk2NywiZXhwIjoxNjgwNzA3NzY3fQ.VCUlea7VtA-BmzJlzafaYW3zEzu3U8yyH6sUbF6s4YU
+
+
+###
+POST  http://localhost:3000/v1/api/logout
+Content-Type: application/json
+x-api-key: 64fdadef5cbaa75e4187d0e7a766ffbe9f3558e1dbca0048f86e547acc6ab7153baa1040539f83a9fcd5e9f6b252b691062e9954320d1412ff77f5e639f2f897
+x-client-id : 1
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJxdXkxIiwiaWF0IjoxNjc5ODI1NDE4LCJleHAiOjE2Nzk5OTgyMTh9.viyEMog-8Hztxv1vextym72IaZYxNXM-TkGItEiHAm4

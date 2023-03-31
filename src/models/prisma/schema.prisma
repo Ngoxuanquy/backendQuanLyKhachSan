@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  password       String
+  img            String
+  roles          String
+  keys           Keys[]
+  transactions   transactions? @relation(fields: [transactionsId], references: [id])
+  transactionsId Int?
+}
+
+model ApiKey {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  status      Boolean  @default(true)
+  permissions Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Keys {
+  id               Int                @id @default(autoincrement())
+  users            users?             @relation(fields: [usersId], references: [id])
+  usersId          Int?
+  privateKey       String
+  publicKey        String
+  refeshToken      String
+  refeshTokensUsed refeshTokensUsed[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+}
+
+model refeshTokensUsed {
+  id          Int    @id @default(autoincrement())
+  refeshToken String
+  Keys        Keys?  @relation(fields: [keysId], references: [id])
+  keysId      Int?
+}
+
+model products {
+  id                  Int                 @id @default(autoincrement())
+  product_name        String
+  product_thumb       String
+  product_price       Float
+  product_description String
+  product_type        String
+  product_quantity    String
+  product_attributes  String
+  transaction_lines   transaction_lines[]
+}
+
+model transactions {
+  id                            Int                   @id @default(autoincrement())
+  code_bill                     String
+  nguoithuchien                 String
+  order_date                    DateTime
+  status                        String
+  total_amount_without_discount Float
+  combo_discount                Float
+  VAT                           Float
+  discount                      Float
+  total_amount_after_discount   Float
+  orders                        orders[]
+  users                         users[]
+  transaction_lines             transaction_lines[]
+  transaction_payment           transaction_payment[]
+}
+
+model orders {
+  id              Int           @id @default(autoincrement())
+  product_id      Int
+  status          String
+  published       Boolean       @default(false)
+  transactions    transactions? @relation(fields: [transactions_id], references: [id])
+  transactions_id Int?
+}
+
+model transaction_lines {
+  id             Int           @id @default(autoincrement())
+  oderhistory_id Int
+  product_id     Int
+  name           String
+  number_of      Int
+  price          Float
+  img            String
+  total_sale     Float
+  transaction    transactions? @relation(fields: [transaction_id], references: [id])
+  transaction_id Int?
+  products       products?     @relation(fields: [products_id], references: [id])
+  products_id    Int?
+}
+
+model transaction_payment {
+  id              Int           @id @default(autoincrement())
+  oderhistory_id  Int
+  payment_methods String
+  account_name    String
+  bank_name       String
+  total_sale      Float
+  account_number  String
+  transaction     transactions? @relation(fields: [transaction_id], references: [id])
+  transaction_id  Int?
+}
