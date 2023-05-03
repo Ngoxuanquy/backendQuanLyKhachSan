@@ -2,14 +2,14 @@
 
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
-const { products } = new PrismaClient();
+const { contacts } = new PrismaClient();
 
 // define Factory class to create product
-class ProductFactory {
+class ContactFactory {
 
-    static async createProduct(payload) {
+    static async createContact(payload) {
 
-        const product = await products.create({
+        const product = await contacts.create({
             data: {
                 product_name: payload.product_name,
                 product_thumb: payload.product_thumb,
@@ -25,7 +25,7 @@ class ProductFactory {
 
     }
 
-    static async getProduct(decode) {
+    static async getContact(decode) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -33,7 +33,7 @@ class ProductFactory {
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
 
-        const Get_product = await products.findMany({
+        const Get_product = await contacts.findMany({
             skip,
             take,
             // select: {
@@ -79,4 +79,4 @@ class ProductFactory {
 // }
 
 
-module.exports = ProductFactory
+module.exports = ContactFactory

@@ -4,69 +4,9 @@ const { Keys, users } = new PrismaClient();
 
 class KeyTokenServices {
     static createKeyToken = async ({ id, publicKey, privateKey, refeshToken }) => {
-
-        // console.log(refeshToken)
+        console.log({})
 
         try {
-            // const tokens = await Keys.create({
-            //     data: {
-            //         usersId: Number(id),
-            //         publicKey,
-            //         privateKey,
-            //         // refeshTokensUsed: { set: [] },
-            //         refeshToken: ""
-            //         // Add additional fields as needed
-            //     },
-            //     // where: {
-            //     //     usersId: Number(id)
-            //     // }
-            // });
-            // return tokens ? tokens.publicKey : null
-
-            // const tokens = await users.updateMany({
-            //     where: { usersId: Number(id) },
-            //     data: {
-            //         Keys: {
-            //             upsert: {
-            //                 create: {
-            //                     usersId: Number(id),
-            //                     publicKey,
-            //                     privateKey,
-            //                     // refeshTokensUsed: { set: [] },
-            //                     refeshToken: ""
-            //                 },
-            //                 update: {
-            //                     publicKey,
-            //                     privateKey,
-            //                     // refeshTokensUsed: { set: [] },
-            //                     refeshToken: ""
-            //                 },
-            //             },
-            //         }
-            //     },
-            // })
-
-
-            // const tokens = await Keys.upsert({
-
-            //     where: { usersId: Number(id) },
-            //     create: {
-            //         usersId: Number(id),
-            //         publicKey,
-            //         privateKey,
-            //         // refeshTokensUsed: { set: [] },
-            //         refeshToken: ""
-            //     },
-            //     update: {
-            //         publicKey,
-            //         privateKey,
-            //         // refeshTokensUsed: { set: [] },
-            //         refeshToken: ""
-            //     },
-            // })
-
-
-
 
             const orders = await Keys.count({
                 where: {
@@ -75,13 +15,14 @@ class KeyTokenServices {
             })
 
             if (orders == 0) {
+                console.log(refeshToken)
                 const tokens = await Keys.create({
                     data: {
                         usersId: Number(id),
                         publicKey,
                         privateKey,
                         // refeshTokensUsed: { set: [] },
-                        refeshToken: ""
+                        refeshToken: "refeshToken"
                         // Add additional fields as needed
                     },
                     // where: {
@@ -169,6 +110,20 @@ class KeyTokenServices {
     //     }
     //     )
     // }
+
+
+    static keyUsers = async (id) => {
+
+        const objkey = await Keys.findMany({
+            where: {
+                usersId: Number(id),
+                // status: true
+            },
+        })
+
+
+        return objkey
+    }
 }
 
 

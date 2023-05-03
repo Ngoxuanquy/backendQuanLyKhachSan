@@ -20,10 +20,7 @@ class OrderFactory {
                         status: payload.status,
                     }
                 })
-                //    product.update({
-                //         where: { id: productId },
-                //         data: { quantity: { decrement: quantity } }
-                //     })
+
             ])
         } catch (error) {
             // Rollback the transaction if any of the queries failed
@@ -34,32 +31,34 @@ class OrderFactory {
         return result
     }
 
+
+    static async getOrder(decode) {
+
+        const pageNumber = 1; // Số trang muốn lấy
+        const perPage = 2; // Số bản ghi trên mỗi trang
+
+        const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
+        const take = perPage; // Số bản ghi muốn lấy
+
+        const Get_product = await orders.findMany({
+            skip,
+            take,
+            // select: {
+            //     product_name: true,
+            //     product_thumb: true,
+            //     product_price: true,
+            //     product_description: true,
+            //     product_type: true,
+            //     product_quantity: true,
+            //     product_attributes: true
+            // }
+        })
+
+        return Get_product;
+
+    }
+
 }
-
-// // define base product class
-// class Product {
-//     constructor({
-//         product_name, product_thumb, product_description, product_price,
-//         product_type, product_shop, product_attributes, product_quantity
-//     }) {
-
-//         this.product_attributes = product_attributes
-//         this.product_quantity = product_quantity
-//         this.product_name = product_name
-//         this.product_thumb = product_thumb
-//         this.product_description = product_description
-//         this.product_price = product_price
-//         this.product_type = product_type
-//         this.product_shop = product_shop
-
-//     }
-
-//     // create new product
-//     async createProduct() {
-//         return await product.create(this)
-//     }
-
-// }
 
 
 module.exports = OrderFactory

@@ -1,21 +1,22 @@
 
 const { CREATED, SuccessResponse } = require("../core/success.response")
-const ProductService = require("../services/product.services")
+const ContactServices = require("../services/contact.services")
 
 
 
-class ProductControllers {
+class ContactControllers {
 
-    createProduct = async (req, res, next) => {
+    createContacts = async (req, res, next) => {
 
         new SuccessResponse({
             message: 'create new product success',
-            metadata: await ProductService.createProduct(req.body)
+            metadata: await ContactServices.createCustomer(req.body)
         }).send(res)
+
+
     }
 
-
-    getProduct = async (req, res, next) => {
+    getContacts = async (req, res, next) => {
 
         console.log(req.user)
 
@@ -25,11 +26,10 @@ class ProductControllers {
 
         new SuccessResponse({
             message: 'Get product success',
-            metadata: await ProductService.getProduct(req.user)
+            metadata: await ContactServices.getContact(req.user)
         }).send(res)
     }
 
-
 }
 
-module.exports = new ProductControllers()
+module.exports = new ContactControllers()

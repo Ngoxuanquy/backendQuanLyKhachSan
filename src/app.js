@@ -2,11 +2,11 @@ const compression = require('compression')
 const express = require('express')
 const { default: helmet } = require('helmet')
 const morgan = require('morgan')
-
+var cors = require('cors')
 const app = express()
 
 // init middlewares
-
+app.use(cors())
 app.use(morgan("dev"))
 app.use(helmet())
 app.use(compression())
@@ -15,6 +15,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+app.use(express.json())
 //int db
 require('./dbs/init.sql')
 
@@ -37,7 +38,7 @@ app.use((error, req, res, next) => {
     return res.status(statusCode).json({
         status: 'error',
         code: statusCode,
-        stack: error.stack,
+        // stack: error.stack,
         message: error.message || 'Internal Server Error',
     })
 })

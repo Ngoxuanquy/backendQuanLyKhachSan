@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,14 +8,86 @@ datasource db {
 }
 
 model users {
-  id             Int           @id @default(autoincrement())
-  email          String        @unique
-  password       String
-  img            String
-  roles          String
-  keys           Keys[]
-  transactions   transactions? @relation(fields: [transactionsId], references: [id])
-  transactionsId Int?
+  id                      Int                   @id @default(autoincrement()) @db.UnsignedInt
+  surname                 String?               @db.Char(10)
+  user_extension          String?
+  sub_extension           String?
+  first_name              String
+  sub_surname             String?
+  device_id               String?
+  branch_id               Int?
+  type                    String                @default("normal")
+  last_name               String?
+  username                String                @unique(map: "users_username_unique")
+  operating_code          String?
+  phong_ban               Int?
+  bo_phan                 Int?
+  thoi_gian_lv            Int?
+  salary_status           Int?
+  user_kpi                Int?
+  email                   String?
+  password                String
+  language                String                @default("vi") @db.Char(4)
+  contact_no              String?               @db.Char(15)
+  address                 String?               @db.Text
+  remember_token          String?               @db.VarChar(100)
+  business_id             Int?                  @db.UnsignedInt
+  status                  users_status          @default(active)
+  is_cmmsn_agnt           Boolean               @default(false)
+  cmmsn_percent           Decimal               @default(0.00) @db.Decimal(4, 2)
+  selected_contacts       Boolean               @default(false)
+  dob                     DateTime?             @db.Date
+  marital_status          users_marital_status?
+  blood_group             String?               @db.Char(10)
+  contact_number          String?               @db.Char(20)
+  fb_link                 String?
+  twitter_link            String?
+  social_media_1          String?
+  social_media_2          String?
+  permanent_address       String?               @db.Text
+  current_address         String?               @db.Text
+  guardian_name           String?
+  so_hoa_don              Int?
+  date_of_birth           DateTime              @db.Date
+  user_type               String?
+  phan_quyen              String                @default("nv")
+  user_group_id           Int?
+  ngay_nghi_phep          Float                 @default(7) @db.Float
+  lan_nghi_sai_qd         Float                 @default(0) @db.Float
+  gender                  String?
+  id_proof_date           DateTime?             @db.Date
+  id_proof_position       String?               @db.Text
+  end_at                  DateTime?             @db.Date
+  operating_available     Int                   @default(1)
+  training_status         Int                   @default(0)
+  custom_field_1          DateTime?             @db.Date
+  custom_field_2          String?
+  custom_field_3          Float?                @default(26) @db.Float
+  custom_field_4          DateTime?             @db.Date
+  bank_account_number     String?
+  bank_name               String?
+  bank_account_name       String?
+  cookie_first_device     String?
+  cookie_second_device    String?
+  bank_details            String?               @db.LongText
+  id_proof_name           String?
+  id_proof_number         String?
+  deleted_at              DateTime?             @db.Timestamp(0)
+  tg_bat_dau_lv           DateTime?             @db.Date
+  tg_ket_thuc_lv          DateTime?             @db.Date
+  chiet_khau_vuot         Int                   @default(0)
+  last_seen               DateTime?             @db.Timestamp(0)
+  phu_cap                 Int                   @default(0)
+  start_at                DateTime?             @db.Date
+  login_failed            Int                   @default(0)
+  ip_address_login_failed String?
+  company_ip_address      String?
+  last_sessid             String?
+  created_at              DateTime?             @db.Timestamp(0)
+  updated_at              DateTime?             @db.Timestamp(0)
+  Keys                    Keys[]
+
+  // @@index([business_id], map: "users_business_id_foreign")
 }
 
 model ApiKey {
@@ -31,85 +100,2894 @@ model ApiKey {
 }
 
 model Keys {
-  id               Int                @id @default(autoincrement())
-  users            users?             @relation(fields: [usersId], references: [id])
-  usersId          Int?
-  privateKey       String
-  publicKey        String
-  refeshToken      String
-  refeshTokensUsed refeshTokensUsed[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
-}
+  id Int @id @default(autoincrement())
 
-model refeshTokensUsed {
-  id          Int    @id @default(autoincrement())
+  privateKey  String
+  publicKey   String
   refeshToken String
-  Keys        Keys?  @relation(fields: [keysId], references: [id])
-  keysId      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  users       users?   @relation(fields: [usersId], references: [id])
+  usersId     Int?     @db.UnsignedInt
 }
 
-model products {
-  id                  Int                 @id @default(autoincrement())
-  product_name        String
-  product_thumb       String
-  product_price       Float
-  product_description String
-  product_type        String
-  product_quantity    String
-  product_attributes  String
-  transaction_lines   transaction_lines[]
+model accept_daily_result_details {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  accept_daily_result_id Int
+  daily_result_id        Int
+  user_id                Int
+  ole                    Int       @default(0)
+  type                   String
+  department_id          Int?
+  branch_id              Int?
+  bo_phan                Int?
+  user_group_id          Int?
+  salary_status          Int?
+  thoi_gian_lv           Int?
+  so_cong                Float     @db.Float
+  user_level_code        String?
+  user_kpi               Int?
+  luong_cb               Int
+  doanh_so               Int
+  chiet_khau_don_them    Int
+  ca                     String    @db.VarChar(11)
+  doanh_so_yc            Int
+  so_don_yc              Float     @db.Float
+  tb_don_yc              Int
+  don_ps                 Int
+  don_bao_hanh           Int
+  don_vs                 Int
+  thuong                 Int
+  phat                   Int
+  chiet_khau             Int
+  tru_thieu_don          Int       @default(0)
+  tru_sl_nghe_may        Int       @default(0)
+  tg_dam_thoai_yc        Int       @default(0)
+  sl_nghe_may            Int       @default(0)
+  sl_nghe_may_yc         Float     @default(0) @db.Float
+  tg_dam_thoai           Int       @default(0)
+  tru_tg_dam_thoai       Int       @default(0)
+  don_ps_dinh_ky         Int       @default(0)
+  don_ps_ton             Int       @default(0)
+  don_them               Int
+  thu_nhap_ngay          Int
+  ngay                   DateTime? @db.Date
+  status                 String
+  note                   String?   @db.Text
+  xac_nhan_1             String?
+  time_xac_nhan_1        DateTime? @db.DateTime(0)
+  xac_nhan_2             String?
+  time_xac_nhan_2        DateTime? @db.DateTime(0)
+  denied_note_1          String?   @db.Text
+  denied_note_2          String?   @db.Text
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
 }
 
-model transactions {
-  id                            Int                   @id @default(autoincrement())
-  code_bill                     String
-  nguoithuchien                 String
-  order_date                    DateTime
-  status                        String
-  total_amount_without_discount Float
-  combo_discount                Float
-  VAT                           Float
-  discount                      Float
-  total_amount_after_discount   Float
-  orders                        orders[]
-  users                         users[]
-  transaction_lines             transaction_lines[]
-  transaction_payment           transaction_payment[]
+model accept_user_transfers {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id       Int
+  trans_level_from  String?
+  trans_level_to    String?
+  trans_kpi_from    Int?
+  trans_kpi_to      Int?
+  trans_status_from Int?
+  trans_status_to   Int?
+  user_id           Int
+  user_transfer_id  Int?
+  date              DateTime  @db.Date
+  tinh_tu_luc       DateTime  @db.Date
+  xac_nhan_1        String?
+  time_xac_nhan_1   DateTime? @db.DateTime(0)
+  xac_nhan_2        String?
+  time_xac_nhan_2   DateTime? @db.DateTime(0)
+  denied_note       String?   @db.Text
+  note              String
+  ghi_chu           String?   @db.Text
+  status            String
+  type              String
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model activity_log {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  log_name     String?
+  description  String    @db.MediumText
+  subject_id   Int?
+  subject_type String?
+  causer_id    Int?
+  causer_type  String?
+  properties   String?   @db.MediumText
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+
+  @@index([log_name], map: "activity_log_log_name_index")
+}
+
+model barcodes {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  name                  String
+  description           String?   @db.MediumText
+  width                 Float?
+  height                Float?
+  paper_width           Float?
+  paper_height          Float?
+  top_margin            Float?
+  left_margin           Float?
+  row_distance          Float?
+  col_distance          Float?
+  stickers_in_one_row   Int?
+  is_default            Boolean   @default(false)
+  is_continuous         Boolean   @default(false)
+  stickers_in_one_sheet Int?
+  business_id           Int?      @db.UnsignedInt
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "barcodes_business_id_foreign")
+}
+
+model bo_phans {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  name        String
+  code        String
+  description String?
+  phong_ban   Int
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model branch_locations {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id    Int
+  code           String?
+  name           String?
+  description    String?   @db.Text
+  nguoi_giam_sat Int?
+  status         String    @default("active") @db.VarChar(20)
+  longitude      String?
+  latitude       String?
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+}
+
+model brands {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int       @db.UnsignedInt
+  name        String
+  description String?   @db.MediumText
+  created_by  Int       @db.UnsignedInt
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "brands_business_id_foreign")
+  @@index([created_by], map: "brands_created_by_foreign")
+}
+
+model business {
+  id                                   Int                                @id @default(autoincrement()) @db.UnsignedInt
+  name                                 String                             @db.VarChar(256)
+  currency_id                          Int                                @db.UnsignedInt
+  start_date                           DateTime?                          @db.Date
+  tax_number_1                         String?                            @db.VarChar(100)
+  tax_label_1                          String?                            @db.VarChar(10)
+  tax_number_2                         String?                            @db.VarChar(100)
+  tax_label_2                          String?                            @db.VarChar(10)
+  default_sales_tax                    Int?                               @db.UnsignedInt
+  default_profit_percent               Float                              @default(0.00)
+  owner_id                             Int                                @db.UnsignedInt
+  time_zone                            String                             @default("Asia/Kolkata")
+  fy_start_month                       Int                                @default(1) @db.TinyInt
+  accounting_method                    business_accounting_method         @default(fifo)
+  default_sales_discount               Decimal?                           @db.Decimal(5, 2)
+  sell_price_tax                       business_sell_price_tax            @default(includes)
+  logo                                 String?
+  sku_prefix                           String?
+  enable_product_expiry                Boolean                            @default(false)
+  expiry_type                          business_expiry_type               @default(add_expiry)
+  on_product_expiry                    business_on_product_expiry         @default(keep_selling)
+  stop_selling_before                  Int
+  enable_tooltip                       Boolean                            @default(true)
+  purchase_in_diff_currency            Boolean                            @default(false)
+  purchase_currency_id                 Int?                               @db.UnsignedInt
+  p_exchange_rate                      Decimal                            @default(1.000) @db.Decimal(20, 3)
+  transaction_edit_days                Int                                @default(30) @db.UnsignedInt
+  stock_expiry_alert_days              Int                                @default(30) @db.UnsignedInt
+  keyboard_shortcuts                   String?                            @db.Text
+  pos_settings                         String?                            @db.Text
+  enable_brand                         Boolean                            @default(true)
+  enable_category                      Boolean                            @default(true)
+  enable_sub_category                  Boolean                            @default(true)
+  enable_price_tax                     Boolean                            @default(true)
+  enable_purchase_status               Boolean?                           @default(true)
+  enable_lot_number                    Boolean                            @default(false)
+  default_unit                         Int?
+  enable_sub_units                     Boolean                            @default(false)
+  enable_racks                         Boolean                            @default(false)
+  enable_row                           Boolean                            @default(false)
+  enable_position                      Boolean                            @default(false)
+  enable_editing_product_from_purchase Boolean                            @default(true)
+  sales_cmsn_agnt                      business_sales_cmsn_agnt?
+  item_addition_method                 Boolean                            @default(true)
+  enable_inline_tax                    Boolean                            @default(true)
+  currency_symbol_placement            business_currency_symbol_placement @default(before)
+  enabled_modules                      String?                            @db.Text
+  date_format                          String                             @default("m/d/Y")
+  time_format                          String                             @default(dbgenerated("24"))
+  ref_no_prefixes                      String?                            @db.Text
+  theme_color                          String?                            @db.Char(20)
+  created_by                           Int?
+  enable_rp                            Boolean                            @default(false)
+  rp_name                              String?
+  amount_for_unit_rp                   Decimal                            @default(1.0000) @db.Decimal(22, 4)
+  min_order_total_for_rp               Decimal                            @default(1.0000) @db.Decimal(22, 4)
+  max_rp_per_order                     Int?
+  redeem_amount_per_unit_rp            Decimal                            @default(1.0000) @db.Decimal(22, 4)
+  min_order_total_for_redeem           Decimal                            @default(1.0000) @db.Decimal(22, 4)
+  min_redeem_point                     Int?
+  max_redeem_point                     Int?
+  rp_expiry_period                     Int?
+  rp_expiry_type                       business_rp_expiry_type            @default(year)
+  email_settings                       String?                            @db.Text
+  sms_settings                         String?                            @db.Text
+  custom_labels                        String?                            @db.Text
+  is_active                            Boolean                            @default(true)
+  created_at                           DateTime?                          @db.Timestamp(0)
+  updated_at                           DateTime?                          @db.Timestamp(0)
+
+  @@index([currency_id], map: "business_currency_id_foreign")
+  @@index([default_sales_tax], map: "business_default_sales_tax_foreign")
+  @@index([owner_id], map: "business_owner_id_foreign")
+}
+
+model business_file_managements {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  created_by        Int?
+  phong_ban         Int?
+  bo_phan           Int?
+  to_group          Int?
+  user_id           Int?
+  apply_position_id Int?
+  todo_list_id      Int?
+  todo_id           Int?
+  type              String?   @db.VarChar(50)
+  content           String?   @db.Text
+  file_name         String?
+  file_ext          String?   @db.VarChar(50)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model business_locations {
+  id                       Int                                     @id @default(autoincrement()) @db.UnsignedInt
+  business_id              Int                                     @db.UnsignedInt
+  location_id              String?
+  branch_id                Int?
+  name                     String                                  @db.VarChar(256)
+  landmark                 String?                                 @db.Text
+  country                  String                                  @db.VarChar(100)
+  state                    String                                  @db.VarChar(100)
+  city                     String                                  @db.VarChar(100)
+  zip_code                 String                                  @db.Char(7)
+  invoice_scheme_id        Int                                     @db.UnsignedInt
+  invoice_layout_id        Int                                     @db.UnsignedInt
+  print_receipt_on_invoice Boolean?                                @default(true)
+  receipt_printer_type     business_locations_receipt_printer_type @default(browser)
+  printer_id               Int?
+  mobile                   String?
+  alternate_number         String?
+  email                    String?
+  website                  String?
+  nguoi_giam_sat           Int?
+  custom_field1            DateTime?                               @db.Date
+  custom_field2            String?
+  custom_field3            Float?                                  @default(26) @db.Float
+  custom_field4            String?
+  deleted_at               DateTime?                               @db.Timestamp(0)
+  status                   String?                                 @default("active")
+  level                    Int                                     @default(3)
+  default_location_code    String?
+  created_at               DateTime?                               @db.Timestamp(0)
+  updated_at               DateTime?                               @db.Timestamp(0)
+
+  @@index([business_id], map: "business_locations_business_id_index")
+  @@index([invoice_layout_id], map: "business_locations_invoice_layout_id_foreign")
+  @@index([invoice_scheme_id], map: "business_locations_invoice_scheme_id_foreign")
+}
+
+model cash_register_transactions {
+  id               Int                                         @id @default(autoincrement()) @db.UnsignedInt
+  cash_register_id Int                                         @db.UnsignedInt
+  amount           Decimal                                     @default(0.0000) @db.Decimal(22, 4)
+  pay_method       cash_register_transactions_pay_method?
+  type             cash_register_transactions_type
+  transaction_type cash_register_transactions_transaction_type
+  transaction_id   Int?
+  created_at       DateTime?                                   @db.Timestamp(0)
+  updated_at       DateTime?                                   @db.Timestamp(0)
+
+  @@index([cash_register_id], map: "cash_register_transactions_cash_register_id_foreign")
+  @@index([transaction_id], map: "cash_register_transactions_transaction_id_index")
+}
+
+model cash_registers {
+  id               Int                   @id @default(autoincrement()) @db.UnsignedInt
+  business_id      Int                   @db.UnsignedInt
+  user_id          Int?                  @db.UnsignedInt
+  status           cash_registers_status @default(open)
+  closed_at        DateTime?             @db.DateTime(0)
+  closing_amount   Decimal               @default(0.0000) @db.Decimal(22, 4)
+  total_card_slips Int                   @default(0)
+  total_cheques    Int                   @default(0)
+  closing_note     String?               @db.Text
+  created_at       DateTime?             @db.Timestamp(0)
+  updated_at       DateTime?             @db.Timestamp(0)
+
+  @@index([business_id], map: "cash_registers_business_id_foreign")
+  @@index([user_id], map: "cash_registers_user_id_foreign")
+}
+
+model categories {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  name        String
+  business_id Int       @db.UnsignedInt
+  short_code  String?
+  parent_id   Int
+  created_by  Int       @db.UnsignedInt
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "categories_business_id_foreign")
+  @@index([created_by], map: "categories_created_by_foreign")
+}
+
+model cham_cong_images {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  ip_connect  String
+  user_id     Int
+  surname     String
+  user_name   String
+  image_name  String
+  date        DateTime  @db.Date
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model cham_cong_users {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  user_id     Int
+  vao_sang    DateTime? @db.Time(0)
+  ra_sang     DateTime? @db.Time(0)
+  vao_chieu   DateTime? @db.Time(0)
+  ra_chieu    DateTime? @db.Time(0)
+  vao_toi     DateTime? @db.Time(0)
+  ra_toi      DateTime? @db.Time(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model comments {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id          Int
+  de_nghi_id       Int?
+  customer_care_id Int?
+  user_name        String
+  order_id         Int
+  types            String?
+  parent_id        Int       @default(1)
+  content          String?   @db.Text
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+
+  @@index([order_id], map: "order_id")
+}
+
+model contacts {
+  id                     Int                     @id @default(autoincrement()) @db.UnsignedInt
+  business_id            Int                     @db.UnsignedInt
+  type                   contacts_type
+  supplier_business_name String?
+  name                   String
+  email                  String?
+  contact_id             String?
+  tax_number             String?
+  city                   String?
+  state                  String?
+  open_phone_request     Boolean                 @default(false)
+  country                String?
+  landmark               String?
+  mobile                 String?                 @db.Text
+  landline               String?
+  alternate_number       String?
+  pay_term_number        Int?
+  pay_term_type          contacts_pay_term_type?
+  credit_limit           Decimal?                @db.Decimal(22, 4)
+  created_by             Int                     @db.UnsignedInt
+  phone                  String?
+  sub_name               String?                 @db.VarChar(50)
+  sub_phone              String?                 @db.VarChar(20)
+  total_rp               Int                     @default(0)
+  total_rp_used          Int                     @default(0)
+  total_rp_expired       Int                     @default(0)
+  is_default             Boolean                 @default(false)
+  longitude              String?
+  latitude               String?
+  map_link               String?                 @db.Text
+  formatted_address      String?                 @db.Text
+  customer_group_id      Int?
+  sub_long               String?
+  sub_lat                String?
+  phan_loai_no           String?                 @default("bt")
+  custom_field1          String?
+  custom_field2          String?
+  custom_field3          String?
+  custom_field4          String?
+  deleted_at             DateTime?               @db.Timestamp(0)
+  created_at             DateTime?               @db.Timestamp(0)
+  updated_at             DateTime?               @db.Timestamp(0)
+  // @@index([mobile, formatted_address], map: "mobile")
+
+  @@index([business_id], map: "contacts_business_id_foreign")
+  @@index([created_by], map: "contacts_created_by_foreign")
+}
+
+model cskh_histories {
+  id                        Int       @id @default(autoincrement())
+  date                      DateTime  @db.Date
+  from_time                 DateTime  @db.Time(0)
+  to_time                   DateTime  @db.Time(0)
+  ca                        Int
+  is_gay                    Int       @default(0)
+  status                    String    @default("active")
+  nay_status                String    @default("active")
+  mai_status                String    @default("active")
+  ngay_nghi_status          String    @default("active")
+  key_address               String?   @db.Text
+  created_at                DateTime? @db.Timestamp(0)
+  updated_at                DateTime? @db.Timestamp(0)
+  can_hen_them_kd           Int       @default(0)
+  can_hen_them_cskh         Int       @default(0)
+  can_hen_them_mai_kd       Int       @default(0)
+  can_hen_them_mai_cskh     Int       @default(0)
+  can_hen_them_ngay_nghi    Int       @default(0)
+  can_hen_them_ngay_nghi_kd Int       @default(0)
+  sl_nvkt_du_kien           Int       @default(0)
+  can_hen_them              Int       @default(0)
+}
+
+model currencies {
+  id                 Int       @id @default(autoincrement()) @db.UnsignedInt
+  country            String    @db.VarChar(100)
+  currency           String    @db.VarChar(100)
+  code               String    @db.VarChar(25)
+  symbol             String    @db.VarChar(25)
+  thousand_separator String    @db.VarChar(10)
+  decimal_separator  String    @db.VarChar(10)
+  created_at         DateTime? @db.Timestamp(0)
+  updated_at         DateTime? @db.Timestamp(0)
+}
+
+model daily_results {
+  id                  Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id         Int
+  user_id             Int
+  type                String
+  ngay                DateTime? @db.Date
+  ca                  String
+  chiet_khau_vuot     Int       @default(0)
+  don_tinh_chiet_khau Int       @default(0)
+  ole                 Int       @default(0)
+  phong_ban           Int?
+  branch_id           Int?
+  bo_phan             Int?
+  user_group_id       Int?
+  salary_status       Int?
+  thoi_gian_lv        Int?
+  so_cong             Float
+  bac_luong           String
+  user_kpi            Int?
+  luong_cb            Int
+  doanh_so            Int
+  chiet_khau_mo_moi   Int       @default(0)
+  doanh_so_yc         Int
+  so_don_yc           Float     @db.Float
+  tb_don_yc           Int
+  ds_ban_may          Int
+  don_ban_may         Int
+  ko_tinh_don_ps      Int       @default(0)
+  ko_tinh_don_vs      Int       @default(0)
+  ko_tinh_ds          Int       @default(0)
+  don_ps              Int
+  don_ps_dinh_ky      Int       @default(0)
+  don_ps_ton          Int       @default(0)
+  don_bao_hanh        Int       @default(0)
+  don_vs              Int
+  thuong              Int
+  phat                Int
+  chiet_khau          Int
+  don_them            Int
+  thu_nhap_ngay       Int
+  status              String?
+  ghi_chu             String?   @db.Text
+  gio_vao1            DateTime? @db.Time(0)
+  gio_ra1             DateTime? @db.Time(0)
+  gio_vao2            DateTime? @db.Time(0)
+  gio_ra2             DateTime? @db.Time(0)
+  gio_vao3            DateTime? @db.Time(0)
+  gio_ra3             DateTime? @db.Time(0)
+  so_cong_theo_gio    Float?    @default(0) @db.Float
+  vao_tre             Float?    @db.Float
+  ra_som              Float?    @db.Float
+  khai_thac_dinh_ky   Int?
+  khai_thac_ton       Int?
+  sl_nghe_may         Int       @default(0)
+  sl_ko_nghe_may      Int       @default(0)
+  sl_nghe_may_yc      Float     @default(0) @db.Float
+  tg_dam_thoai        Int       @default(0)
+  tg_dam_thoai_yc     Int       @default(0)
+  phu_cap_ngay        Int       @default(0)
+  luong_kpi           Int       @default(0)
+  custom_field_1      String?
+  custom_field_2      String?
+  custom_field_3      String?
+  custom_field_4      String?
+  created_at          DateTime? @db.Timestamp(0)
+  updated_at          DateTime? @db.Timestamp(0)
+  tru_thieu_don       Int       @default(0)
+  tru_sl_nghe_may     Int       @default(0)
+  tru_tg_dam_thoai    Int       @default(0)
+}
+
+model debt_managements {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id          Int
+  user_name        String?
+  transaction_id   Int?
+  type             String    @default("in") @db.VarChar(50)
+  status           String    @default("active") @db.VarChar(20)
+  comment          String?
+  total            BigInt    @default(0)
+  total_paid       BigInt    @default(0)
+  transaction_date DateTime? @db.DateTime(0)
+  description      String?   @db.Text
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+}
+
+model default_locations {
+  id                           Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id                  Int       @default(1)
+  default_location_code        String
+  location_standard_product_id Int?
+  product_id                   Int
+  sku                          String
+  quantity                     Int
+  custom_field_1               String?
+  custom_field_2               String?
+  custom_field_3               String?
+  custom_field_4               String?
+  created_at                   DateTime? @db.Timestamp(0)
+  updated_at                   DateTime? @db.Timestamp(0)
+}
+
+model departments {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  name        String
+  code        String
+  description String?
+  demarcation Int       @default(0)
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model detail_phieu_chis {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  type         String?
+  material_id  Int?
+  phieu_chi_id Int
+  name         String
+  description  String?
+  price        Int
+  quantity     Int?
+  don_vi_tinh  String?
+  tax          Float     @default(0) @db.Float
+  note         String?
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+}
+
+model detail_phieu_xuats {
+  id                   Int       @id @default(autoincrement()) @db.UnsignedInt
+  product_id           Int?
+  confirm_id           Int
+  thuc_ban             Int
+  cho_muon             Int       @default(0)
+  da_muon              Int       @default(0)
+  ton_kho_sau_xuat     Int?
+  thoi_gian_xuat       DateTime? @db.DateTime(0)
+  chenh_lech           Int       @default(0)
+  discount_amount      Int       @default(0)
+  tax_amount           Int       @default(0)
+  sl_tieu_chuan        Int       @default(0)
+  ton_kho_365          Int
+  thuc_xuat            Int
+  da_xuat              Int
+  sl_tra_lai           Int
+  ton_kho              Int
+  location_id          Int
+  transfer_location_id Int
+  status               String
+  is_thu_hoi           Boolean   @default(false)
+  kho_no               Int       @default(0)
+  cap_bu               Int       @default(0)
+  ghi_chu              String?   @db.Text
+  custom_field_2       String?
+  custom_field_3       String?
+  custom_field_4       String?
+  created_at           DateTime? @db.Timestamp(0)
+  updated_at           DateTime? @db.Timestamp(0)
+  note                 String
+}
+
+model discounts {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  name              String
+  business_id       Int
+  brand_id          Int?
+  category_id       Int?
+  location_id       Int?
+  priority          Int?
+  discount_type     String?
+  discount_amount   Decimal   @default(0.0000) @db.Decimal(22, 4)
+  starts_at         DateTime? @db.DateTime(0)
+  ends_at           DateTime? @db.DateTime(0)
+  is_active         Boolean   @default(true)
+  applicable_in_spg Boolean?  @default(false)
+  applicable_in_cg  Boolean?  @default(false)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+
+  @@index([brand_id], map: "discounts_brand_id_index")
+  @@index([business_id], map: "discounts_business_id_index")
+  @@index([category_id], map: "discounts_category_id_index")
+  @@index([location_id], map: "discounts_location_id_index")
+  @@index([priority], map: "discounts_priority_index")
+}
+
+model dk_lich_details {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  dk_lich_id Int?
+  user_id    Int?
+  code       String?
+  type       String    @default("day")
+  date       DateTime? @db.Date
+  name       String
+  status     String    @default("active")
+  sang       String
+  chieu      String
+  toi        String
+  sang_vao   DateTime? @db.Time(0)
+  sang_ra    DateTime? @db.Time(0)
+  chieu_vao  DateTime? @db.Time(0)
+  chieu_ra   DateTime? @db.Time(0)
+  toi_vao    DateTime? @db.Time(0)
+  toi_ra     DateTime? @db.Time(0)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model dk_lich_lv {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id     Int
+  user_id         Int
+  type            String    @default("day") @db.VarChar(50)
+  user_name       String
+  phan_quyen      String
+  phong_ban       String
+  status          String
+  from_date       DateTime? @db.Date
+  to_date         DateTime? @db.Date
+  xac_nhan_1      String?
+  time_xac_nhan_1 DateTime? @db.DateTime(0)
+  xac_nhan_2      String?
+  time_xac_nhan_2 DateTime? @db.DateTime(0)
+  xac_nhan_3      String?
+  time_xac_nhan_3 DateTime? @db.DateTime(0)
+  xac_nhan_4      String?
+  time_xac_nhan_4 DateTime? @db.DateTime(0)
+  denied_note     String?   @db.Text
+  date            DateTime  @db.DateTime(0)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model don_xin_nghi_pheps {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id       Int
+  user_id           Int
+  user_name         String
+  ca                String?
+  phan_quyen        String?
+  type              String
+  status            String
+  from_date         DateTime  @db.DateTime(0)
+  to_date           DateTime  @db.DateTime(0)
+  description       String?   @db.Text
+  tt_xac_nhan       Int?
+  tbp_xac_nhan      Int?
+  tphc_xac_nhan     Int?
+  gd_xac_nhan       Int?
+  ban_giao_xac_nhan Int?
+  time_nghi_viec    DateTime? @db.Date
+  time_xn_0         DateTime? @db.DateTime(0)
+  time_xn_1         DateTime? @db.DateTime(0)
+  time_xn_2         DateTime? @db.DateTime(0)
+  time_xn_3         DateTime? @db.DateTime(0)
+  time_xn_4         DateTime? @db.DateTime(0)
+  pns_xac_nhan      Int?
+  time_xn_5         DateTime? @db.DateTime(0)
+  so_ngay_nghi      Float     @default(0) @db.Float
+  so_ngay_con_lai   Float?    @db.Float
+  ban_giao_cv       Int?
+  so_lan_nghi_sai   Int?
+  cam_ket           String?   @db.Text
+  cv_ban_giao       String?   @db.Text
+  note              String?
+  denied_note       String?   @db.Text
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model duyet_luong_details {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id           Int
+  user_id               Int
+  status                String    @default("cho_xn") @db.VarChar(50)
+  denied_status         String?
+  thang                 String?
+  denied_note           String?   @db.Text
+  xac_nhan_1            String?
+  xac_nhan_2            String?
+  time_xac_nhan_1       DateTime? @db.DateTime(0)
+  time_xac_nhan_2       DateTime? @db.DateTime(0)
+  phong_ban             Int?
+  phu_cap_xang_xe       Int       @default(0)
+  so_don_pc_xang        Int       @default(0)
+  to_group              Int?
+  bo_phan               Int?
+  salary_status         Int?
+  thoi_gian_lv          Int?
+  duyet_luong_id        Int?
+  duyet_luong_phong_id  Int?
+  phan_quyen            String?
+  type                  String
+  luong_cb              Int       @default(0)
+  ngay_cong             Float     @default(0) @db.Float
+  luong_cb_theo_cong    Int       @default(0)
+  luong_2p              Int       @default(0)
+  luong_3p              Int       @default(0)
+  chiet_khau_vuot_ds    Int       @default(0)
+  chiet_khau_mo_moi     Int       @default(0)
+  doanh_so              Int?
+  doanhso_yc            Int?
+  so_don_vs             Int?
+  so_don_ps             Int?
+  so_don_yc             Int?
+  tb_don_yc             Int       @default(0)
+  ti_le_chot            Int       @default(0)
+  ti_le_chot_yc         Int       @default(0)
+  sl_nghe_may_yc        Float     @default(0) @db.Float
+  sl_nghe_may           Int       @default(0)
+  khai_thac_dinh_ky_yc  Int       @default(0)
+  no_da_thu_kh          Int       @default(0)
+  khai_thac_dinh_ky     Int       @default(0)
+  khai_thac_ton_yc      Int       @default(0)
+  khai_thac_ton         Int       @default(0)
+  kpi_sl_nghe_may       Int       @default(0)
+  kpi_khai_thac_ton     Int       @default(0)
+  kpi_khai_thac_dinh_ky Int       @default(0)
+  kpi_ti_le_chot        Int       @default(0)
+  kpi_tg_dam_thoai      Int       @default(0)
+  from_date             DateTime? @db.DateTime(0)
+  to_date               DateTime? @db.DateTime(0)
+  luong_tn              Int       @default(0)
+  phu_cap               Int       @default(0)
+  note_phu_cap          String?   @db.Text
+  luong_kpi             Int       @default(0)
+  tong_luong            Int       @default(0)
+  khau_tru_kpi          Int       @default(0)
+  social_insurance_fee  Int       @default(0)
+  phat                  Int       @default(0)
+  tam_ung               Int       @default(0)
+  cty_giu               Int       @default(0)
+  cong_no               Int       @default(0)
+  thuc_linh             Int       @default(0)
+  thuc_tra              Int       @default(0)
+  thuong_nong           Int       @default(0)
+  de_nghi_tra           Int       @default(0)
+  ghi_chu               String?   @db.Text
+  xac_nhan_3            String?
+  time_xac_nhan_3       DateTime? @db.DateTime(0)
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+  xac_nhan_4            String?
+  time_xac_nhan_4       DateTime? @db.DateTime(0)
+  salary_id             Int?
+  tg_dam_thoai          Int?      @default(0)
+  tg_dam_thoai_yc       Int?      @default(0)
+}
+
+model duyet_luongs {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  month            Int?
+  year             Int?
+  status           String
+  is_read          Boolean   @default(false)
+  type             String    @default("cty")
+  phong_ban_target Int?
+  created_by       Int
+  tp_hanh_chinh    Int?
+  tro_ly_tc        Int?
+  giam_doc         Int?
+  chu_tich         Int?
+  thu_quy          Int?
+  xac_nhan_1       String?
+  xac_nhan_2       String?
+  xac_nhan_3       String?
+  xac_nhan_4       String?
+  xac_nhan_5       String?
+  time_xac_nhan_1  DateTime? @db.DateTime(0)
+  time_xac_nhan_2  DateTime? @db.DateTime(0)
+  time_xac_nhan_3  DateTime? @db.DateTime(0)
+  time_xac_nhan_4  DateTime? @db.DateTime(0)
+  time_xac_nhan_5  DateTime? @db.DateTime(0)
+  ghi_chu          String?   @db.Text
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+}
+
+model editing_invoice_payments {
+  id                         Int       @id @default(autoincrement())
+  editing_invoice_id         Int
+  transaction_payment_id     Int
+  method_before              String?
+  method_after               String?
+  bank_account_number_before String?   @db.Text
+  bank_account_number_after  String?   @db.Text
+  real_paid_on_before        DateTime? @db.DateTime(0)
+  real_paid_on_after         DateTime? @db.DateTime(0)
+  created_at                 DateTime  @db.DateTime(0)
+  updated_at                 DateTime  @db.DateTime(0)
+}
+
+model editing_invoices {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id           Int
+  user_name         String
+  user_object       String?   @default("nvkt")
+  status            String
+  so_hoa_don_before Int
+  transaction_id    Int
+  type              String
+  editing_method    String    @default("list") @db.VarChar(50)
+  so_hoa_don_after  Int
+  description       String
+  denied_note       String?
+  xac_nhan_0        String?
+  xac_nhan_5        String?
+  time_xac_nhan_0   DateTime? @db.DateTime(0)
+  time_xac_nhan_5   DateTime? @db.DateTime(0)
+  xac_nhan_4        String?
+  time_xac_nhan_4   DateTime? @db.DateTime(0)
+  xac_nhan_1        String?
+  xac_nhan_2        String?
+  xac_nhan_3        String?
+  time_xac_nhan_1   DateTime? @db.DateTime(0)
+  time_xac_nhan_2   DateTime? @db.DateTime(0)
+  time_xac_nhan_3   DateTime? @db.DateTime(0)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model giay_de_nghis {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id            Int
+  user_id                String
+  user_name              String
+  phan_quyen             String
+  daily_result_detail_id Int?
+  phong_ban              String?
+  noi_dung               String?   @db.Text
+  cam_ket                String?   @db.Text
+  type                   String
+  status                 String?
+  denied_note            String?   @db.Text
+  date                   DateTime  @db.Date
+  note                   String?   @db.Text
+  xac_nhan_1             String?
+  time_xac_nhan_1        DateTime? @db.DateTime(0)
+  xac_nhan_2             String?
+  time_xac_nhan_2        DateTime? @db.DateTime(0)
+  xac_nhan_3             String?
+  time_xac_nhan_3        DateTime? @db.DateTime(0)
+  xac_nhan_4             String?
+  time_xac_nhan_4        DateTime? @db.DateTime(0)
+  xac_nhan_5             String?
+  time_xac_nhan_5        DateTime? @db.DateTime(0)
+  xac_nhan_6             String?
+  time_xac_nhan_6        DateTime? @db.DateTime(0)
+  xac_nhan_7             String?
+  time_xac_nhan_7        DateTime? @db.DateTime(0)
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+}
+
+model hand_over_histories {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  confirm_id     Int
+  location_id    Int?
+  transaction_id Int
+  hand_over      String
+  type           String    @default("chua_ban_giao")
+  sub_type       String?   @default("")
+  description    String?
+  denied_note    String?
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+}
+
+model invoice_layouts {
+  id                       Int       @id @default(autoincrement()) @db.UnsignedInt
+  name                     String
+  header_text              String?   @db.Text
+  invoice_no_prefix        String?
+  quotation_no_prefix      String?
+  invoice_heading          String?
+  sub_heading_line1        String?
+  sub_heading_line2        String?
+  sub_heading_line3        String?
+  sub_heading_line4        String?
+  sub_heading_line5        String?
+  invoice_heading_not_paid String?
+  invoice_heading_paid     String?
+  quotation_heading        String?
+  sub_total_label          String?
+  discount_label           String?
+  tax_label                String?
+  total_label              String?
+  total_due_label          String?
+  paid_label               String?
+  show_client_id           Boolean   @default(false)
+  client_id_label          String?
+  client_tax_label         String?
+  date_label               String?
+  date_time_format         String?
+  show_time                Boolean   @default(true)
+  show_brand               Boolean   @default(false)
+  show_sku                 Boolean   @default(true)
+  show_cat_code            Boolean   @default(true)
+  show_expiry              Boolean   @default(false)
+  show_lot                 Boolean   @default(false)
+  show_image               Boolean   @default(false)
+  show_sale_description    Boolean   @default(false)
+  sales_person_label       String?
+  show_sales_person        Boolean   @default(false)
+  table_product_label      String?
+  table_qty_label          String?
+  table_unit_price_label   String?
+  table_subtotal_label     String?
+  cat_code_label           String?
+  logo                     String?
+  show_logo                Boolean   @default(false)
+  show_business_name       Boolean   @default(false)
+  show_location_name       Boolean   @default(true)
+  show_landmark            Boolean   @default(true)
+  show_city                Boolean   @default(true)
+  show_state               Boolean   @default(true)
+  show_zip_code            Boolean   @default(true)
+  show_country             Boolean   @default(true)
+  show_mobile_number       Boolean   @default(true)
+  show_alternate_number    Boolean   @default(false)
+  show_email               Boolean   @default(false)
+  show_tax_1               Boolean   @default(true)
+  show_tax_2               Boolean   @default(false)
+  show_barcode             Boolean   @default(false)
+  show_payments            Boolean   @default(false)
+  show_customer            Boolean   @default(false)
+  customer_label           String?
+  show_reward_point        Boolean   @default(false)
+  highlight_color          String?   @db.VarChar(10)
+  footer_text              String?   @db.Text
+  module_info              String?   @db.Text
+  is_default               Boolean   @default(false)
+  business_id              Int       @db.UnsignedInt
+  design                   String?   @default("classic") @db.VarChar(256)
+  cn_heading               String?
+  cn_no_label              String?
+  cn_amount_label          String?
+  table_tax_headings       String?   @db.Text
+  show_previous_bal        Boolean   @default(false)
+  prev_bal_label           String?
+  product_custom_fields    String?   @db.Text
+  contact_custom_fields    String?   @db.Text
+  location_custom_fields   String?   @db.Text
+  created_at               DateTime? @db.Timestamp(0)
+  updated_at               DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "invoice_layouts_business_id_foreign")
+}
+
+model invoice_schemes {
+  id            Int                         @id @default(autoincrement()) @db.UnsignedInt
+  business_id   Int                         @db.UnsignedInt
+  name          String
+  scheme_type   invoice_schemes_scheme_type
+  prefix        String?
+  start_number  Int?
+  invoice_count Int                         @default(0)
+  total_digits  Int?
+  is_default    Boolean                     @default(false)
+  created_at    DateTime?                   @db.Timestamp(0)
+  updated_at    DateTime?                   @db.Timestamp(0)
+
+  @@index([business_id], map: "invoice_schemes_business_id_foreign")
+}
+
+model jobs {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  queue        String
+  payload      String    @db.LongText
+  attempts     Int       @db.UnsignedTinyInt
+  reserved_at  Int?      @db.UnsignedInt
+  available_at DateTime? @default(now()) @db.Timestamp(0)
+  created_at   DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([queue], map: "jobs_queue_index")
+}
+
+model location_standard_products {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  code       String?
+  name       String
+  created_by Int
+  note       String?   @db.Text
+  status     String    @default("active") @db.VarChar(50)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model location_standard_users {
+  id                   Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id              Int?
+  location_standard_id Int
+  location_id          Int?
+  type                 String?   @default("user") @db.VarChar(20)
+  note                 String?   @db.Text
+  created_at           DateTime? @db.Timestamp(0)
+  updated_at           DateTime? @db.Timestamp(0)
+}
+
+model media {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  file_name   String
+  model_type  String
+  model_id    BigInt    @db.UnsignedBigInt
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([model_type, model_id], map: "media_model_type_model_id_index")
+}
+
+model model_has_permissions {
+  permission_id Int    @db.UnsignedInt
+  model_type    String
+  model_id      BigInt @db.UnsignedBigInt
+
+  @@id([permission_id, model_id, model_type])
+  @@index([model_type, model_id], map: "model_has_permissions_model_type_model_id_index")
+}
+
+model model_has_roles {
+  role_id    Int    @db.UnsignedInt
+  model_type String
+  model_id   BigInt @db.UnsignedBigInt
+
+  @@id([role_id, model_id, model_type])
+  @@index([model_type, model_id], map: "model_has_roles_model_type_model_id_index")
+}
+
+model money_hand_overs {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id           Int
+  confirm_id            Int
+  tien_mat              BigInt
+  chuyen_khoan          BigInt
+  ck_vietinbank         BigInt
+  ck_techcombank        BigInt
+  ck_vietcombank        BigInt
+  thu_no_tm             BigInt
+  thu_no_ck             BigInt
+  thu_no_ck_vietcombank BigInt
+  thu_no_ck_vietinbank  BigInt
+  thu_no_ck_techcombank BigInt
+  con_no                BigInt
+  note                  String?   @db.Text
+  status                String
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+}
+
+model money_report_details {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  phieu_ban_giao_id Int
+  phieu_xuat_id     Int
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model money_reports {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  confirm_id             Int
+  location_id            Int?
+  branch_id              Int?
+  ca                     String
+  date                   DateTime  @db.Date
+  doanh_thu              Int
+  type                   String
+  tien_mat               Int
+  chuyen_khoan           Int
+  ck_vietinbank          Int       @default(0)
+  ck_techcombank         Int       @default(0)
+  ck_vietcombank         Int       @default(0)
+  thu_no_ck_vietinbank   Int       @default(0)
+  thu_no_ck_techcombank  Int       @default(0)
+  thu_no_ck_vietcombank  Int       @default(0)
+  khach_no               Int
+  no_da_thu_tm           Int
+  no_da_thu_ck           Int
+  kho_ban_tm             Int       @default(0)
+  kho_ban_ck             Int       @default(0)
+  kho_ban_ck_vietinbank  Int       @default(0)
+  kho_ban_ck_techcombank Int       @default(0)
+  kho_ban_ck_vietcombank Int       @default(0)
+  chua_bg_tm             Int       @default(0)
+  chua_bg_ck             Int       @default(0)
+  chua_bg_ck_vietinbank  Int       @default(0)
+  chua_bg_ck_techcombank Int       @default(0)
+  chua_bg_ck_vietcombank Int       @default(0)
+  list_transaction       String?   @db.Text
+  list_transaction_no    String?   @db.Text
+  list_don_thu_no_id     String?   @db.Text
+  list_payment_id        String?   @db.Text
+  list_target_id         String?   @db.Text
+  accepted_by            Int?
+  note                   String?
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+}
+
+model notification_templates {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id   Int
+  template_for  String
+  email_body    String?   @db.Text
+  sms_body      String?   @db.Text
+  subject       String?
+  auto_send     Boolean   @default(false)
+  auto_send_sms Boolean   @default(false)
+  created_at    DateTime? @db.Timestamp(0)
+  updated_at    DateTime? @db.Timestamp(0)
+}
+
+model notifications {
+  id              String    @id @db.Char(36)
+  type            String
+  notifiable_type String
+  notifiable_id   BigInt    @db.UnsignedBigInt
+  data            String    @db.Text
+  read_at         DateTime? @db.Timestamp(0)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+
+  @@index([notifiable_type, notifiable_id], map: "notifications_notifiable_type_notifiable_id_index")
+}
+
+model order_histories {
+  id                  Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id         Int
+  status              String    @default("active")
+  ord_status          String?
+  type                String
+  order_id            Int
+  loai_don            String    @default("binh_thuong")
+  is_mo_moi           String?   @default("normal")
+  is_tinh_thoi_gian   Int       @default(1)
+  transaction_id      Int?
+  nvkt_id             Int
+  location_id         Int?
+  nvkd_id             Int
+  customer_id         Int?
+  start_order_at      DateTime? @default(now()) @db.Timestamp(0)
+  end_order_at        DateTime? @default(now()) @db.Timestamp(0)
+  paid_at             DateTime? @default(now()) @db.Timestamp(0)
+  thanh_toan_stt      String?
+  due_stt             String?
+  up_anh_stt          String?
+  bao_hanh_stt        String?
+  bao_hanh_lai        String?
+  ve_sinh_stt         String?
+  huy_stt             String?
+  danh_gia            Int       @default(0)
+  is_vsbd_280         String    @default("no") @db.VarChar(11)
+  is_tl_vs_bd         Boolean   @default(false)
+  vsbd_add_minutes    Int       @default(0)
+  danh_gia_cua_kt     Int       @default(0)
+  ca                  Int?
+  qr_code             String?
+  source              String?
+  services            String?
+  do_can_mang         String?
+  tg_den_nha_khach    Int?
+  tg_lam_don          Int?
+  diem_thai_do        Float?    @db.Float
+  diem_trinh_do       Float?    @db.Float
+  diem_gon_gang       Float?    @db.Float
+  is_danh_gia_kh      Int?      @default(0)
+  comment             String?   @db.Text
+  km_diff             Float     @default(0) @db.Float
+  km_distance         Float     @default(0) @db.Float
+  km_distance_return  Float     @default(0) @db.Float
+  km_distance_minutes Int       @default(0)
+  created_at          DateTime? @db.Timestamp(0)
+  updated_at          DateTime? @db.Timestamp(0)
+}
+
+model order_images {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  name              String?
+  customer_id       Int?
+  contact_id        String?
+  order_id          Int?
+  time_chup         DateTime? @db.Timestamp(0)
+  filename          String?
+  caring_history_id Int?
+  folder_id         String?
+  types             String?
+  upload_by         Int?
+  time_upload       DateTime? @db.DateTime(0)
+  longitude         String?
+  latitude          String?
+  deleted_at        DateTime? @db.Timestamp(0)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
 }
 
 model orders {
-  id              Int           @id @default(autoincrement())
-  product_id      Int
-  status          String
-  published       Boolean       @default(false)
-  transactions    transactions? @relation(fields: [transactions_id], references: [id])
-  transactions_id Int?
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  ord_code              String
+  ctv_check_status      String    @default("normal") @db.VarChar(11)
+  loai_don              String    @default("binh_thuong")
+  order_type            String    @default("normal")
+  description           String?   @db.Text
+  working_with          String?
+  more_request          String?
+  other_more_request    String?   @db.Text
+  machine_problem       String?
+  other_machine_problem String?   @db.Text
+  status                Int       @default(1)
+  source                String?   @db.VarChar(20)
+  ord_status            String?   @db.VarChar(11)
+  text_status           String?
+  ctv_hll_status        String    @default("normal") @db.VarChar(50)
+  dh_status             Int?      @default(1)
+  thanh_toan_stt        String?
+  hotline_source        String?
+  due_stt               String?
+  up_anh_stt            String?
+  bao_hanh_stt          String?
+  bao_hanh_lai          String?
+  ve_sinh_stt           String?
+  huy_stt               String?
+  is_giam_gia           Int       @default(0)
+  prepare_nvkt_id       Int?
+  nvkt_id               Int?      @default(0)
+  nvkd_id               Int?      @default(0)
+  gio_hen               DateTime? @db.Timestamp(0)
+  handler               Int?
+  gio_goi               String?
+  gio_den               String?
+  thu_nhap              String?
+  tinh_cach             String?
+  don_them_status       String    @default("moi")
+  don_them_sub_status   String?
+  slot_id               Int?
+  check_in              DateTime? @db.Timestamp(0)
+  check_out             DateTime? @db.Timestamp(0)
+  service_type          String?
+  km_distance           Float     @default(0) @db.Float
+  km_distance_return    Float     @default(0) @db.Float
+  visible               Int       @default(1)
+  is_den_sp             String    @default("no")
+  ca                    Int?      @default(1)
+  is_vsbd_280           String    @default("no")
+  vsbd_280_status       String    @default("vsbd_280")
+  qr_code               String?
+  do_can_mang           String?   @db.Text
+  services              String?
+  vsbd_add_minutes      Int       @default(0)
+  km_distance_minutes   Int       @default(0)
+  is_mo_moi             String?   @default("normal")
+  denied_note           String?   @db.Text
+  ord_trans_id          Int?
+  deleted_status        String?   @db.VarChar(11)
+  start_ord             DateTime? @db.Timestamp(0)
+  end_ord               DateTime? @db.Timestamp(0)
+  is_cho_no             Int       @default(0)
+  show_phone_status     String    @default("inactive")
+  show_phone_pdh        String?   @db.VarChar(20)
+  request_open_phone    Boolean   @default(false)
+  is_checked            Int       @default(0)
+  is_som                Int       @default(0)
+  is_kt_cung            Int       @default(0)
+  is_dung_gio           Int       @default(0)
+  is_tinh_thoi_gian     Int?      @default(1)
+  huy_note              String?   @db.Text
+  tra_ve_note           String?   @db.Text
+  so_phut_them          Int       @default(0)
+  status_change_at      DateTime? @db.Timestamp(0)
+  note                  String?   @db.Text
+  support_request       String?
+  tag_time              DateTime? @db.Timestamp(0)
+  created_at            DateTime? @default(now()) @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
 }
 
-model transaction_lines {
-  id             Int           @id @default(autoincrement())
-  oderhistory_id Int
-  product_id     Int
+model password_resets {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  email      String
+  token      String
+  created_at DateTime? @db.Timestamp(0)
+}
+
+model payment_back_ups {
+  id                      Int                      @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id          Int?                     @db.UnsignedInt
+  business_id             Int?
+  is_return               Boolean                  @default(false)
+  amount                  Decimal                  @default(0.0000) @db.Decimal(22, 4)
+  method                  payment_back_ups_method?
+  accepted_at             DateTime?                @db.DateTime(0)
+  accepted_by             Int
+  is_accepted             Int                      @default(0)
+  is_ban_giao_ck          Int                      @default(0)
+  transaction_no          String?
+  card_transaction_number String?
+  card_number             String?
+  card_type               String?
+  card_holder_name        String?
+  card_month              String?
+  card_year               String?
+  card_security           String?                  @db.VarChar(5)
+  cheque_number           String?
+  ktnb_accept             Int?
+  ktnb_accept_time        DateTime?                @db.DateTime(0)
+  ktk_accept              Int?
+  ktk_accept_time         DateTime?                @db.DateTime(0)
+  bank_account_number     String?
+  bank_account_number1    String?
+  bank_account_number2    String?
+  paid_on                 DateTime?                @db.DateTime(0)
+  real_paid_on            DateTime?                @db.DateTime(0)
+  created_by              Int
+  payment_for             Int?
+  parent_id               Int?
+  note                    String?
+  document                String?
+  payment_ref_no          String?
+  account_id              Int?
+  created_at              DateTime?                @db.Timestamp(0)
+  updated_at              DateTime?                @db.Timestamp(0)
+
+  @@index([created_by], map: "transaction_payments_created_by_index")
+  @@index([parent_id], map: "transaction_payments_parent_id_index")
+  @@index([transaction_id], map: "transaction_payments_transaction_id_foreign")
+}
+
+model payment_confirmations {
+  id                     Int       @id @default(autoincrement())
+  user_id                Int
+  code                   String?
+  user_target_id         Int?
+  is_tapped              Boolean   @default(false)
+  user_name              String
+  ca                     String?
+  business_id            Int       @default(1)
+  transaction_id         Int?
+  ref_no                 String?
+  accepted_by            Int?
+  location_id            Int
+  branch_id              Int?
+  nguoi_xuat             Int?
+  xac_nhan               Int?
+  kt_xac_nhan            Int?
+  tphc_xac_nhan          Int?
+  thu_quy_xac_nhan       Int?
+  time_xac_nhan_1        DateTime? @db.DateTime(0)
+  time_xac_nhan_2        DateTime? @db.DateTime(0)
+  time_xac_nhan_3        DateTime? @db.DateTime(0)
+  time_xac_nhan_4        DateTime? @db.DateTime(0)
+  xac_nhan_1             String?
+  xac_nhan_2             String?
+  xac_nhan_3             String?
+  xac_nhan_4             String?
+  chu_tich_xn            Int?
+  list_transactions      String?   @db.Text
+  list_transaction_no    String?   @db.Text
+  list_don_thu_no_id     String?   @db.Text
+  list_payment_id        String?   @db.Text
+  list_target_ids        String?
+  transfer_location_id   Int?
+  tien_mat               Int?
+  chuyen_khoan           Int?
+  ck_vietinbank          Int?
+  ck_techcombank         Int?
+  ck_vietcombank         Int?
+  chuyen_khoan_chua_xn   BigInt?
+  ck_vietinbank_chua_xn  BigInt?
+  ck_techcombank_chua_xn BigInt?
+  ck_vietcombank_chua_xn BigInt?
+  thu_no_ck_vietcombank  Int?
+  thu_no_ck_vietinbank   Int?
+  thu_no_ck_techcombank  Int?
+  kho_ban_tm             Int       @default(0)
+  kho_ban_ck             Int       @default(0)
+  kho_ban_ck_vietinbank  Int       @default(0)
+  kho_ban_ck_techcombank Int       @default(0)
+  kho_ban_ck_vietcombank Int       @default(0)
+  con_no                 Int?
+  tax_amount             Int       @default(0)
+  doanh_thu              Int?
+  giam_gia               Int       @default(0)
+  giam_gia_combo         Int       @default(0)
+  thu_no_ck              Int?
+  thu_no_tm              Int?
+  don_ps_kd              Int?
+  don_ps_hotline         Int?
+  don_bh_vs              Int?
+  don_bh_ps              Int?
+  don_vs                 Int?
+  don_no_da_thu          Int?
+  so_don_da_tt           Int?
+  so_don_chua_tt         Int?
+  hoa_don_chua_tt        String?   @db.Text
+  date                   DateTime  @db.Date
+  tu_luc                 DateTime? @db.Timestamp(0)
+  den_luc                DateTime? @db.Timestamp(0)
+  level                  String?
+  ban_giao_status        String?   @default("chua_ban_giao")
+  to_group               String?
+  type                   String
+  status                 String?
+  ghi_chu                String?
+  is_checked_2           Int?      @default(0)
+  is_checked             Int?      @default(0)
+  created_at             DateTime? @default(now()) @db.Timestamp(0)
+  updated_at             DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model payment_slips {
+  id                  Int       @id @default(autoincrement())
+  user_id             Int
+  transaction_id      Int?
+  user_name           String?
+  location_id         Int?
+  date                DateTime? @db.Date
+  level               String?
+  to_group            String?
+  thanh_toan_stt      String?
+  expense_category_id Int?
+  edit_status         Float     @default(0) @db.Float
+  type                String?
+  phieu_chi_id        Int?
+  noi_dung            String?   @db.VarChar(5000)
+  so_tien             Int
+  chenh_lech          Int?
+  so_tai_khoan        String?
+  tk_ngan_hang        String?   @db.Text
+  chu_tk              String?   @db.Text
+  status              String?   @db.Text
+  truong_bp           Int?
+  tp_hanh_chinh       Int?
+  giam_doc            Int?
+  chu_tich            Int?
+  nv_hanh_chinh       Int?
+  ke_toan             Int?
+  ghi_chu             String?   @db.Text
+  expense_type        String?
+  is_cp_co_dinh       Int       @default(0)
+  chi_phi_co_dinh_id  Int?
+  denied_by           Int?
+  denied_note         String?   @db.Text
+  time_xn_1           DateTime? @db.DateTime(0)
+  time_xn_2           DateTime? @db.DateTime(0)
+  time_xn_3           DateTime? @db.DateTime(0)
+  time_xn_4           DateTime? @db.DateTime(0)
+  time_xn_5           DateTime? @db.DateTime(0)
+  accepted_by         Int?
+  ban_ke              String?
+  note                String?
+  created_at          DateTime? @default(now()) @db.Timestamp(0)
+  updated_at          DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model permissions {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String
+  guard_name String
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model phieu_phats {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id            Int
+  transaction_id         Int?
+  user_id                Int
+  code                   String?
+  quy_trinh_code         String?
+  quantity               Int       @default(0)
+  name                   String
+  tien_phat              Int
+  create_type            String?   @default("auto")
+  status                 String    @default("all")
+  description            String?   @db.Text
+  ghi_chu                String?   @db.Text
+  comment                String?   @db.Text
+  ngay_phat              DateTime? @db.Timestamp(0)
+  denied_note            String?   @db.Text
+  is_accept              String?
+  cham_cong_id           Int?
+  nhan_vien_note         String    @db.Text
+  truong_cn_note         String    @db.Text
+  truong_phong_note      String    @db.Text
+  giam_doc_note          String    @db.Text
+  nhan_vien_note_time    DateTime? @db.Timestamp(0)
+  truong_cn_note_time    DateTime? @db.Timestamp(0)
+  truong_phong_note_time DateTime? @db.Timestamp(0)
+  giam_doc_note_time     DateTime? @db.Timestamp(0)
+  nhan_vien_xn           String?
+  truong_cn_xn           String?
+  truong_phong_xn        String?
+  giam_doc_xn            String?
+  pdh_xn                 String?
+  pdh_note               String?   @db.Text
+  pdh_note_time          DateTime? @db.Timestamp(0)
+  accepted_by            String?
+  accepted_at            DateTime? @db.DateTime(0)
+  created_by             Int?
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+}
+
+model phieu_thus {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id          Int?
+  user_name        String?
+  status           String?   @db.VarChar(50)
+  type             String?
+  total_paid       Int?
+  description      String?   @db.Text
+  transaction_date DateTime? @db.Timestamp(0)
+  denied_note      String?   @db.Text
+  xac_nhan_1       String?
+  time_xac_nhan_1  DateTime? @db.Timestamp(0)
+  xac_nhan_2       String?
+  time_xac_nhan_2  DateTime? @db.Timestamp(0)
+  xac_nhan_3       String?
+  time_xac_nhan_3  DateTime? @db.Timestamp(0)
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+}
+
+model position_histories {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int?
+  user_name  String?   @default("")
+  deviceName String?
+  uniqueId   String?
+  protocol   String?
+  serverTime DateTime? @db.Timestamp(0)
+  deviceTime DateTime? @db.Timestamp(0)
+  fixTime    Int?
+  outdated   Boolean?
+  valid      Boolean?
+  latitude   String?
+  longitude  String?
+  altitude   String?
+  speed      Float?    @default(0) @db.Float
+  course     Int?      @default(0)
+  address    String?   @db.Text
+  accuracy   Float?    @default(0) @db.Float
+  network    String?
+  status     String?   @db.VarChar(50)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model post_images {
+  id          Int       @id @default(autoincrement())
+  name        String
+  types       String    @db.VarChar(11)
+  image_check Int?
+  post_id     Int
+  custom_1    Int?
+  custom_2    Int?
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model post_targets {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  post_id       Int
+  target_id     Int
+  accepted_time DateTime? @db.DateTime(0)
+  accepted_by   String?
+  type          String
+  created_at    DateTime? @db.Timestamp(0)
+  updated_at    DateTime? @db.Timestamp(0)
+}
+
+model posts {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  content         String    @db.Text
+  status          String?
+  post_no         Int?
+  type            String
+  thong_bao_group String    @default("toan_cty")
+  created_by      Int
+  accepted_by     String?
+  accepted_time   DateTime? @db.DateTime(0)
+  tb_title        String
+  custom_2        String?
+  custom_3        String?
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model printers {
+  id                 Int                         @id @default(autoincrement()) @db.UnsignedInt
+  business_id        Int                         @db.UnsignedInt
+  name               String                      @db.VarChar(256)
+  connection_type    printers_connection_type
+  capability_profile printers_capability_profile @default(default)
+  char_per_line      String?
+  ip_address         String?
+  port               String?
+  path               String?
+  created_by         Int                         @db.UnsignedInt
+  created_at         DateTime?                   @db.Timestamp(0)
+  updated_at         DateTime?                   @db.Timestamp(0)
+
+  @@index([business_id], map: "printers_business_id_foreign")
+}
+
+model product_racks {
+  id          Int       @id @db.UnsignedInt
+  business_id Int       @db.UnsignedInt
+  location_id Int       @db.UnsignedInt
+  product_id  Int       @db.UnsignedInt
+  rack        String?
+  row         String?
+  position    String?
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model product_variations {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  variation_template_id Int?
+  name                  String
+  product_id            Int       @db.UnsignedInt
+  is_dummy              Boolean   @default(true)
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+
+  @@index([name], map: "product_variations_name_index")
+  @@index([product_id], map: "product_variations_product_id_index")
+}
+
+model products {
+  id                  Int                          @id @default(autoincrement()) @db.UnsignedInt
+  name                String
+  business_id         Int                          @db.UnsignedInt
+  type                products_type?
+  unit_id             Int?                         @db.UnsignedInt
+  sub_unit_ids        String?                      @db.Text
+  brand_id            Int?                         @db.UnsignedInt
+  category_id         Int?                         @db.UnsignedInt
+  sub_category_id     Int?                         @db.UnsignedInt
+  tax                 Int?                         @db.UnsignedInt
+  tax_type            products_tax_type
+  enable_stock        Boolean                      @default(false)
+  alert_quantity      Int                          @default(0)
+  sku                 String
+  barcode_type        products_barcode_type?       @default(C128)
+  expiry_period       Decimal?                     @db.Decimal(4, 2)
+  expiry_period_type  products_expiry_period_type?
+  enable_sr_no        Boolean                      @default(false)
+  weight              String?
+  kt_cskh_tv1         Int?                         @default(0)
+  kt_cskh_tv2         Int?                         @default(0)
+  kt_cskh_ct          Int?                         @default(0)
+  kt_kd_tv1           Int?                         @default(0)
+  kt_kd_tv2           Int?                         @default(0)
+  kt_kd_ct            Int?                         @default(0)
+  image               String?
+  product_description String?                      @db.Text
+  product_check       String                       @default("sp") @db.VarChar(11)
+  created_by          Int                          @db.UnsignedInt
+  is_inactive         Boolean                      @default(false)
+  not_for_selling     Boolean                      @default(false)
+  created_at          DateTime?                    @db.Timestamp(0)
+  updated_at          DateTime?                    @db.Timestamp(0)
+
+  @@index([brand_id], map: "products_brand_id_foreign")
+  @@index([business_id], map: "products_business_id_index")
+  @@index([category_id], map: "products_category_id_foreign")
+  @@index([created_by], map: "products_created_by_index")
+  @@index([name], map: "products_name_index")
+  @@index([sub_category_id], map: "products_sub_category_id_foreign")
+  @@index([tax], map: "products_tax_foreign")
+  @@index([unit_id], map: "products_unit_id_index")
+}
+
+model products_discounts {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_code   String
+  category_id Int
+  discount    Int
+  description String    @db.Text
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model purchase_lines {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id         Int       @db.UnsignedInt
+  product_id             Int       @db.UnsignedInt
+  variation_id           Int       @db.UnsignedInt
+  quantity               Int
+  pp_without_discount    Decimal   @default(0.0000) @db.Decimal(22, 4)
+  discount_percent       Decimal   @default(0.00) @db.Decimal(5, 2)
+  purchase_price         Decimal   @db.Decimal(22, 4)
+  purchase_price_inc_tax Decimal   @default(0.0000) @db.Decimal(22, 4)
+  item_tax               Decimal   @db.Decimal(22, 4)
+  tax_id                 Int?      @db.UnsignedInt
+  quantity_sold          Decimal   @default(0.0000) @db.Decimal(22, 4)
+  quantity_adjusted      Decimal   @default(0.0000) @db.Decimal(22, 4)
+  quantity_returned      Decimal   @default(0.0000) @db.Decimal(20, 4)
+  mfg_quantity_used      Decimal   @default(0.0000) @db.Decimal(20, 4)
+  mfg_date               DateTime? @db.Date
+  exp_date               DateTime? @db.Date
+  lot_number             String?   @db.VarChar(256)
+  sub_unit_id            Int?
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+
+  @@index([product_id], map: "purchase_lines_product_id_foreign")
+  @@index([sub_unit_id], map: "purchase_lines_sub_unit_id_index")
+  @@index([tax_id], map: "purchase_lines_tax_id_foreign")
+  @@index([transaction_id], map: "purchase_lines_transaction_id_foreign")
+  @@index([variation_id], map: "purchase_lines_variation_id_foreign")
+}
+
+model push_subscriptions {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  subscribable_type String
+  subscribable_id   BigInt    @db.UnsignedBigInt
+  endpoint          String    @unique(map: "push_subscriptions_endpoint_unique") @db.VarChar(500)
+  public_key        String?
+  auth_token        String?
+  content_encoding  String?
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+
+  @@index([subscribable_type, subscribable_id], map: "push_subscriptions_subscribable_type_subscribable_id_index")
+}
+
+model qr_code_campaigns {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  code       String?
+  name       String
+  note       String?   @db.Text
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model qr_codes {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  location_id Int
+  type        String
+  code        String
+  date        DateTime  @db.Date
+  created_by  Int
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model quan_ly_don_no_payments {
+  id                  Int                             @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id      Int?                            @db.UnsignedInt
+  quan_ly_don_no_id   Int?
+  amount              Decimal                         @default(0.0000) @db.Decimal(22, 4)
+  method              quan_ly_don_no_payments_method?
+  transaction_no      String?
+  bank_account_number String?
+  paid_on             DateTime?                       @db.DateTime(0)
+  real_paid_on        DateTime?                       @db.DateTime(0)
+  note                String?
+  created_at          DateTime?                       @db.Timestamp(0)
+  updated_at          DateTime?                       @db.Timestamp(0)
+
+  @@index([transaction_id], map: "transaction_payments_transaction_id_foreign")
+}
+
+model quan_ly_don_nos {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id      Int
+  type             String?
+  transaction_id   Int
+  tien_no          Int
+  con_no           Int?
+  method           String?
+  bank_account     String?
+  order_history_id Int?
+  nhan_vien_thu_no Int
+  status           String
+  note             String
+  transaction_date DateTime? @db.Timestamp(0)
+  hand_over_status String?   @default("thanh_toan")
+  is_ban_giao      Int       @default(0)
+  paid_at          DateTime  @db.DateTime(0)
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+}
+
+model reference_counts {
+  id          Int       @id @db.UnsignedInt
+  ref_type    String
+  ref_count   Int
+  business_id Int
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model res_product_modifier_sets {
+  modifier_set_id Int @db.UnsignedInt
+  product_id      Int @db.UnsignedInt
+
+  @@index([modifier_set_id], map: "res_product_modifier_sets_modifier_set_id_foreign")
+  @@ignore
+}
+
+model res_tables {
+  id          Int       @id @db.UnsignedInt
+  business_id Int       @db.UnsignedInt
+  location_id Int       @db.UnsignedInt
+  name        String
+  description String?   @db.Text
+  created_by  Int       @db.UnsignedInt
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "res_tables_business_id_foreign")
+}
+
+model rest_days {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  he_so_luong Float?    @default(1) @db.Float
+  is_kpi      Int       @default(1)
+  is_luong    Int       @default(0)
+  date        DateTime? @db.Date
+  code        String
+  note        String?
+  updated_by  Int
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model role_has_permissions {
+  permission_id Int @default(autoincrement()) @db.UnsignedInt
+  role_id       Int @db.UnsignedInt
+
+  @@id([permission_id, role_id])
+  @@index([role_id], map: "role_has_permissions_role_id_foreign")
+}
+
+model roles {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  name             String
+  code             String
+  phong_ban        Int?
+  vai_tro          String?
+  guard_name       String
+  business_id      Int       @db.UnsignedInt
+  is_default       Boolean   @default(false)
+  is_service_staff Boolean   @default(false)
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "roles_business_id_foreign")
+}
+
+model salaries {
+  id                    Int       @id @unique(map: "id") @default(autoincrement())
+  user_id               Int
+  business_id           Int
+  status                String?
+  denied_note           String?   @db.Text
+  xac_nhan_1            String?
+  xac_nhan_2            String?
+  time_xac_nhan_1       DateTime? @db.DateTime(0)
+  time_xac_nhan_2       DateTime? @db.DateTime(0)
+  thang                 String
+  tu_ngay               DateTime? @db.Timestamp(0)
+  den_ngay              DateTime? @db.Timestamp(0)
+  bac_luong             String    @db.VarChar(255)
+  cong_no               Float     @default(0) @db.Float
+  tam_ung               Int       @default(0)
+  cty_giu               Int       @default(0)
+  tb_don_yc             Int?
+  doanh_so              Int       @default(0)
+  phu_cap_xang_xe       Int       @default(0)
+  doanhso_yc            Int       @default(0)
+  so_don_vs             Int       @default(0)
+  ti_le_chot            Int       @default(0)
+  ti_le_chot_yc         Int       @default(0)
+  so_don_ps             Int       @default(0)
+  sl_nghe_may_yc        Float     @default(0) @db.Float
+  sl_nghe_may           Int       @default(0)
+  khai_thac_dinh_ky_yc  Int       @default(0)
+  khai_thac_dinh_ky     Int       @default(0)
+  khai_thac_ton_yc      Int       @default(0)
+  khai_thac_ton         Int       @default(0)
+  chiet_khau            Int       @default(0)
+  chiet_khau_mo_moi     Int       @default(0)
+  ngay_cong             Float     @default(0) @db.Float
+  luong_cb              Int       @default(0)
+  luong_cb_trong_thang  Int?      @default(0)
+  luong_2p              Int       @default(0)
+  luong_3p              Int       @default(0)
+  luong_tn              Int       @default(0)
+  phu_cap               Int       @default(0)
+  note_phu_cap          String?   @db.Text
+  don_them              Int?      @default(0)
+  so_don_yc             Int       @default(0)
+  tong_luong            Int       @default(0)
+  khau_tru_kpi          Int       @default(0)
+  kpi_gia_tri_dh        Int       @default(0)
+  tg_dam_thoai          Int       @default(0)
+  tg_dam_thoai_yc       Int       @default(0)
+  luong_kpi             Int       @default(0)
+  no_da_thu_kh          Int       @default(0)
+  kpi_doanh_so          Int       @default(0)
+  so_don_pc_xang        Int       @default(0)
+  social_insurance_fee  Int       @default(0)
+  kpi_so_don            Int       @default(0)
+  kpi_ti_le_vs          Int       @default(0)
+  kpi_sl_nghe_may       Int       @default(0)
+  kpi_khai_thac_ton     Int       @default(0)
+  kpi_tg_dam_thoai      Int       @default(0)
+  kpi_khai_thac_dinh_ky Int
+  kpi_ti_le_chot        Int       @default(0)
+  thuong_nong           Int       @default(0)
+  thuong                Int       @default(0)
+  phat                  Int       @default(0)
+  ghi_chu               String?
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+}
+
+model salary_statuses {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  name        String
+  code        String
+  description String?
+  phong_ban   Int
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model selling_price_groups {
+  id          Int       @id @db.UnsignedInt
+  name        String
+  description String?   @db.Text
+  business_id Int       @db.UnsignedInt
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "selling_price_groups_business_id_foreign")
+}
+
+model sessions {
+  id            String  @unique(map: "sessions_id_unique")
+  user_id       Int?    @db.UnsignedInt
+  ip_address    String? @db.VarChar(45)
+  user_agent    String? @db.Text
+  payload       String  @db.Text
+  last_activity Int
+}
+
+model social_insurance_fees {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id     Int?
+  type        String?
+  status      String?   @db.VarChar(20)
+  created_by  Int?
+  total_fee   Int       @default(0)
+  paid_on     DateTime? @db.Date
+  description String?   @db.Text
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model stock_adjustment_lines {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id        Int       @db.UnsignedInt
+  product_id            Int       @db.UnsignedInt
+  variation_id          Int       @db.UnsignedInt
+  quantity              Decimal   @db.Decimal(22, 4)
+  unit_price            Decimal?  @db.Decimal(22, 4)
+  removed_purchase_line Int?
+  lot_no_line_id        Int?
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+
+  @@index([product_id], map: "stock_adjustment_lines_product_id_foreign")
+  @@index([transaction_id], map: "stock_adjustment_lines_transaction_id_index")
+  @@index([variation_id], map: "stock_adjustment_lines_variation_id_foreign")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model stock_adjustments_temp {
+  id Int?
+
+  @@ignore
+}
+
+model support_orders {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id         Int?
+  user_name       String?
+  order_id        Int?
+  order_code      String?
+  note            String?   @db.Text
+  type            String    @default("order") @db.VarChar(50)
+  name            String?
+  support_by      Int?
+  support_by_name String?
+  time_supported  DateTime? @db.Timestamp(0)
+  status          String?   @default("active")
+  so_phut_them    Int       @default(0)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model system {
+  id    Int     @id @db.UnsignedInt
+  key   String
+  value String? @db.Text
+}
+
+model target_details {
+  id             Int       @id @default(autoincrement())
+  user_id        Int?
+  user_code_add  String?
+  target_id      Int?
+  user_name      String
+  date           DateTime? @db.Date
+  phong_ban      Int?
+  to_group       Int?
+  bo_phan        Int?
+  ca             String
+  sl_don_du_kien Int       @default(0)
+  created_at     DateTime  @default(now()) @db.Timestamp(0)
+  updated_at     DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model targets {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  phong_ban_code  String
+  date            DateTime? @db.Date
+  from_date       DateTime? @db.Date
+  to_date         DateTime? @db.Date
+  xac_nhan_1      String?
+  time_xac_nhan_1 DateTime? @db.DateTime(0)
+  xac_nhan_2      String?
+  time_xac_nhan_2 DateTime? @db.DateTime(0)
+  xac_nhan_3      String?
+  time_xac_nhan_3 DateTime? @db.DateTime(0)
+  xac_nhan_4      String?
+  time_xac_nhan_4 DateTime? @db.DateTime(0)
+  so_don          Int       @default(0)
+  doanh_so        Int       @default(0)
+  status          String?   @default("cho_xn")
+  denied_note     String?   @db.Text
+  note            String?   @db.Text
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model tax_rates {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id  Int       @db.UnsignedInt
+  name         String
+  amount       Float
+  is_tax_group Boolean   @default(false)
+  created_by   Int       @db.UnsignedInt
+  deleted_at   DateTime? @db.Timestamp(0)
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "tax_rates_business_id_foreign")
+  @@index([created_by], map: "tax_rates_created_by_foreign")
+}
+
+model time_books {
+  id           Int       @id @default(autoincrement())
+  business_id  Int       @default(1) @db.UnsignedInt
+  ma_nhanvien  String?   @db.VarChar(100)
+  ten_nhanvien String?   @db.VarChar(100)
+  phong_ban    String?   @db.VarChar(100)
+  chuc_vu      String?   @db.VarChar(100)
+  ngay_cham    DateTime? @db.Date
+  thu          String?   @db.VarChar(50)
+  gio_vao1     DateTime? @db.Time(0)
+  gio_ra1      DateTime? @db.Time(0)
+  gio_vao2     DateTime? @db.Time(0)
+  gio_ra2      DateTime? @db.Time(0)
+  gio_vao3     DateTime? @db.Time(0)
+  gio_ra3      DateTime? @db.Time(0)
+  cong         Float?    @db.Float
+  status       String    @default("confimred")
+  gio          Float?    @db.Float
+  cong_        Float?    @map("cong+") @db.Float
+  gio_         Float?    @map("gio+") @db.Float
+  vao_tre      Float?    @db.Float
+  ra_som       Float?    @db.Float
+  longitude    String?
+  latitude     String?
+  tc1          Float?    @db.Float
+  tc2          Float?    @db.Float
+  tc3          Float?    @db.Float
+  ten_ca       String?   @db.VarChar(100)
+  kyhieu       String?   @db.VarChar(100)
+  kyhieu_      String?   @map("kyhieu+") @db.VarChar(100)
+  tong_gio     Float?    @db.Float
+  created_at   DateTime  @default(now()) @db.Timestamp(0)
+  updated_at   DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model transaction_payments {
+  id                      Int                          @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id          Int?                         @db.UnsignedInt
+  business_id             Int?
+  is_return               Boolean                      @default(false)
+  amount                  Decimal                      @default(0.0000) @db.Decimal(22, 4)
+  method                  transaction_payments_method?
+  accepted_at             DateTime?                    @db.DateTime(0)
+  accepted_by             Int
+  is_accepted             Int                          @default(0)
+  is_ban_giao_ck          Int                          @default(0)
+  transaction_no          String?
+  card_transaction_number String?
+  card_number             String?
+  card_type               String?
+  card_holder_name        String?
+  card_month              String?
+  card_year               String?
+  card_security           String?                      @db.VarChar(5)
+  cheque_number           String?
+  bank_account_number     String?
+  bank_account_number1    String?
+  bank_account_number2    String?
+  paid_on                 DateTime?                    @db.DateTime(0)
+  real_paid_on            DateTime?                    @db.DateTime(0)
+  created_by              Int
+  payment_for             Int?
+  parent_id               Int?
+  ktk_accept              Int?
+  ktk_accept_time         DateTime?                    @db.DateTime(0)
+  ktnb_accept             Int?
+  ktnb_accept_time        DateTime?                    @db.DateTime(0)
+  note                    String?
+  document                String?
+  payment_ref_no          String?
+  account_id              Int?
+  created_at              DateTime?                    @db.Timestamp(0)
+  updated_at              DateTime?                    @db.Timestamp(0)
+
+  @@index([created_by], map: "transaction_payments_created_by_index")
+  @@index([parent_id], map: "transaction_payments_parent_id_index")
+  @@index([transaction_id], map: "transaction_payments_transaction_id_foreign")
+}
+
+model transaction_sell_lines {
+  id                         Int                                        @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id             Int                                        @db.UnsignedInt
+  product_id                 Int                                        @db.UnsignedInt
+  variation_id               Int                                        @db.UnsignedInt
+  quantity                   Int
+  quantity_returned          Decimal                                    @default(0) @db.Decimal(20, 0)
+  unit_price_before_discount Decimal                                    @default(0.0) @db.Decimal(22, 1)
+  unit_price                 Decimal?                                   @db.Decimal(22, 1)
+  line_discount_type         transaction_sell_lines_line_discount_type?
+  line_discount_amount       Decimal                                    @default(0) @db.Decimal(22, 0)
+  unit_price_inc_tax         Decimal?                                   @db.Decimal(22, 1)
+  item_tax                   Decimal                                    @db.Decimal(22, 4)
+  tax_id                     Int?                                       @db.UnsignedInt
+  tax_amount                 Int                                        @default(0)
+  discount_amount            Int                                        @default(0)
+  discount_id                Int?
+  lot_no_line_id             Int?
+  sell_line_note             String?                                    @db.Text
+  res_service_staff_id       Int?
+  res_line_order_status      String?
+  parent_sell_line_id        Int?
+  children_type              String?                                    @default("")
+  sub_unit_id                Int?
+  is_den_sp                  String                                     @default("no")
+  note                       String?
+  created_at                 DateTime?                                  @db.Timestamp(0)
+  updated_at                 DateTime?                                  @db.Timestamp(0)
+
+  @@index([children_type], map: "transaction_sell_lines_children_type_index")
+  @@index([parent_sell_line_id], map: "transaction_sell_lines_parent_sell_line_id_index")
+  @@index([product_id], map: "transaction_sell_lines_product_id_foreign")
+  @@index([tax_id], map: "transaction_sell_lines_tax_id_foreign")
+  @@index([transaction_id], map: "transaction_sell_lines_transaction_id_foreign")
+  @@index([variation_id], map: "transaction_sell_lines_variation_id_foreign")
+}
+
+model transaction_sell_lines_purchase_lines {
+  id                       Int       @id @default(autoincrement()) @db.UnsignedInt
+  sell_line_id             Int?      @db.UnsignedInt
+  stock_adjustment_line_id Int?      @db.UnsignedInt
+  purchase_line_id         Int       @db.UnsignedInt
+  quantity                 Decimal   @db.Decimal(22, 4)
+  qty_returned             Decimal   @default(0.0000) @db.Decimal(20, 4)
+  created_at               DateTime? @db.Timestamp(0)
+  updated_at               DateTime? @db.Timestamp(0)
+
+  @@index([purchase_line_id], map: "purchase_line_id")
+  @@index([sell_line_id], map: "sell_line_id")
+  @@index([stock_adjustment_line_id], map: "stock_adjustment_line_id")
+}
+
+model transactions {
+  id                       Int                               @id @default(autoincrement()) @db.UnsignedInt
+  business_id              Int                               @db.UnsignedInt
+  location_id              Int?                              @db.UnsignedInt
+  nvkd_id                  Int?                              @db.UnsignedInt
+  nvkt_id                  Int?
+  is_mo_moi                String?                           @default("normal")
+  is_xuat_vat              Boolean                           @default(false)
+  res_table_id             Int?                              @db.UnsignedInt
+  res_waiter_id            Int?                              @db.UnsignedInt
+  res_order_status         transactions_res_order_status?
+  type                     String?                           @db.VarChar(255)
+  sub_type                 String?                           @db.VarChar(20)
+  status                   transactions_status
+  is_quotation             Boolean                           @default(false)
+  payment_status           transactions_payment_status?
+  adjustment_type          transactions_adjustment_type?
+  contact_id               Int?                              @db.UnsignedInt
+  customer_group_id        Int?
+  invoice_no               String?
+  ref_no                   String?
+  subscription_no          String?
+  transaction_date         DateTime                          @db.DateTime(0)
+  total_before_tax         Decimal                           @default(0.0000) @db.Decimal(22, 4)
+  tax_id                   Int?                              @db.UnsignedInt
+  tax_amount               Decimal                           @default(0.0000) @db.Decimal(22, 4)
+  discount_type            transactions_discount_type?
+  discount_amount          String?                           @db.VarChar(10)
+  rp_redeemed              Int                               @default(0)
+  rp_redeemed_amount       Decimal                           @default(0.0000) @db.Decimal(22, 4)
+  shipping_details         String?
+  shipping_charges         Decimal                           @default(0.0000) @db.Decimal(22, 4)
+  additional_notes         String?                           @db.Text
+  staff_note               String?                           @db.Text
+  final_total              Decimal                           @default(0.0000) @db.Decimal(22, 4)
+  chiet_khau               Int?
+  loai_don                 String?                           @default("binh_thuong")
+  giam_gia                 Int                               @default(0)
+  xuat_kho_stt             String                            @default("ban_hang")
+  expense_category_id      Int?                              @db.UnsignedInt
+  expense_for              Int?                              @db.UnsignedInt
+  commission_agent         Int?
+  document                 String?
+  is_direct_sale           Boolean                           @default(false)
+  is_suspend               Boolean                           @default(false)
+  exchange_rate            Decimal                           @default(1.000) @db.Decimal(20, 3)
+  total_amount_recovered   Decimal?                          @db.Decimal(22, 4)
+  transfer_parent_id       Int?
+  return_parent_id         Int?
+  opening_stock_product_id Int?
+  created_by               Int                               @db.UnsignedInt
+  is_created_from_api      Boolean                           @default(false)
+  rp_earned                Int                               @default(0)
+  order_addresses          String?                           @db.Text
+  is_recurring             Boolean                           @default(false)
+  recur_interval           Float?
+  recur_interval_type      transactions_recur_interval_type?
+  recur_repetitions        Int?
+  recur_stopped_on         DateTime?                         @db.DateTime(0)
+  recur_parent_id          Int?
+  invoice_token            String?
+  pay_term_number          Int?
+  pay_term_type            transactions_pay_term_type?
+  selling_price_group_id   Int?
+  so_hoa_don               Int?
+  is_da_hen                Int                               @default(0)
+  is_ban_giao              Int?                              @default(0)
+  is_giam_gia              Int                               @default(1)
+  ngay_hen_tra             DateTime?                         @db.Date
+  is_giu_luong             Int                               @default(0)
+  accepted_at              DateTime?                         @db.DateTime(0)
+  ban_giao_status          String                            @default("nvkt_chua_bg")
+  giu_luong_status         String                            @default("no") @db.VarChar(50)
+  hand_over_location_id    Int?
+  hand_over_branch_id      Int?
+  accepted_by              Int?
+  is_accepted              Int                               @default(0)
+  is_ban_giao_ck           Int                               @default(0)
+  is_lap_may               Int                               @default(0)
+  hand_over_status         String?                           @default("thanh_toan")
+  hand_over_user_id        Int?
+  so_lan_gui               Int                               @default(0)
+  accept_status            String                            @default("accept")
+  denied_note              String?                           @db.Text
+  dieu_hanh_note           String?                           @db.Text
+  ly_do_chua_thu           String?                           @db.Text
+  denied_code              String?
+  ktk_accept               Int?
+  ktk_accept_time          DateTime?                         @db.DateTime(0)
+  ktnb_accept              Int?
+  ktnb_accept_time         DateTime?                         @db.DateTime(0)
+  created_at               DateTime?                         @db.Timestamp(0)
+  updated_at               DateTime?                         @db.Timestamp(0)
+
+  @@index([business_id], map: "transactions_business_id_index")
+  @@index([contact_id], map: "transactions_contact_id_index")
+  @@index([created_by], map: "transactions_created_by_index")
+  @@index([expense_category_id], map: "transactions_expense_category_id_index")
+  @@index([expense_for], map: "transactions_expense_for_foreign")
+  @@index([location_id], map: "transactions_location_id_index")
+  @@index([return_parent_id], map: "transactions_return_parent_id_index")
+  @@index([sub_type], map: "transactions_sub_type_index")
+  @@index([tax_id], map: "transactions_tax_id_foreign")
+  @@index([transaction_date], map: "transactions_transaction_date_index")
+  @@index([type(length: 191)], map: "transactions_type_index")
+  @@index([type(length: 191)], map: "type")
+}
+
+model turn_order_to_due_histories {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  save_date             DateTime  @db.Date
+  transaction_id        Int
+  tong_tien             BigInt    @default(0)
+  tien_mat              BigInt    @default(0)
+  chuyen_khoan          BigInt    @default(0)
+  ck_vietinbank         BigInt    @default(0)
+  ck_vietcombank        BigInt    @default(0)
+  ck_techcombank        BigInt    @default(0)
+  con_no                BigInt    @default(0)
+  ban_giao_status       String?
+  hand_over_location_id Int?
+  hand_over_user_id     Int?
+  ghi_chu               BigInt
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+}
+
+model units {
+  id                   Int       @id @db.UnsignedInt
+  business_id          Int       @db.UnsignedInt
+  actual_name          String
+  short_name           String
+  allow_decimal        Boolean
+  base_unit_id         Int?
+  base_unit_multiplier Decimal?  @db.Decimal(20, 4)
+  created_by           Int       @db.UnsignedInt
+  deleted_at           DateTime? @db.Timestamp(0)
+  created_at           DateTime? @db.Timestamp(0)
+  updated_at           DateTime? @db.Timestamp(0)
+
+  @@index([base_unit_id], map: "units_base_unit_id_index")
+  @@index([business_id], map: "units_business_id_foreign")
+  @@index([created_by], map: "units_created_by_foreign")
+}
+
+model user_contact_access {
+  id         Int @id @db.UnsignedInt
+  user_id    Int
+  contact_id Int
+}
+
+model user_groups {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id  Int
+  group_code   String
+  group_name   String
+  phong_ban    Int
+  bo_phan      Int?
+  group_type   String
+  group_type_2 String
+  status       String    @default("active") @db.VarChar(50)
+  description  String?   @db.Text
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+}
+
+model user_kpis {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id       Int
+  kpi_code          String
+  phong_ban         Int
+  kpi_name          String
+  so_don_yc         Float     @db.Float
+  doanh_so_yc       Int
+  tb_don_yc         Int
+  tg_dam_thoai_yc   Int       @default(0)
+  muc_thuong_1      Int       @default(0)
+  muc_thuong_2      Int       @default(0)
+  muc_thuong_3      Int       @default(0)
+  moc_ds_thuong_1   Int       @default(0)
+  moc_ds_thuong_2   Int       @default(0)
+  moc_ds_thuong_3   Int       @default(0)
+  tien_thuong_1     Int       @default(0)
+  tien_thuong_2     Int       @default(0)
+  tien_thuong_3     Int       @default(0)
+  desctiption       String?   @db.Text
+  ti_le_chot        Int       @default(0)
+  lui_huy_cskh      Float?    @db.Float
+  lui_huy_pkd       Float?    @db.Float
+  khai_thac_dinh_ky Int?
+  khai_thac_ton     Int?
+  sl_nghe_may       Int?
+  data_su_kien_yc   Int       @default(0)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model user_level {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id    Int       @default(1)
+  department_id  Int?
+  code           String
   name           String
-  number_of      Int
-  price          Float
-  img            String
-  total_sale     Float
-  transaction    transactions? @relation(fields: [transaction_id], references: [id])
-  transaction_id Int?
-  products       products?     @relation(fields: [products_id], references: [id])
-  products_id    Int?
+  luong_cb_sang  Int       @default(0)
+  luong_cb_chieu Int       @default(0)
+  don_yc         Float
+  tb_don         Int
+  luong_kpi      Int       @default(0)
+  phu_cap        Int       @default(0)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
 }
 
-model transaction_payment {
-  id              Int           @id @default(autoincrement())
-  oderhistory_id  Int
-  payment_methods String
-  account_name    String
-  bank_name       String
-  total_sale      Float
-  account_number  String
-  transaction     transactions? @relation(fields: [transaction_id], references: [id])
-  transaction_id  Int?
+model user_log_histories {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  updated_by   Int
+  time_updated DateTime  @db.DateTime(0)
+  target_id    Int
+  action       String
+  before_log   String?
+  after_log    String?
+  note         String?   @db.Text
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+}
+
+model user_login_histories {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id         Int
+  status          String    @default("active") @db.VarChar(20)
+  user_status     String?   @default("active")
+  is_disable_user Int       @default(0)
+  ip_address      String?
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model user_qr_codes {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  code        String?
+  campaign_id Int
+  name        String
+  user_id     Int
+  user_name   String
+  surname     String
+  status      String
+  note        String?   @db.Text
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model user_tracking_locations {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id          Int
+  type             String    @default("normal") @db.VarChar(50)
+  user_name        String
+  user_code        String
+  work_days        Int?      @default(0)
+  mentality_status Int       @default(5)
+  order_id         Int?
+  lat              String
+  long             String
+  km_per_order     Float?    @db.Float
+  distance         Int?      @default(0)
+  so_don_ps        Int?
+  doanh_so         Int?
+  loi_dang_het     String?
+  gio_hen          DateTime? @db.DateTime(0)
+  date             DateTime? @db.Date
+  is_bao_hanh      Int       @default(0)
+  created_at       DateTime? @db.Timestamp(0)
+  updated_at       DateTime? @db.Timestamp(0)
+}
+
+model variation_group_prices {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  variation_id   Int       @db.UnsignedInt
+  price_group_id Int       @db.UnsignedInt
+  price_inc_tax  Decimal   @db.Decimal(22, 0)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+
+  @@index([price_group_id], map: "variation_group_prices_price_group_id_foreign")
+  @@index([variation_id], map: "variation_group_prices_variation_id_foreign")
+}
+
+model variation_location_details {
+  id                   Int       @id @default(autoincrement())
+  product_id           Int       @db.UnsignedInt
+  product_variation_id Int       @db.UnsignedInt
+  variation_id         Int       @db.UnsignedInt
+  location_id          Int       @db.UnsignedInt
+  qty_available        Decimal?  @db.Decimal(22, 0)
+  loai_1               Int       @default(0)
+  loai_2               Int       @default(0)
+  loai_3               Int       @default(0)
+  loai_4               Int       @default(0)
+  created_at           DateTime? @db.Timestamp(0)
+  updated_at           DateTime? @db.Timestamp(0)
+
+  @@index([id], map: "id")
+  @@index([id], map: "id_2")
+  @@index([location_id], map: "variation_location_details_location_id_foreign")
+  @@index([product_id], map: "variation_location_details_product_id_index")
+  @@index([product_variation_id], map: "variation_location_details_product_variation_id_index")
+  @@index([variation_id], map: "variation_location_details_variation_id_index")
+}
+
+model variation_templates {
+  id          Int       @id @db.UnsignedInt
+  name        String
+  business_id Int       @db.UnsignedInt
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+
+  @@index([business_id], map: "variation_templates_business_id_foreign")
+}
+
+model variations {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  name                   String
+  product_id             Int       @db.UnsignedInt
+  sub_sku                String?
+  product_variation_id   Int       @db.UnsignedInt
+  variation_value_id     Int?
+  default_purchase_price Decimal?  @db.Decimal(22, 4)
+  dpp_inc_tax            Decimal   @default(0.0000) @db.Decimal(22, 4)
+  profit_percent         Decimal   @default(0.0000) @db.Decimal(22, 4)
+  default_sell_price     Decimal?  @db.Decimal(22, 0)
+  sell_price_inc_tax     Decimal?  @db.Decimal(22, 0)
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+  deleted_at             DateTime? @db.Timestamp(0)
+  combo_variations       String?   @db.Text
+
+  @@index([name], map: "variations_name_index")
+  @@index([product_id], map: "variations_product_id_foreign")
+  @@index([product_variation_id], map: "variations_product_variation_id_foreign")
+  @@index([sub_sku], map: "variations_sub_sku_index")
+  @@index([variation_value_id], map: "variations_variation_value_id_index")
+}
+
+model weekly_points {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id           Int
+  user_id               Int
+  user_name             String
+  type                  String
+  date                  DateTime  @db.Date
+  tuan                  Int
+  thang                 Int
+  nam                   Int
+  phong_ban             Int
+  bo_phan               Int
+  to_group              Int
+  chuyen_mon            Float?    @db.Float
+  lam_viec_nhom         Float?    @db.Float
+  tim_duong             Float?    @db.Float
+  tu_van                Float?    @db.Float
+  xu_ly_tinh_huong      Float?    @db.Float
+  trung_thuc            Float?    @db.Float
+  nhiet_tinh            Float?    @db.Float
+  tac_phong             Float?    @db.Float
+  ton_trong_dong_nghiep Float?    @db.Float
+  can_trong             Float?    @db.Float
+  ham_hoc_hoi           Float?    @db.Float
+  dieu_hanh_to          Float?    @db.Float
+  dao_tao_nv            Float?    @db.Float
+  hoan_thanh_cv         Float?    @db.Float
+  quan_ly_nv            Float?    @db.Float
+  trung_binh_nang_luc   Float     @db.Float
+  trung_binh_thai_do    Float     @db.Float
+  trung_binh            Float?    @db.Float
+  description           String?   @db.Text
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+}
+
+model working_times {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  business_id Int
+  name        String
+  description String?
+  deleted_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+enum contacts_type {
+  customer
+  supplier
+  both
+}
+
+enum cash_registers_status {
+  close
+  open
+}
+
+enum cash_register_transactions_pay_method {
+  cash
+  card
+  cheque
+  bank_transfer
+  custom_pay_1
+  custom_pay_2
+  custom_pay_3
+  other
+}
+
+enum invoice_schemes_scheme_type {
+  blank
+  year
+}
+
+enum printers_connection_type {
+  network
+  windows
+  linux
+}
+
+enum products_type {
+  single
+  variable
+  modifier
+  combo
+}
+
+enum cash_register_transactions_type {
+  debit
+  credit
+}
+
+enum printers_capability_profile {
+  default
+  simple
+  SP2000
+  TEP_200M @map("TEP-200M")
+  P822D
+}
+
+enum quan_ly_don_no_payments_method {
+  cash
+  card
+  cheque
+  bank_transfer
+  custom_pay_1
+  custom_pay_2
+  custom_pay_3
+  other
+}
+
+enum cash_register_transactions_transaction_type {
+  initial
+  sell
+  transfer
+  refund
+}
+
+enum payment_back_ups_method {
+  cash
+  card
+  cheque
+  bank_transfer
+  custom_pay_1
+  custom_pay_2
+  custom_pay_3
+  other
+}
+
+enum transaction_payments_method {
+  cash
+  card
+  cheque
+  bank_transfer
+  custom_pay_1
+  custom_pay_2
+  custom_pay_3
+  other
+}
+
+enum transaction_sell_lines_line_discount_type {
+  fixed
+  percentage
+}
+
+enum transactions_res_order_status {
+  received
+  cooked
+  served
+}
+
+enum products_tax_type {
+  inclusive
+  exclusive
+}
+
+enum transactions_status {
+  received
+  pending
+  ordered
+  draft
+  final
+}
+
+enum business_accounting_method {
+  fifo
+  lifo
+  avco
+}
+
+enum business_locations_receipt_printer_type {
+  browser
+  printer
+}
+
+enum products_barcode_type {
+  C39
+  C128
+  EAN13
+  EAN8
+  UPCA
+  UPCE
+}
+
+enum transactions_payment_status {
+  paid
+  due
+  partial
+}
+
+enum business_sell_price_tax {
+  includes
+  excludes
+}
+
+enum transactions_adjustment_type {
+  normal
+  abnormal
+}
+
+enum products_expiry_period_type {
+  days
+  months
+}
+
+enum contacts_pay_term_type {
+  days
+  months
+}
+
+enum business_expiry_type {
+  add_expiry
+  add_manufacturing
+}
+
+enum business_on_product_expiry {
+  keep_selling
+  stop_selling
+  auto_delete
+}
+
+enum users_status {
+  active
+  inactive
+  terminated
+}
+
+enum transactions_discount_type {
+  fixed
+  percentage
+}
+
+enum users_marital_status {
+  married
+  unmarried
+  divorced
+}
+
+enum business_sales_cmsn_agnt {
+  logged_in_user
+  user
+  cmsn_agnt
+}
+
+enum business_currency_symbol_placement {
+  before
+  after
+}
+
+// enum business_time_format {
+//   a @map("12")
+//   b @map("24")
+// }
+
+enum transactions_recur_interval_type {
+  days
+  months
+  years
+}
+
+enum transactions_pay_term_type {
+  days
+  months
+}
+
+enum business_rp_expiry_type {
+  month
+  year
 }

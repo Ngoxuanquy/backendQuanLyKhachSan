@@ -12,6 +12,8 @@ const router = express.Router();
 router.use(authenticationV2)
 
 router.post('', asyncHandler(ProductControllers.createProduct))
+router.post('/get', asyncHandler(ProductControllers.getProduct))
+
 
 
 module.exports = router

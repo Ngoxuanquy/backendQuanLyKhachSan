@@ -17,14 +17,19 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
         //accessToken
         const accessToken = await JWT.sign(payload, publicKey, {
-            expiresIn: '2 days'
+            expiresIn: '1 h'
         })
+
+        console.log(Math.floor(Date.now() / 1000))
 
 
         //refeshToken
         const refeshToken = await JWT.sign(payload, privateKey, {
             expiresIn: '7 days',
         })
+
+        const decode = JWT.verify(accessToken, publicKey)
+
 
         //
         JWT.verify(accessToken, publicKey, (err, decode) => {
@@ -33,10 +38,11 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
             }
             else {
                 console.log('decode verify: ', decode)
+
             }
         })
 
-        return { accessToken, refeshToken }
+        return { accessToken, refeshToken, timeExp: decode.exp }
     } catch (error) {
         console.log(error)
     }
@@ -44,6 +50,8 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
 
 
 const authenticationV2 = asyncHandler(async (req, res, next) => {
+
+
     const userId = req.headers[HEADER.CLIENT_ID]
 
     console.log(userId)
@@ -61,10 +69,11 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
 
     let data = await promise;
 
+    // console.log(data)
+
 
     if (req.headers[HEADER.REFESHTOKEN]) {
         try {
-
             const refeshToken = req.headers[HEADER.REFESHTOKEN]
 
             console.log(refeshToken)
@@ -87,21 +96,19 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
     }
 
     const accessToken = req.headers[HEADER.AUTHORIZATION]
-    console.log(accessToken)
+    console.log({ accessToken })
 
     if (!accessToken) throw new AuthFailureError('Invalid Request')
-
-
 
     try {
 
         const decodeUser = JWT.verify(accessToken, data[0].publicKey)
-        // console.log(decodeUser)
+        console.log(decodeUser)
 
         if (userId != decodeUser.id) throw new AuthFailureError('Invalid Request')
 
         req.keyStore = data
-        console.log("a")
+        req.user = decodeUser
 
         return next()
     } catch (error) {

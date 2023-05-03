@@ -14,9 +14,16 @@ class OrderControllers {
             message: 'create new product success',
             metadata: await OrderServices.createOrder(req.body)
         }).send(res)
-
-
     }
+
+    getOrders = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.getOrder(req.user)
+        }).send(res)
+    }
+
 
 }
 

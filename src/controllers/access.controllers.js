@@ -12,24 +12,25 @@ class AccessControllers {
         //     metadata: await AccessService.HandlerRefreshToken(req.body.refeshToken),
         // }).send(res)
 
+
         //VS2
         new SuccessResponse({
             message: 'get token success',
             metadata: await AccessService.HandlerRefreshTokenV2({
                 refeshToken: req.refeshToken,
                 user: req.user,
-                keyStore: req.keyStore
+                keyStore: req.keyStore[0]
             }),
         }).send(res)
     }
 
     logout = async (req, res, next) => {
 
-        console.log(req.keyStore)
+        console.log(req.user)
 
         new SuccessResponse({
             message: 'Logout success',
-            metadata: await AccessService.logout(req.keyStore),
+            metadata: await AccessService.logout(req.keyStore, req.user),
         }).send(res)
     }
 
@@ -41,6 +42,10 @@ class AccessControllers {
     }
 
     signUp = async (req, res, next) => {
+
+
+        console.log(req.body)
+
         new CREATED({
             message: 'Register OK',
             metadata: await AccessService.signUp(req.body),

@@ -1,7 +1,7 @@
 
 const express = require('express');
 const asyncHandler = require('../../helpers/asyncHandle');
-const OrderControllers = require('../../controllers/order.controllers')
+const keyTokenControllers = require('../../controllers/keyToken.controllers')
 const { authentication, authenticationV2 } = require('../../auth/authUtils')
 
 const router = express.Router();
@@ -11,9 +11,7 @@ const router = express.Router();
 
 router.use(authenticationV2)
 
-router.post('/create', asyncHandler(OrderControllers.createOrder))
-router.post('/get', asyncHandler(OrderControllers.getOrders))
-
+router.post('/:id', asyncHandler(keyTokenControllers.keyID))
 
 
 module.exports = router
