@@ -2,30 +2,39 @@
 
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
-const { contacts } = new PrismaClient();
+const { transactions } = new PrismaClient();
+
 
 // define Factory class to create product
-class ContactFactory {
+class TransactionFactory {
 
-    static async createContact(payload) {
+    static async createTransaction(payload) {
 
-        const product = await contacts.create({
-            data: {
-                product_name: payload.product_name,
-                product_thumb: payload.product_thumb,
-                product_price: payload.product_price,
-                product_description: payload.product_description,
-                product_type: payload.product_type,
-                product_quantity: payload.product_quantity,
-                product_attributes: payload.product_attributes
-            }
+        const orders = await transactions.count({
+            where: {
+                contact_id: Number(payload.contact_id)
+            },
         })
 
-        return product;
+        console.log(payload)
 
+        if (orders == 0) {
+            const newTransaction = await transactions.create({
+                data: {
+                    contact_id: payload.contact_id,
+                    nvkt_id: Number(payload.nvkt_id),
+                    business_id: payload.business_id,
+                    created_by: payload.created_by,
+                    status: 'pending',
+                    final_total: payload.final_total,
+                    transaction_date: new Date(),
+                },
+            })
+            return newTransaction
+        }
     }
 
-    static async getContact(decode) {
+    static async getTransaction(decode) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -33,12 +42,26 @@ class ContactFactory {
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
 
-        const Get_product = await contacts.findMany({
+        const Get_product = await transactions.findMany({
             skip,
             take,
-            // where: {
-            //     ordersId: null
-            // }
+
+        })
+
+        return Get_product;
+
+    }
+
+    static async updateTransaction(decode) {
+
+        const Get_product = await transactions.updateMany({
+            data: {
+                status: 'ordered'
+            },
+            where: {
+                contact_id: Number(decode.id)
+            }
+
         })
 
         return Get_product;
@@ -73,4 +96,4 @@ class ContactFactory {
 // }
 
 
-module.exports = ContactFactory
+module.exports = TransactionFactory

@@ -86,8 +86,11 @@ model users {
   created_at              DateTime?             @db.Timestamp(0)
   updated_at              DateTime?             @db.Timestamp(0)
   Keys                    Keys[]
+  order_histories         order_histories[]
 
   // @@index([business_id], map: "users_business_id_foreign")
+  roles   roles? @relation(fields: [rolesId], references: [id])
+  rolesId Int?   @db.UnsignedInt
 }
 
 model ApiKey {
@@ -533,6 +536,8 @@ model contacts {
   created_at             DateTime?               @db.Timestamp(0)
   updated_at             DateTime?               @db.Timestamp(0)
   // @@index([mobile, formatted_address], map: "mobile")
+  orders                 orders?                 @relation(fields: [ordersId], references: [id])
+  ordersId               Int?                    @db.UnsignedInt
 
   @@index([business_id], map: "contacts_business_id_foreign")
   @@index([created_by], map: "contacts_created_by_foreign")
@@ -1350,6 +1355,11 @@ model order_histories {
   km_distance_minutes Int       @default(0)
   created_at          DateTime? @db.Timestamp(0)
   updated_at          DateTime? @db.Timestamp(0)
+
+  users        users[]
+  orders       orders?        @relation(fields: [ordersId], references: [id])
+  ordersId     Int?           @db.UnsignedInt
+  transactions transactions[]
 }
 
 model order_images {
@@ -1373,23 +1383,23 @@ model order_images {
 }
 
 model orders {
-  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  id                    Int               @id @default(autoincrement()) @db.UnsignedInt
   ord_code              String
-  ctv_check_status      String    @default("normal") @db.VarChar(11)
-  loai_don              String    @default("binh_thuong")
-  order_type            String    @default("normal")
-  description           String?   @db.Text
+  ctv_check_status      String            @default("normal") @db.VarChar(11)
+  loai_don              String            @default("binh_thuong")
+  order_type            String            @default("normal")
+  description           String?           @db.Text
   working_with          String?
   more_request          String?
-  other_more_request    String?   @db.Text
+  other_more_request    String?           @db.Text
   machine_problem       String?
-  other_machine_problem String?   @db.Text
-  status                Int       @default(1)
-  source                String?   @db.VarChar(20)
-  ord_status            String?   @db.VarChar(11)
+  other_machine_problem String?           @db.Text
+  status                Int               @default(1)
+  source                String?           @db.VarChar(20)
+  ord_status            String?           @db.VarChar(11)
   text_status           String?
-  ctv_hll_status        String    @default("normal") @db.VarChar(50)
-  dh_status             Int?      @default(1)
+  ctv_hll_status        String            @default("normal") @db.VarChar(50)
+  dh_status             Int?              @default(1)
   thanh_toan_stt        String?
   hotline_source        String?
   due_stt               String?
@@ -1398,58 +1408,60 @@ model orders {
   bao_hanh_lai          String?
   ve_sinh_stt           String?
   huy_stt               String?
-  is_giam_gia           Int       @default(0)
+  is_giam_gia           Int               @default(0)
   prepare_nvkt_id       Int?
-  nvkt_id               Int?      @default(0)
-  nvkd_id               Int?      @default(0)
-  gio_hen               DateTime? @db.Timestamp(0)
+  nvkt_id               Int?              @default(0)
+  nvkd_id               Int?              @default(0)
+  gio_hen               DateTime?         @db.Timestamp(0)
   handler               Int?
   gio_goi               String?
   gio_den               String?
   thu_nhap              String?
   tinh_cach             String?
-  don_them_status       String    @default("moi")
+  don_them_status       String            @default("moi")
   don_them_sub_status   String?
   slot_id               Int?
-  check_in              DateTime? @db.Timestamp(0)
-  check_out             DateTime? @db.Timestamp(0)
+  check_in              DateTime?         @db.Timestamp(0)
+  check_out             DateTime?         @db.Timestamp(0)
   service_type          String?
-  km_distance           Float     @default(0) @db.Float
-  km_distance_return    Float     @default(0) @db.Float
-  visible               Int       @default(1)
-  is_den_sp             String    @default("no")
-  ca                    Int?      @default(1)
-  is_vsbd_280           String    @default("no")
-  vsbd_280_status       String    @default("vsbd_280")
+  km_distance           Float             @default(0) @db.Float
+  km_distance_return    Float             @default(0) @db.Float
+  visible               Int               @default(1)
+  is_den_sp             String            @default("no")
+  ca                    Int?              @default(1)
+  is_vsbd_280           String            @default("no")
+  vsbd_280_status       String            @default("vsbd_280")
   qr_code               String?
-  do_can_mang           String?   @db.Text
+  do_can_mang           String?           @db.Text
   services              String?
-  vsbd_add_minutes      Int       @default(0)
-  km_distance_minutes   Int       @default(0)
-  is_mo_moi             String?   @default("normal")
-  denied_note           String?   @db.Text
+  vsbd_add_minutes      Int               @default(0)
+  km_distance_minutes   Int               @default(0)
+  is_mo_moi             String?           @default("normal")
+  denied_note           String?           @db.Text
   ord_trans_id          Int?
-  deleted_status        String?   @db.VarChar(11)
-  start_ord             DateTime? @db.Timestamp(0)
-  end_ord               DateTime? @db.Timestamp(0)
-  is_cho_no             Int       @default(0)
-  show_phone_status     String    @default("inactive")
-  show_phone_pdh        String?   @db.VarChar(20)
-  request_open_phone    Boolean   @default(false)
-  is_checked            Int       @default(0)
-  is_som                Int       @default(0)
-  is_kt_cung            Int       @default(0)
-  is_dung_gio           Int       @default(0)
-  is_tinh_thoi_gian     Int?      @default(1)
-  huy_note              String?   @db.Text
-  tra_ve_note           String?   @db.Text
-  so_phut_them          Int       @default(0)
-  status_change_at      DateTime? @db.Timestamp(0)
-  note                  String?   @db.Text
+  deleted_status        String?           @db.VarChar(11)
+  start_ord             DateTime?         @db.Timestamp(0)
+  end_ord               DateTime?         @db.Timestamp(0)
+  is_cho_no             Int               @default(0)
+  show_phone_status     String            @default("inactive")
+  show_phone_pdh        String?           @db.VarChar(20)
+  request_open_phone    Boolean           @default(false)
+  is_checked            Int               @default(0)
+  is_som                Int               @default(0)
+  is_kt_cung            Int               @default(0)
+  is_dung_gio           Int               @default(0)
+  is_tinh_thoi_gian     Int?              @default(1)
+  huy_note              String?           @db.Text
+  tra_ve_note           String?           @db.Text
+  so_phut_them          Int               @default(0)
+  status_change_at      DateTime?         @db.Timestamp(0)
+  note                  String?           @db.Text
   support_request       String?
-  tag_time              DateTime? @db.Timestamp(0)
-  created_at            DateTime? @default(now()) @db.Timestamp(0)
-  updated_at            DateTime? @db.Timestamp(0)
+  tag_time              DateTime?         @db.Timestamp(0)
+  created_at            DateTime?         @default(now()) @db.Timestamp(0)
+  updated_at            DateTime?         @db.Timestamp(0)
+  contacts              contacts[]
+  order_histories       order_histories[]
 }
 
 model password_resets {
@@ -1807,39 +1819,41 @@ model product_variations {
 }
 
 model products {
-  id                  Int                          @id @default(autoincrement()) @db.UnsignedInt
-  name                String
-  business_id         Int                          @db.UnsignedInt
-  type                products_type?
-  unit_id             Int?                         @db.UnsignedInt
-  sub_unit_ids        String?                      @db.Text
-  brand_id            Int?                         @db.UnsignedInt
-  category_id         Int?                         @db.UnsignedInt
-  sub_category_id     Int?                         @db.UnsignedInt
-  tax                 Int?                         @db.UnsignedInt
-  tax_type            products_tax_type
-  enable_stock        Boolean                      @default(false)
-  alert_quantity      Int                          @default(0)
-  sku                 String
-  barcode_type        products_barcode_type?       @default(C128)
-  expiry_period       Decimal?                     @db.Decimal(4, 2)
-  expiry_period_type  products_expiry_period_type?
-  enable_sr_no        Boolean                      @default(false)
-  weight              String?
-  kt_cskh_tv1         Int?                         @default(0)
-  kt_cskh_tv2         Int?                         @default(0)
-  kt_cskh_ct          Int?                         @default(0)
-  kt_kd_tv1           Int?                         @default(0)
-  kt_kd_tv2           Int?                         @default(0)
-  kt_kd_ct            Int?                         @default(0)
-  image               String?
-  product_description String?                      @db.Text
-  product_check       String                       @default("sp") @db.VarChar(11)
-  created_by          Int                          @db.UnsignedInt
-  is_inactive         Boolean                      @default(false)
-  not_for_selling     Boolean                      @default(false)
-  created_at          DateTime?                    @db.Timestamp(0)
-  updated_at          DateTime?                    @db.Timestamp(0)
+  id                     Int                          @id @default(autoincrement())
+  name                   String
+  business_id            Int                          @db.UnsignedInt
+  type                   products_type?
+  unit_id                Int?                         @db.UnsignedInt
+  sub_unit_ids           String?                      @db.Text
+  brand_id               Int?                         @db.UnsignedInt
+  category_id            Int?                         @db.UnsignedInt
+  sub_category_id        Int?                         @db.UnsignedInt
+  tax                    Int?                         @db.UnsignedInt
+  tax_type               products_tax_type
+  enable_stock           Boolean                      @default(false)
+  alert_quantity         Int                          @default(0)
+  sku                    String
+  price                  Int
+  barcode_type           products_barcode_type?       @default(C128)
+  expiry_period          Decimal?                     @db.Decimal(4, 2)
+  expiry_period_type     products_expiry_period_type?
+  enable_sr_no           Boolean                      @default(false)
+  weight                 String?
+  kt_cskh_tv1            Int?                         @default(0)
+  kt_cskh_tv2            Int?                         @default(0)
+  kt_cskh_ct             Int?                         @default(0)
+  kt_kd_tv1              Int?                         @default(0)
+  kt_kd_tv2              Int?                         @default(0)
+  kt_kd_ct               Int?                         @default(0)
+  image                  String?
+  product_description    String?                      @db.Text
+  product_check          String                       @default("sp") @db.VarChar(11)
+  created_by             Int                          @db.UnsignedInt
+  is_inactive            Boolean                      @default(false)
+  not_for_selling        Boolean                      @default(false)
+  created_at             DateTime?                    @db.Timestamp(0)
+  updated_at             DateTime?                    @db.Timestamp(0)
+  transaction_sell_lines transaction_sell_lines[]
 
   @@index([brand_id], map: "products_brand_id_foreign")
   @@index([business_id], map: "products_business_id_index")
@@ -2030,6 +2044,7 @@ model roles {
   is_service_staff Boolean   @default(false)
   created_at       DateTime? @db.Timestamp(0)
   updated_at       DateTime? @db.Timestamp(0)
+  users            users[]
 
   @@index([business_id], map: "roles_business_id_foreign")
 }
@@ -2331,8 +2346,6 @@ model transaction_payments {
 
 model transaction_sell_lines {
   id                         Int                                        @id @default(autoincrement()) @db.UnsignedInt
-  transaction_id             Int                                        @db.UnsignedInt
-  product_id                 Int                                        @db.UnsignedInt
   variation_id               Int                                        @db.UnsignedInt
   quantity                   Int
   quantity_returned          Decimal                                    @default(0) @db.Decimal(20, 0)
@@ -2357,12 +2370,16 @@ model transaction_sell_lines {
   note                       String?
   created_at                 DateTime?                                  @db.Timestamp(0)
   updated_at                 DateTime?                                  @db.Timestamp(0)
+  product_id                 Int                                        @unique @db.Int
+  product                    products                                   @relation(fields: [product_id], references: [id])
+  transaction_id             Int                                        @db.UnsignedInt
+  transaction                transactions                               @relation(fields: [transaction_id], references: [id])
 
   @@index([children_type], map: "transaction_sell_lines_children_type_index")
   @@index([parent_sell_line_id], map: "transaction_sell_lines_parent_sell_line_id_index")
-  @@index([product_id], map: "transaction_sell_lines_product_id_foreign")
+  // @@index([product_id], map: "transaction_sell_lines_product_id_foreign")
   @@index([tax_id], map: "transaction_sell_lines_tax_id_foreign")
-  @@index([transaction_id], map: "transaction_sell_lines_transaction_id_foreign")
+  // @@index([transaction_id], map: "transaction_sell_lines_transaction_id_foreign")
   @@index([variation_id], map: "transaction_sell_lines_variation_id_foreign")
 }
 
@@ -2474,6 +2491,8 @@ model transactions {
   ktnb_accept_time         DateTime?                         @db.DateTime(0)
   created_at               DateTime?                         @db.Timestamp(0)
   updated_at               DateTime?                         @db.Timestamp(0)
+  transaction_sell_lines   transaction_sell_lines[]
+  order_histories          order_histories[]
 
   @@index([business_id], map: "transactions_business_id_index")
   @@index([contact_id], map: "transactions_contact_id_index")

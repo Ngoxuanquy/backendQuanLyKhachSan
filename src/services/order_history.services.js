@@ -2,30 +2,45 @@
 
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
-const { contacts } = new PrismaClient();
+const { order_histories } = new PrismaClient();
 
 // define Factory class to create product
-class ContactFactory {
+class OrderHistoryFactory {
 
-    static async createContact(payload) {
+    static async createOrderHistory(payload) {
 
-        const product = await contacts.create({
-            data: {
-                product_name: payload.product_name,
-                product_thumb: payload.product_thumb,
-                product_price: payload.product_price,
-                product_description: payload.product_description,
-                product_type: payload.product_type,
-                product_quantity: payload.product_quantity,
-                product_attributes: payload.product_attributes
-            }
+        const orders = await order_histories.count({
+            where: {
+                ordersId: Number(payload.ordersId)
+            },
         })
 
-        return product;
+        console.log(payload)
+
+        if (orders == 0) {
+            const order_historie = await order_histories.create({
+                data: {
+                    business_id: payload.business_id,
+                    order_id: payload.ordersId,
+                    nvkt_id: Number(payload.nvkt_id),
+                    nvkd_id: payload.nvkd_id,
+                    type: payload.type,
+                    status: payload.status,
+                    ord_status: payload.ord_status,
+                    ordersId: payload.ordersId,
+                    transaction_id: Number(payload.transaction_id)
+                }
+            })
+
+            return order_historie;
+        }
+        // else {
+        //     return order_historie;
+        // }
 
     }
 
-    static async getContact(decode) {
+    static async getOrderHistory(decode) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -33,12 +48,10 @@ class ContactFactory {
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
 
-        const Get_product = await contacts.findMany({
+        const Get_product = await order_histories.findMany({
             skip,
             take,
-            // where: {
-            //     ordersId: null
-            // }
+
         })
 
         return Get_product;
@@ -73,4 +86,4 @@ class ContactFactory {
 // }
 
 
-module.exports = ContactFactory
+module.exports = OrderHistoryFactory

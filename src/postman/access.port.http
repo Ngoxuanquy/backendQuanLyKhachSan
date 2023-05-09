@@ -2,17 +2,17 @@
 
 POST  http://localhost:3000/v1/api/signup
 Content-Type: application/json
-x-api-key: 2a5f256a441f0203c12901b2d94f84b21d79447d9d5463c9c790aa534ba747259d77b2506e92615f78e2dc052f7828b3ba98454dc438fa327e4f794297373181
+x-api-key: f2b4082fa7cc195e5f3def504034449977724b4fa76c126cedf3e91b67d21d98c4964f5a25736fb4a314c101e6e32d440500f5081119bb029b7033339859bbeb
 
 {
-    "username": "12",
+    "username": "121",
     "password": "1"
 }
 
 ###
 POST  http://localhost:3000/v1/api/login
 Content-Type: application/json
-x-api-key: 2a5f256a441f0203c12901b2d94f84b21d79447d9d5463c9c790aa534ba747259d77b2506e92615f78e2dc052f7828b3ba98454dc438fa327e4f794297373181
+x-api-key: f2b4082fa7cc195e5f3def504034449977724b4fa76c126cedf3e91b67d21d98c4964f5a25736fb4a314c101e6e32d440500f5081119bb029b7033339859bbeb
 
 {
     "username": "121",
@@ -40,25 +40,106 @@ x-client-id : 1
 ###
 POST  http://localhost:3000/v1/api/product/get
 Content-Type: application/json
+x-api-key: f5bbcd37ce34a18da24fd4faea28a74ea5b64ed23f668c0398a69cbeee3410febdc4c00a94f50e52af948e397d02b3ff141711fd7bbf8cfca7c26c87fd70f458
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiIxMjEiLCJpYXQiOjE2ODM1MTMyMDQsImV4cCI6MTY4MzUxNjgwNH0.fPNZT5R2d05vSgi6iNix0qaF4ZZTgI0NCIRMY8oi1UA
+x-client-id : 3
+
+
+###
+POST  http://localhost:3000/v1/api/orderhistory/get
+Content-Type: application/json
+x-api-key: f5bbcd37ce34a18da24fd4faea28a74ea5b64ed23f668c0398a69cbeee3410febdc4c00a94f50e52af948e397d02b3ff141711fd7bbf8cfca7c26c87fd70f458
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiIxMiIsImlhdCI6MTY4MzUxNjA5OSwiZXhwIjoxNjgzNTE5Njk5fQ.3wkhxjekWI4Ot6biAisWRifCxq5KEK-tehw5CJu2PBM
+x-client-id : 4
+
+###
+POST  http://localhost:3000/v1/api/orderhistory/create
+Content-Type: application/json
+x-api-key: f5bbcd37ce34a18da24fd4faea28a74ea5b64ed23f668c0398a69cbeee3410febdc4c00a94f50e52af948e397d02b3ff141711fd7bbf8cfca7c26c87fd70f458
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiIxMjEiLCJpYXQiOjE2ODM1MDk4NTMsImV4cCI6MTY4MzUxMzQ1M30.-3aSZGA24_bwFY6Sy5Ki2lhvv_Vt9zoQy1pDDLyYMRc
+x-client-id : 3
+
+###
+POST  http://localhost:3000/v1/api/transactions/get
+Content-Type: application/json
+x-api-key: f5bbcd37ce34a18da24fd4faea28a74ea5b64ed23f668c0398a69cbeee3410febdc4c00a94f50e52af948e397d02b3ff141711fd7bbf8cfca7c26c87fd70f458
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiIxMiIsImlhdCI6MTY4MzUxMzUzNiwiZXhwIjoxNjgzNTE3MTM2fQ.M_K6oZZx4yqbeSvltlKY1YpQfnqe20GksEDpf2aoHVU
+x-client-id : 4
+
+###
+POST  http://localhost:3000/v1/api/transactions_sell_line/get/1
+Content-Type: application/json
+x-api-key: f2b4082fa7cc195e5f3def504034449977724b4fa76c126cedf3e91b67d21d98c4964f5a25736fb4a314c101e6e32d440500f5081119bb029b7033339859bbeb
+authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjEiLCJpYXQiOjE2ODM2MDUxNDAsImV4cCI6MTY4MzYwODc0MH0.7CFGUqZcmoiq4bmU_0aCby9FJk4j58uIGRK9THD3PvA
+x-client-id : 2
+
+###
+POST  http://localhost:3000/v1/api/transactions_sell_line
+Content-Type: application/json
+x-api-key: f2b4082fa7cc195e5f3def504034449977724b4fa76c126cedf3e91b67d21d98c4964f5a25736fb4a314c101e6e32d440500f5081119bb029b7033339859bbeb
+authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjEiLCJpYXQiOjE2ODM2MDUxNDAsImV4cCI6MTY4MzYwODc0MH0.7CFGUqZcmoiq4bmU_0aCby9FJk4j58uIGRK9THD3PvA
+x-client-id : 2
+
+
+     {
+    "transactionId": 1,
+      "productId": 1,
+    "quantity": 2,
+    "Price": 100,
+    "item_tax": 0,
+    "variation_id": 1
+}
+
+
+###
+POST  http://localhost:3000/v1/api/transactions/create
+Content-Type: application/json
+x-api-key: 69f7bba9e67c41ea743b9fa9dc64b566f4a55f6c6d60f6ac8c35cf9d8a44fdc8eff2512c729e5f1e38babcdb4dd439d7ddf4f6666357097141b443dcb348510b
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMiIsImlhdCI6MTY4MzYwMTE0OCwiZXhwIjoxNjgzNjA0NzQ4fQ.KRCRJW7h5tk_FFFtj-fUtpRntrVdjc50nZP4iZa4xvs
+x-client-id : 2
+
+{
+    "contact_id": 1,
+       "nvkt_id": 1,
+        "business_id": 1,
+        "created_by": 1,
+        "status": "pending",
+        "final_total": 1,
+}
+###
+POST  http://localhost:3000/v1/api/user/update/24
+Content-Type: application/json
 x-api-key: 2a5f256a441f0203c12901b2d94f84b21d79447d9d5463c9c790aa534ba747259d77b2506e92615f78e2dc052f7828b3ba98454dc438fa327e4f794297373181
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInVzZXJuYW1lIjoiMTIxIiwiaWF0IjoxNjgyNTc5NTQyLCJleHAiOjE2ODI1ODMxNDJ9.cTB3bO8pzTwpvVzUk4XltT8__Q58x1wF-ll0zvTZPo4
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInVzZXJuYW1lIjoiMTIxIiwiaWF0IjoxNjgzMTA3OTkzLCJleHAiOjE2ODMxMTE1OTN9.SF10aMcCvi6cOG-RK3qqZ5BdB1pzyOKWsCeqaXJWepE
 x-client-id : 23
+
+{
+    "surname": "a"
+}
 
 
 
 ###
 POST  http://localhost:3000/v1/api/contacts/get
 Content-Type: application/json
-x-api-key: 2a5f256a441f0203c12901b2d94f84b21d79447d9d5463c9c790aa534ba747259d77b2506e92615f78e2dc052f7828b3ba98454dc438fa327e4f794297373181
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInVzZXJuYW1lIjoiMTIxIiwiaWF0IjoxNjgyNjUyODg4LCJleHAiOjE2ODI2NTY0ODh9.aiH_YW36fgCv0zNhUckQRv1SsCf1zEUJktNPLPa5B-M
-x-client-id : 23
+x-api-key: f5bbcd37ce34a18da24fd4faea28a74ea5b64ed23f668c0398a69cbeee3410febdc4c00a94f50e52af948e397d02b3ff141711fd7bbf8cfca7c26c87fd70f458
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiIxMiIsImlhdCI6MTY4MzUxMzgwMSwiZXhwIjoxNjgzNTE3NDAxfQ.9K6THe1xX2HvLPR5_f8x3dz4T7exMauSHQrpl86uFKo
+x-client-id : 4
 
 ###
-POST  http://localhost:3000/v1/api/orders/get
+POST  http://localhost:3000/v1/api/orders/getorderdone/1
 Content-Type: application/json
-x-api-key: 2a5f256a441f0203c12901b2d94f84b21d79447d9d5463c9c790aa534ba747259d77b2506e92615f78e2dc052f7828b3ba98454dc438fa327e4f794297373181
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInVzZXJuYW1lIjoiMTIxIiwiaWF0IjoxNjgyNjU0MTIyLCJleHAiOjE2ODI2NTc3MjJ9.OZ9Xh8deh9RZV3fse8Mrn-OD8vnpichOCEPq497FjEk
-x-client-id : 23
+x-api-key: 64e99e26999fc4b274cd301bca91f9d62ed0f237ac956558a595ab45bab9acb992dcd6c778a95df2dcb0dad7f71a30b6555a60b48ab5b0a00b88e44888397706
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjEiLCJpYXQiOjE2ODM1NTY3NDksImV4cCI6MTY4MzU2MDM0OX0.D3MUGlxlqkSRgZy-G1M18wdr9EU14Ss9-7iNnfjos50
+x-client-id : 2
+
+###
+POST  http://localhost:3000/v1/api/orders/updateaction/6
+Content-Type: application/json
+x-api-key: 69f7bba9e67c41ea743b9fa9dc64b566f4a55f6c6d60f6ac8c35cf9d8a44fdc8eff2512c729e5f1e38babcdb4dd439d7ddf4f6666357097141b443dcb348510b
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMiIsImlhdCI6MTY4MzYwMTE0OCwiZXhwIjoxNjgzNjA0NzQ4fQ.KRCRJW7h5tk_FFFtj-fUtpRntrVdjc50nZP4iZa4xvs
+x-client-id : 2
+
 
 ###
 POST  http://localhost:3000/v1/api/keyUers/1

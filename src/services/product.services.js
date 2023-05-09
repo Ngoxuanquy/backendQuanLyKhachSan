@@ -7,23 +7,23 @@ const { products } = new PrismaClient();
 // define Factory class to create product
 class ProductFactory {
 
-    static async createProduct(payload) {
+    // static async createProduct(payload) {
 
-        const product = await products.create({
-            data: {
-                product_name: payload.product_name,
-                product_thumb: payload.product_thumb,
-                product_price: payload.product_price,
-                product_description: payload.product_description,
-                product_type: payload.product_type,
-                product_quantity: payload.product_quantity,
-                product_attributes: payload.product_attributes
-            }
-        })
+    //     const product = await products.create({
+    //         data: {
+    //             product_name: payload.product_name,
+    //             product_thumb: payload.product_thumb,
+    //             product_price: payload.product_price,
+    //             product_description: payload.product_description,
+    //             product_type: payload.product_type,
+    //             product_quantity: payload.product_quantity,
+    //             product_attributes: payload.product_attributes
+    //         }
+    //     })
 
-        return product;
+    //     return product;
 
-    }
+    // }
 
     static async getProduct(decode) {
 
@@ -36,15 +36,27 @@ class ProductFactory {
         const Get_product = await products.findMany({
             skip,
             take,
-            // select: {
-            //     product_name: true,
-            //     product_thumb: true,
-            //     product_price: true,
-            //     product_description: true,
-            //     product_type: true,
-            //     product_quantity: true,
-            //     product_attributes: true
-            // }
+
+        })
+
+        return Get_product;
+
+    }
+
+    static async getProductById(decode) {
+
+        const pageNumber = 1; // Số trang muốn lấy
+        const perPage = 2; // Số bản ghi trên mỗi trang
+
+        const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
+        const take = perPage; // Số bản ghi muốn lấy
+
+        const Get_product = await products.findMany({
+            skip,
+            take,
+            where: {
+                id: Number(decode.id)
+            }
         })
 
         return Get_product;

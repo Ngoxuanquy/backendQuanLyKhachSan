@@ -17,15 +17,17 @@ class ProductControllers {
 
     getProduct = async (req, res, next) => {
 
-        console.log(req.user)
-
-        console.log(Date.now())
-        console.log(new Date().getTime())
-
-
         new SuccessResponse({
             message: 'Get product success',
             metadata: await ProductService.getProduct(req.user)
+        }).send(res)
+    }
+
+    getProductById = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get product success',
+            metadata: await ProductService.getProductById(req.params)
         }).send(res)
     }
 

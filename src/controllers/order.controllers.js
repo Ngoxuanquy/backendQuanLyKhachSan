@@ -16,11 +16,52 @@ class OrderControllers {
         }).send(res)
     }
 
-    getOrders = async (req, res, next) => {
+    getOrdersPending = async (req, res, next) => {
 
         new SuccessResponse({
             message: 'Get order success',
-            metadata: await OrderServices.getOrder(req.user)
+            metadata: await OrderServices.getOrderPending(req.params)
+        }).send(res)
+    }
+
+    updateOrders = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.UpdateOrder(req.params)
+        }).send(res)
+    }
+
+    updateOrdersAction = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.updateOrdersAction(req.params)
+        }).send(res)
+    }
+
+
+    getOrdersAcction = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.getOrderAcction(req.params)
+        }).send(res)
+    }
+
+    getOrdersDone = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.getOrderDone(req.params)
+        }).send(res)
+    }
+
+    getOrderById = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get order success',
+            metadata: await OrderServices.getOrderById(req.params)
         }).send(res)
     }
 

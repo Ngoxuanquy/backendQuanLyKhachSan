@@ -56,6 +56,7 @@ class KeyTokenServices {
 
     static findByUserId = async (userId) => {
 
+        console.log(userId)
 
         const keyToken = await Keys.findMany({
             where: {

@@ -6,7 +6,7 @@ const { login } = require("../auth/authUtils")
 const { findByEmail } = require('./shop.service')
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { createTokenPair, verifyJWT } = require("../auth/authUtils")
-const getIntoData = require("../utils")
+const { getIntoData } = require("../utils")
 
 const { PrismaClient } = require('@prisma/client');
 const { users, Keys, refeshTokensUsed } = new PrismaClient();

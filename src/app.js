@@ -20,8 +20,6 @@ app.use(express.json())
 require('./dbs/init.sql')
 
 
-
-
 //init router
 app.use('/', require('./routes'))
 
@@ -38,7 +36,7 @@ app.use((error, req, res, next) => {
     return res.status(statusCode).json({
         status: 'error',
         code: statusCode,
-        // stack: error.stack,
+        stack: error.stack,
         message: error.message || 'Internal Server Error',
     })
 })

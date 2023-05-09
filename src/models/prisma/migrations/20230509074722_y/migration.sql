@@ -77,6 +77,7 @@ CREATE TABLE `users` (
     `last_sessid` VARCHAR(191) NULL,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `rolesId` INTEGER UNSIGNED NULL,
 
     UNIQUE INDEX `users_username_unique`(`username`),
     PRIMARY KEY (`id`)
@@ -569,6 +570,7 @@ CREATE TABLE `contacts` (
     `deleted_at` TIMESTAMP(0) NULL,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `ordersId` INTEGER UNSIGNED NULL,
 
     INDEX `contacts_business_id_foreign`(`business_id`),
     INDEX `contacts_created_by_foreign`(`created_by`),
@@ -1471,6 +1473,7 @@ CREATE TABLE `order_histories` (
     `km_distance_minutes` INTEGER NOT NULL DEFAULT 0,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `ordersId` INTEGER UNSIGNED NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -1525,7 +1528,6 @@ CREATE TABLE `orders` (
     `bao_hanh_lai` VARCHAR(191) NULL,
     `ve_sinh_stt` VARCHAR(191) NULL,
     `huy_stt` VARCHAR(191) NULL,
-    `customer_id` INTEGER NOT NULL DEFAULT 0,
     `is_giam_gia` INTEGER NOT NULL DEFAULT 0,
     `prepare_nvkt_id` INTEGER NULL,
     `nvkt_id` INTEGER NULL DEFAULT 0,
@@ -1584,11 +1586,12 @@ CREATE TABLE `orders` (
 
 -- CreateTable
 CREATE TABLE `password_resets` (
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
     `created_at` TIMESTAMP(0) NULL,
 
-    INDEX `password_resets_email_index`(`email`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -1976,7 +1979,7 @@ CREATE TABLE `product_variations` (
 
 -- CreateTable
 CREATE TABLE `products` (
-    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `business_id` INTEGER UNSIGNED NOT NULL,
     `type` ENUM('single', 'variable', 'modifier', 'combo') NULL,
@@ -1990,6 +1993,7 @@ CREATE TABLE `products` (
     `enable_stock` BOOLEAN NOT NULL DEFAULT false,
     `alert_quantity` INTEGER NOT NULL DEFAULT 0,
     `sku` VARCHAR(191) NOT NULL,
+    `price` INTEGER NOT NULL,
     `barcode_type` ENUM('C39', 'C128', 'EAN13', 'EAN8', 'UPCA', 'UPCE') NULL DEFAULT 'C128',
     `expiry_period` DECIMAL(4, 2) NULL,
     `expiry_period_type` ENUM('days', 'months') NULL,
@@ -2565,8 +2569,6 @@ CREATE TABLE `transaction_payments` (
 -- CreateTable
 CREATE TABLE `transaction_sell_lines` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    `transaction_id` INTEGER UNSIGNED NOT NULL,
-    `product_id` INTEGER UNSIGNED NOT NULL,
     `variation_id` INTEGER UNSIGNED NOT NULL,
     `quantity` INTEGER NOT NULL,
     `quantity_returned` DECIMAL(20, 0) NOT NULL DEFAULT 0,
@@ -2591,12 +2593,13 @@ CREATE TABLE `transaction_sell_lines` (
     `note` VARCHAR(191) NULL,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `product_id` INTEGER NOT NULL,
+    `transaction_id` INTEGER NOT NULL,
 
+    UNIQUE INDEX `transaction_sell_lines_product_id_key`(`product_id`),
     INDEX `transaction_sell_lines_children_type_index`(`children_type`),
     INDEX `transaction_sell_lines_parent_sell_line_id_index`(`parent_sell_line_id`),
-    INDEX `transaction_sell_lines_product_id_foreign`(`product_id`),
     INDEX `transaction_sell_lines_tax_id_foreign`(`tax_id`),
-    INDEX `transaction_sell_lines_transaction_id_foreign`(`transaction_id`),
     INDEX `transaction_sell_lines_variation_id_foreign`(`variation_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -3051,5 +3054,50 @@ CREATE TABLE `working_times` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_order_historiesTousers` (
+    `A` INTEGER UNSIGNED NOT NULL,
+    `B` INTEGER UNSIGNED NOT NULL,
+
+    UNIQUE INDEX `_order_historiesTousers_AB_unique`(`A`, `B`),
+    INDEX `_order_historiesTousers_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_order_historiesTotransactions` (
+    `A` INTEGER UNSIGNED NOT NULL,
+    `B` INTEGER UNSIGNED NOT NULL,
+
+    UNIQUE INDEX `_order_historiesTotransactions_AB_unique`(`A`, `B`),
+    INDEX `_order_historiesTotransactions_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `users` ADD CONSTRAINT `users_rolesId_fkey` FOREIGN KEY (`rolesId`) REFERENCES `roles`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE `Keys` ADD CONSTRAINT `Keys_usersId_fkey` FOREIGN KEY (`usersId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contacts` ADD CONSTRAINT `contacts_ordersId_fkey` FOREIGN KEY (`ordersId`) REFERENCES `orders`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `order_histories` ADD CONSTRAINT `order_histories_ordersId_fkey` FOREIGN KEY (`ordersId`) REFERENCES `orders`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transaction_sell_lines` ADD CONSTRAINT `transaction_sell_lines_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transaction_sell_lines` ADD CONSTRAINT `transaction_sell_lines_transaction_id_fkey` FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_order_historiesTousers` ADD CONSTRAINT `_order_historiesTousers_A_fkey` FOREIGN KEY (`A`) REFERENCES `order_histories`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_order_historiesTousers` ADD CONSTRAINT `_order_historiesTousers_B_fkey` FOREIGN KEY (`B`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_order_historiesTotransactions` ADD CONSTRAINT `_order_historiesTotransactions_A_fkey` FOREIGN KEY (`A`) REFERENCES `order_histories`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_order_historiesTotransactions` ADD CONSTRAINT `_order_historiesTotransactions_B_fkey` FOREIGN KEY (`B`) REFERENCES `transactions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

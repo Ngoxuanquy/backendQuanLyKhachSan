@@ -4,7 +4,7 @@ const CommentServices = require("../services/comment.services")
 
 
 
-class CommentControllers {
+class ContactControllers {
 
     createComment = async (req, res, next) => {
 
@@ -15,7 +15,7 @@ class CommentControllers {
 
     }
 
-    getContacts = async (req, res, next) => {
+    getComment = async (req, res, next) => {
 
         new SuccessResponse({
             message: 'Get product success',
@@ -25,4 +25,4 @@ class CommentControllers {
 
 }
 
-module.exports = new CommentControllers()
+module.exports = new ContactControllers()
