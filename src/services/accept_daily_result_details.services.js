@@ -2,16 +2,16 @@
 
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
-const { comments } = new PrismaClient();
+const { accept_daily_result_details } = new PrismaClient();
 
 // define Factory class to create product
-class CommentFactory {
+class DailyResultDetailsFactory {
 
-    static async createComment(payload) {
+    static async createDailyResultDetails(payload) {
 
         console.log(payload)
 
-        const product = await comments.create({
+        const product = await accept_daily_result_details.create({
             data: {
                 user_id: Number(payload.user_id),
                 order_id: Number(payload.orderId),
@@ -29,7 +29,7 @@ class CommentFactory {
 
     }
 
-    static async getComment(decode) {
+    static async getDailyResultDetails(payload) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -37,11 +37,11 @@ class CommentFactory {
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
 
-        const Get_product = await comments.findMany({
+        const Get_product = await accept_daily_result_details.findMany({
             skip,
             take,
             where: {
-                order_id: Number(decode.id)
+                user_id: Number(payload.id)
             }
         })
 
@@ -77,4 +77,4 @@ class CommentFactory {
 // }
 
 
-module.exports = CommentFactory
+module.exports = DailyResultDetailsFactory

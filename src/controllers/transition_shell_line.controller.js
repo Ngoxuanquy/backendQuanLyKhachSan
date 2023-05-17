@@ -3,6 +3,9 @@ const { CREATED, SuccessResponse } = require('../core/success.response')
 
 class TransactionShellLineController {
     createTransactionShellLine = async (req, res, next) => {
+
+        console.log(req.body)
+
         new SuccessResponse({
             message: 'Create success',
             metadata: await TransactionShellLine.createTransactionShellLine(req.body),
@@ -15,6 +18,15 @@ class TransactionShellLineController {
             metadata: await TransactionShellLine.getTransactionShellLine(req.params),
         }).send(res)
     }
+
+
+    getTransactionShellLinePOS = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Create success',
+            metadata: await TransactionShellLine.getPOS(req.params),
+        }).send(res)
+    }
+
 
     updateTransactionShellLine_Cong = async (req, res, next) => {
         new SuccessResponse({

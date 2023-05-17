@@ -10,6 +10,8 @@ router.post('/delete', asyncHandler(TransactionShellLineController.delteTransact
 router.post('/updatecong', asyncHandler(TransactionShellLineController.updateTransactionShellLine_Cong))
 router.post('/updatetru', asyncHandler(TransactionShellLineController.updateTransactionShellLine_Tru))
 router.post('/get/:id', asyncHandler(TransactionShellLineController.getTransactionShellLine))
+router.post('/get/pos/:id', asyncHandler(TransactionShellLineController.getTransactionShellLinePOS))
+
 
 
 // authentication

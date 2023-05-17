@@ -23,6 +23,13 @@ class TransactionsControllers {
         }).send(res)
     }
 
+    getTransactionByConcactId = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Get Transaction success',
+            metadata: await TransactionService.SelectTransactionByConcactId(req.params)
+        }).send(res)
+    }
     updateTransaction = async (req, res, next) => {
 
         new SuccessResponse({

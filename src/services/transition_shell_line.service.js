@@ -35,7 +35,7 @@ class TransactionShellLineService {
     static async createTransactionShellLine(payload) {
 
         console.log(payload)
-        const newTransaction_sell_lines = await transaction_sell_lines.create({
+        const newTransaction_sell_lines = await transaction_sell_lines.createMany({
             data: {
                 transaction_id: Number(payload.transactionId),
                 product_id: payload.productId,
@@ -43,6 +43,7 @@ class TransactionShellLineService {
                 unit_price: payload.quantity * payload.price,
                 variation_id: 1,
                 item_tax: 0,
+                contactsId: Number(payload.contactId)
             }
 
         })
@@ -92,6 +93,26 @@ class TransactionShellLineService {
         return result
     }
 
+    //update số lượng công
+    static async getPOS(payload) {
+
+        const sellLinesWithOrderHistories = await transaction_sell_lines.findMany({
+            include: {
+                order_histories: true,
+            },
+            select: {
+                quantity: true,
+                unit_price: true,
+                order_histories: true,
+            },
+            where: {
+                transaction_id: Number(payload.id),
+            },
+        });
+
+        return sellLinesWithOrderHistories
+    }
+
 
     //update số lượng trừ
     static async updateTru(payload) {
@@ -124,7 +145,6 @@ class TransactionShellLineService {
     //Xoas sản phẩm
     static async delete(payload) {
 
-        console.log({ payload })
         let result
         try {
             result = await prisma.$transaction([
@@ -133,16 +153,13 @@ class TransactionShellLineService {
                         product_id: Number(payload.productId),
                         transaction_id: Number(payload.transactionId),
                     }
-
                 })
-
             ])
         } catch (error) {
             // Rollback the transaction if any of the queries failed
             console.error(error)
             await prisma.$rollback()
         }
-
         return result
     }
 

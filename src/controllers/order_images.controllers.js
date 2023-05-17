@@ -1,27 +1,25 @@
 
 const { CREATED, SuccessResponse } = require("../core/success.response")
-const CommentServices = require("../services/comment.services")
+const OrderimagesServices = require("../services/order_images.services")
 
 
 
 class ContactControllers {
 
-    createComment = async (req, res, next) => {
-
-        console.log(req.body)
-
+    createImages = async (req, res, next) => {
+        console.log('a')
         new SuccessResponse({
             message: 'create new product success',
-            metadata: await CommentServices.createComment(req.body)
+            metadata: await OrderimagesServices.createImages(req.body)
         }).send(res)
 
     }
 
-    getComment = async (req, res, next) => {
+    getImages = async (req, res, next) => {
 
         new SuccessResponse({
             message: 'Get product success',
-            metadata: await CommentServices.getComment(req.params)
+            metadata: await OrderimagesServices.getImages(req.params)
         }).send(res)
     }
 

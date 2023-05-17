@@ -45,7 +45,35 @@ class ContactFactory {
 
     }
 
+    static async getOrderContacts(payload) {
+        const contact = await contacts.findMany({
+            select: {
+                name: true,
+                formatted_address: true,
+                transaction_sell_lines: {
+                    select: {
+                        unit_price: true,
+                        quantity: true,
+                        product_id: true
+                    }
+                },
+                // products: true,
+
+                order_histories: true,
+                orders: {
+                    where: {
+                        nvkt_id: Number(payload.id)// Điều kiện nvkt_id
+                    }
+                }
+            },
+
+        });
+
+        return contact;
+    }
+
 }
+
 
 // // define base product class
 // class Product {

@@ -2,34 +2,31 @@
 
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
-const { comments } = new PrismaClient();
+const { order_images } = new PrismaClient();
 
 // define Factory class to create product
-class CommentFactory {
+class OrderimagesFactory {
 
-    static async createComment(payload) {
+    static async createImages(payload) {
 
         console.log(payload)
 
-        const product = await comments.create({
+        const order_image = await order_images.create({
             data: {
-                user_id: Number(payload.user_id),
-                order_id: Number(payload.orderId),
-                content: payload.conten,
-                de_nghi_id: null,
-                customer_care_id: null,
-                types: null,
-                parent_id: undefined, // Set parent_id to undefined
-                created_at: new Date(),
-                updated_at: new Date()
-            }
-        });
+                name: payload.name,
+                contact_id: payload.contact_id,
+                order_id: payload.order_id,
+                time_chup: new Date(),
+                filename: payload.img,
 
-        return product;
+            }
+        })
+
+        return order_image
 
     }
 
-    static async getComment(decode) {
+    static async getImages(decode) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -37,7 +34,7 @@ class CommentFactory {
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
 
-        const Get_product = await comments.findMany({
+        const Get_product = await order_images.findMany({
             skip,
             take,
             where: {
@@ -77,4 +74,4 @@ class CommentFactory {
 // }
 
 
-module.exports = CommentFactory
+module.exports = OrderimagesFactory

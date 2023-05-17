@@ -14,6 +14,8 @@ const router = express.Router();
 router.post('/create', asyncHandler(TransactionsControllers.createTransactions))
 router.post('/update/:id', asyncHandler(TransactionsControllers.updateTransaction))
 router.post('/get', asyncHandler(TransactionsControllers.getTransaction))
+router.post('/getbyconcactid/:id', asyncHandler(TransactionsControllers.getTransactionByConcactId))
+
 
 
 

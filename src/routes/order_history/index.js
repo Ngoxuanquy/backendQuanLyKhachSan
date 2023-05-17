@@ -12,7 +12,8 @@ const router = express.Router();
 router.use(authenticationV2)
 
 router.post('/create', asyncHandler(OrderHistoryControllers.createOrderHistory))
-router.post('/get', asyncHandler(OrderHistoryControllers.getOrderHistory))
+router.post('/update/:id', asyncHandler(OrderHistoryControllers.updateOrderHistory))
+router.post('/get/:id', asyncHandler(OrderHistoryControllers.getOrderHistory))
 
 
 

@@ -12,7 +12,9 @@ const router = express.Router();
 router.use(authenticationV2)
 
 router.post('/create', asyncHandler(ContactControllers.createCustomer))
+router.post('/get/ordercontact/:id', asyncHandler(ContactControllers.getOrderContact))
 router.post('/get', asyncHandler(ContactControllers.getContacts))
+
 
 
 

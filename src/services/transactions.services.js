@@ -49,7 +49,6 @@ class TransactionFactory {
         })
 
         return Get_product;
-
     }
 
     static async updateTransaction(decode) {
@@ -61,11 +60,22 @@ class TransactionFactory {
             where: {
                 contact_id: Number(decode.id)
             }
-
         })
 
         return Get_product;
+    }
 
+
+    static async SelectTransactionByConcactId(decode) {
+
+        const Get_Transaction = await transactions.findMany({
+
+            where: {
+                contact_id: Number(decode.id)
+            }
+        })
+
+        return Get_Transaction;
     }
 
 }

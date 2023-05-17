@@ -3,7 +3,7 @@
 const { BadRequestError, AuthFailureError, ForbiddenError } = require("../core/error.response.js")
 const { PrismaClient } = require('@prisma/client');
 const { order_histories } = new PrismaClient();
-
+const prisma = new PrismaClient()
 // define Factory class to create product
 class OrderHistoryFactory {
 
@@ -22,13 +22,15 @@ class OrderHistoryFactory {
                 data: {
                     business_id: payload.business_id,
                     order_id: payload.ordersId,
+                    customer_id: Number(payload.customer_id),
                     nvkt_id: Number(payload.nvkt_id),
                     nvkd_id: payload.nvkd_id,
                     type: payload.type,
                     status: payload.status,
                     ord_status: payload.ord_status,
                     ordersId: payload.ordersId,
-                    transaction_id: Number(payload.transaction_id)
+                    transactionsId: Number(payload.transaction_id),
+                    contactsId: Number(payload.customer_id)
                 }
             })
 
@@ -40,10 +42,11 @@ class OrderHistoryFactory {
 
     }
 
-    static async getOrderHistory(decode) {
+    static async getOrderHistory(payload) {
+
 
         const pageNumber = 1; // Số trang muốn lấy
-        const perPage = 2; // Số bản ghi trên mỗi trang
+        const perPage = 5; // Số bản ghi trên mỗi trang
 
         const skip = (pageNumber - 1) * perPage; // Số bản ghi muốn bỏ qua
         const take = perPage; // Số bản ghi muốn lấy
@@ -51,11 +54,39 @@ class OrderHistoryFactory {
         const Get_product = await order_histories.findMany({
             skip,
             take,
+            include: {
+                transactions: true,
+                orders: true,
+                contacts: true
+            },
+            where: {
+                status: 'Đã Thanh Toán',
+                nvkt_id: Number(payload.id)
+                // Replace 123 with the actual integer value you want to filter by
+            }
 
         })
 
         return Get_product;
+    }
 
+
+
+    static async updateOrderHistory(payload) {
+
+        console.log(payload)
+
+        const Get_product = await order_histories.updateMany({
+            data: {
+                status: 'Đã Thanh Toán',
+            },
+            where: {
+                ordersId: Number(payload.id)
+            }
+
+        })
+
+        return Get_product;
     }
 
 }

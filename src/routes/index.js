@@ -18,6 +18,16 @@ router.use('/v1/api/contacts', require('./contacts'))
 router.use('/v1/api/transactions', require('./transactions'))
 router.use('/v1/api/transactions_sell_line', require('./transationsellline'))
 router.use('/v1/api/orderhistory', require('./order_history'))
+router.use('/v1/api/orderimages', require('./order_images'))
+router.use('/v1/api/ordercomment', require('./comments'))
+router.use('/v1/api/acceptdailyresultdetails', require('./accept_daily_result_details'))
+router.use('/v1/api/chamcong', require('./chamcong'))
+router.use('/v1/api/daily_results', require('./daily_results'))
+
+
+
+
+
 
 router.use('/v1/api/user', require('./users'))
 
