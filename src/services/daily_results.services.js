@@ -15,25 +15,25 @@ class DailyResultsFactory {
             data: {
                 user_id: Number(payload.user_id),
                 business_id: 1,
-                type: "your_type_value",
-                ca: "your_ca_value",
+                type: 'your_type_value',
+                ca: 'your_ca_value',
                 ngay: new Date(),
-                so_cong: 1.5,
-                bac_luong: "your_bac_luong_value",
-                luong_cb: 1000,
-                doanh_so: 5000,
-                doanh_so_yc: 6000,
-                so_don_yc: 2.5,
-                tb_don_yc: 200,
-                ds_ban_may: 100,
-                don_ban_may: 50,
-                don_ps: 30,
-                don_vs: 20,
-                thuong: 100,
-                phat: 50,
-                chiet_khau: 50,
-                don_them: 10,
-                thu_nhap_ngay: 1000
+                so_cong: 0,
+                bac_luong: 'your_bac_luong_value',
+                luong_cb: 0,
+                doanh_so: 0,
+                doanh_so_yc: 0,
+                so_don_yc: 0,
+                tb_don_yc: 0,
+                ds_ban_may: 0,
+                don_ban_may: 0,
+                don_ps: 0,
+                don_vs: 0,
+                thuong: 0,
+                phat: 0,
+                chiet_khau: 0,
+                don_them: 0,
+                thu_nhap_ngay: 0
             }
         });
 
@@ -52,8 +52,6 @@ class DailyResultsFactory {
         const day = String(ngayHienTai.getDate()).padStart(2, '0'); // Lấy ngày hiện tại
 
         const ngayHienTaiString = `${year}-${month}-${day}`; // Tạo chuỗi đại diện cho ngày hiện tại
-
-        console.log(ngayHienTaiString)
 
         const ngay = new Date(ngayHienTaiString);
 
@@ -78,32 +76,96 @@ class DailyResultsFactory {
 
     }
 
+    static async updateDonVeSinh(payload) {
+
+        console.log(payload.DonVs);
+
+        const ngayHienTai = new Date();
+        const year = ngayHienTai.getFullYear();
+        const month = String(ngayHienTai.getMonth() + 1).padStart(2, '0');
+        const day = String(ngayHienTai.getDate()).padStart(2, '0');
+        const ngayHienTaiString = `${year}-${month}-${day}`;
+        const ngay = new Date(ngayHienTaiString);
+
+        const Get_product = await daily_results.updateMany({
+            data: {
+                don_vs: {
+                    increment: Number(payload.DonVs) + 1 // Increment the value of don_vs by 1
+                }
+            },
+            where: {
+                user_id: Number(payload.id),
+                ngay: {
+                    equals: ngay
+                }
+            }
+        });
+
+        return Get_product;
+
+    }
+
+    static async updateDonPhatSinh(payload) {
+
+        const ngayHienTai = new Date(); // Lấy ngày hiện tại
+
+        const year = ngayHienTai.getFullYear(); // Lấy năm hiện tại
+        const month = String(ngayHienTai.getMonth() + 1).padStart(2, '0'); // Lấy tháng hiện tại (phải thêm 1 vì tháng bắt đầu từ 0)
+        const day = String(ngayHienTai.getDate()).padStart(2, '0'); // Lấy ngày hiện tại
+
+        const ngayHienTaiString = `${year}-${month}-${day}`; // Tạo chuỗi đại diện cho ngày hiện tại
+
+        const ngay = new Date(ngayHienTaiString);
+
+        const Get_product = await daily_results.updateMany({
+            data: {
+                don_ps: Number(payload.donPs) + 1,
+                doanh_so: Number(payload.doanhso)
+            },
+            where: {
+                user_id: Number(payload.id),
+                ngay: {
+                    equals: ngay, // Sử dụng đối tượng DateTime trong DateTimeNullableFilter
+                },
+            }
+        })
+
+        return Get_product;
+
+    }
+
+    static async updateChamCong(payload) {
+
+        const ngayHienTai = new Date(); // Lấy ngày hiện tại
+
+        const year = ngayHienTai.getFullYear(); // Lấy năm hiện tại
+        const month = String(ngayHienTai.getMonth() + 1).padStart(2, '0'); // Lấy tháng hiện tại (phải thêm 1 vì tháng bắt đầu từ 0)
+        const day = String(ngayHienTai.getDate()).padStart(2, '0'); // Lấy ngày hiện tại
+
+        const ngayHienTaiString = `${year}-${month}-${day}`; // Tạo chuỗi đại diện cho ngày hiện tại
+
+        const ngay = new Date(ngayHienTaiString);
+
+        const Get_product = await daily_results.updateMany({
+            data: {
+                so_cong: Number(payload.SoCong) + 0.5,
+
+            },
+            where: {
+                user_id: Number(payload.id),
+                ngay: {
+                    equals: ngay, // Sử dụng đối tượng DateTime trong DateTimeNullableFilter
+                },
+            }
+        })
+
+        return Get_product;
+
+    }
+
+
+
 }
-
-// // define base product class
-// class Product {
-//     constructor({
-//         product_name, product_thumb, product_description, product_price,
-//         product_type, product_shop, product_attributes, product_quantity
-//     }) {
-
-//         this.product_attributes = product_attributes
-//         this.product_quantity = product_quantity
-//         this.product_name = product_name
-//         this.product_thumb = product_thumb
-//         this.product_description = product_description
-//         this.product_price = product_price
-//         this.product_type = product_type
-//         this.product_shop = product_shop
-
-//     }
-
-//     // create new product
-//     async createProduct() {
-//         return await product.create(this)
-//     }
-
-// }
 
 
 module.exports = DailyResultsFactory

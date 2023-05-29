@@ -13,6 +13,8 @@ router.use(authenticationV2)
 
 
 router.post('/update/:id', asyncHandler(UserControllers.UpdateUser))
+router.post('/get', asyncHandler(UserControllers.getUserId))
+
 
 
 

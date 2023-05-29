@@ -14,6 +14,7 @@ class ChamCongControllers {
     }
 
     createChamCongSangRa = async (req, res, next) => {
+        console.log(req.body)
         new SuccessResponse({
             message: 'create new product success',
             metadata: await ChamCongServices.createChamCongSangRa(req.body)

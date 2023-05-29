@@ -8,12 +8,23 @@ const { cham_cong_users } = new PrismaClient();
 class ChamCongFactory {
 
     static async createChamCongSangVao(payload) {
+        const date = new Date();
 
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Tháng trong JavaScript được đánh số từ 0 đến 11, nên cần cộng thêm 1.
+        const year = date.getFullYear();
+        const ngay = day + "/" + month + "/" + year
+
+        var currentDate = new Date();
+
+
+        // console.log(ngay)
         const cham_cong = await cham_cong_users.create({
             data: {
                 user_id: Number(payload.id),
                 business_id: Number(payload.business_id),
-                vao_sang: new Date(),
+                day: ngay,
+                vao_sang: new Date(currentDate.getTime() + 7 * 60 * 60 * 1000),
                 created_at: new Date(),
                 updated_at: new Date()
             }
@@ -25,15 +36,16 @@ class ChamCongFactory {
 
 
     static async createChamCongSangRa(payload) {
+        var currentDate = new Date();
 
+        console.log(payload)
         const cham_cong = await cham_cong_users.updateMany({
             data: {
-                ra_sang: new Date(),
-
+                ra_sang: new Date(currentDate.getTime() + 7 * 60 * 60 * 1000)
             },
             where: {
                 user_id: Number(payload.id),
-                created_at: new Date(),
+                created_at: payload.create
             }
         });
 
@@ -43,14 +55,15 @@ class ChamCongFactory {
 
 
     static async createChamCongChieuVao(payload) {
+        var currentDate = new Date();
 
-        const cham_cong = await cham_cong_users.create({
+        const cham_cong = await cham_cong_users.updateMany({
             data: {
+                vao_chieu: new Date(currentDate.getTime() + 7 * 60 * 60 * 1000)
+            },
+            where: {
                 user_id: Number(payload.id),
-                business_id: Number(payload.business_id),
-                vao_chieu: new Date(),
-                created_at: new Date(),
-                updated_at: new Date()
+                created_at: payload.create
             }
         });
 
@@ -59,14 +72,15 @@ class ChamCongFactory {
     }
 
     static async createChamCongChieuRa(payload) {
+        var currentDate = new Date();
 
-        const cham_cong = await cham_cong_users.create({
+        const cham_cong = await cham_cong_users.updateMany({
             data: {
+                ra_chieu: new Date(currentDate.getTime() + 7 * 60 * 60 * 1000)
+            },
+            where: {
                 user_id: Number(payload.id),
-                business_id: Number(payload.business_id),
-                ra_chieu: new Date(),
-                created_at: new Date(),
-                updated_at: new Date()
+                created_at: payload.create
             }
         });
 
@@ -76,6 +90,13 @@ class ChamCongFactory {
 
 
     static async getChamCong(decode) {
+
+        const date = new Date();
+
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Tháng trong JavaScript được đánh số từ 0 đến 11, nên cần cộng thêm 1.
+        const year = date.getFullYear();
+        const ngay = day + "/" + month + "/" + year
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -87,7 +108,8 @@ class ChamCongFactory {
             skip,
             take,
             where: {
-                user_id: Number(decode.id)
+                user_id: Number(decode.id),
+                day: ngay
             }
         })
 

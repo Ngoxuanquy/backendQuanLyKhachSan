@@ -64,7 +64,9 @@ class ContactFactory {
                     where: {
                         nvkt_id: Number(payload.id)// Điều kiện nvkt_id
                     }
-                }
+                },
+                transactions: true,
+                transaction_payments: true
             },
 
         });
@@ -72,33 +74,45 @@ class ContactFactory {
         return contact;
     }
 
+    static async getOrderContactsWithCashPayment(payload) {
+        const contact = await contacts.findMany({
+            where: {
+                id: Number(payload.id), // Sửa thành id thay vì nvkt_id
+                transaction_payments: {
+                    some: {
+                        method: payload.method
+                    }
+                }
+            },
+            select: {
+                name: true,
+                formatted_address: true,
+                transaction_sell_lines: {
+                    select: {
+                        unit_price: true,
+                        quantity: true,
+                        product_id: true
+                    }
+                },
+                order_histories: true,
+                orders: {
+                    where: {
+                        nvkt_id: Number(payload.id) // Có thể cần sửa đổi điều kiện này dựa trên cấu trúc dữ liệu của bạn
+                    }
+                },
+                transactions: true,
+                transaction_payments: {
+                    select: {
+                        method: true
+                    }
+                }
+            }
+        });
+
+        return contact
+    }
+
 }
-
-
-// // define base product class
-// class Product {
-//     constructor({
-//         product_name, product_thumb, product_description, product_price,
-//         product_type, product_shop, product_attributes, product_quantity
-//     }) {
-
-//         this.product_attributes = product_attributes
-//         this.product_quantity = product_quantity
-//         this.product_name = product_name
-//         this.product_thumb = product_thumb
-//         this.product_description = product_description
-//         this.product_price = product_price
-//         this.product_type = product_type
-//         this.product_shop = product_shop
-
-//     }
-
-//     // create new product
-//     async createProduct() {
-//         return await product.create(this)
-//     }
-
-// }
 
 
 module.exports = ContactFactory

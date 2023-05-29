@@ -34,7 +34,7 @@ class TransactionsControllers {
 
         new SuccessResponse({
             message: 'Get product success',
-            metadata: await TransactionService.updateTransaction(req.params)
+            metadata: await TransactionService.updateTransaction(req.body)
         }).send(res)
     }
 

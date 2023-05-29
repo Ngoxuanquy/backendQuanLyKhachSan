@@ -213,7 +213,7 @@ class AccessSevice {
         })
 
         return {
-            shop: getIntoData({ fileds: ['id', 'name', 'email'], object: foundShop }),
+            shop: getIntoData({ fileds: ['id', 'username', 'email'], object: foundShop }),
             tokens,
 
         }

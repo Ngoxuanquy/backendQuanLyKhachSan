@@ -15,19 +15,26 @@ class UserFactory {
 
         const user = await users.update({
             data: {
-                surname: payload.surname,
-                address: payload.address,
-                date_of_birth: payload.date_of_birth,
+                surname: data.surname,
+                address: data.address,
+                date_of_birth: data.date_of_birth,
 
             },
             where: {
-                id: Number(payload.id)
+                id: Number(data.id)
             }
-
         })
-
         return user;
+    }
 
+    static async GetUsers(payload) {
+
+        const userId = await users.findMany({
+            select: {
+                id: true
+            },
+        })
+        return userId;
     }
 }
 

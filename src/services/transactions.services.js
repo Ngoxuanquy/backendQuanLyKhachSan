@@ -51,14 +51,15 @@ class TransactionFactory {
         return Get_product;
     }
 
-    static async updateTransaction(decode) {
+    static async updateTransaction(payload) {
 
         const Get_product = await transactions.updateMany({
             data: {
-                status: 'ordered'
+                status: 'ordered',
+                final_total: payload.final_total
             },
             where: {
-                contact_id: Number(decode.id)
+                contact_id: Number(payload.id)
             }
         })
 

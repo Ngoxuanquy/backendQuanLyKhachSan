@@ -8,85 +8,86 @@ datasource db {
 }
 
 model users {
-  id                      Int                   @id @default(autoincrement()) @db.UnsignedInt
-  surname                 String?               @db.Char(10)
-  user_extension          String?
-  sub_extension           String?
-  first_name              String
-  sub_surname             String?
-  device_id               String?
-  branch_id               Int?
-  type                    String                @default("normal")
-  last_name               String?
-  username                String                @unique(map: "users_username_unique")
-  operating_code          String?
-  phong_ban               Int?
-  bo_phan                 Int?
-  thoi_gian_lv            Int?
-  salary_status           Int?
-  user_kpi                Int?
-  email                   String?
-  password                String
-  language                String                @default("vi") @db.Char(4)
-  contact_no              String?               @db.Char(15)
-  address                 String?               @db.Text
-  remember_token          String?               @db.VarChar(100)
-  business_id             Int?                  @db.UnsignedInt
-  status                  users_status          @default(active)
-  is_cmmsn_agnt           Boolean               @default(false)
-  cmmsn_percent           Decimal               @default(0.00) @db.Decimal(4, 2)
-  selected_contacts       Boolean               @default(false)
-  dob                     DateTime?             @db.Date
-  marital_status          users_marital_status?
-  blood_group             String?               @db.Char(10)
-  contact_number          String?               @db.Char(20)
-  fb_link                 String?
-  twitter_link            String?
-  social_media_1          String?
-  social_media_2          String?
-  permanent_address       String?               @db.Text
-  current_address         String?               @db.Text
-  guardian_name           String?
-  so_hoa_don              Int?
-  date_of_birth           DateTime              @db.Date
-  user_type               String?
-  phan_quyen              String                @default("nv")
-  user_group_id           Int?
-  ngay_nghi_phep          Float                 @default(7) @db.Float
-  lan_nghi_sai_qd         Float                 @default(0) @db.Float
-  gender                  String?
-  id_proof_date           DateTime?             @db.Date
-  id_proof_position       String?               @db.Text
-  end_at                  DateTime?             @db.Date
-  operating_available     Int                   @default(1)
-  training_status         Int                   @default(0)
-  custom_field_1          DateTime?             @db.Date
-  custom_field_2          String?
-  custom_field_3          Float?                @default(26) @db.Float
-  custom_field_4          DateTime?             @db.Date
-  bank_account_number     String?
-  bank_name               String?
-  bank_account_name       String?
-  cookie_first_device     String?
-  cookie_second_device    String?
-  bank_details            String?               @db.LongText
-  id_proof_name           String?
-  id_proof_number         String?
-  deleted_at              DateTime?             @db.Timestamp(0)
-  tg_bat_dau_lv           DateTime?             @db.Date
-  tg_ket_thuc_lv          DateTime?             @db.Date
-  chiet_khau_vuot         Int                   @default(0)
-  last_seen               DateTime?             @db.Timestamp(0)
-  phu_cap                 Int                   @default(0)
-  start_at                DateTime?             @db.Date
-  login_failed            Int                   @default(0)
-  ip_address_login_failed String?
-  company_ip_address      String?
-  last_sessid             String?
-  created_at              DateTime?             @db.Timestamp(0)
-  updated_at              DateTime?             @db.Timestamp(0)
-  Keys                    Keys[]
-  order_histories         order_histories[]
+  id                         Int                          @id @default(autoincrement()) @db.UnsignedInt
+  surname                    String?                      @db.Char(10)
+  user_extension             String?
+  sub_extension              String?
+  first_name                 String
+  sub_surname                String?
+  device_id                  String?
+  branch_id                  Int?
+  type                       String                       @default("normal")
+  last_name                  String?
+  username                   String                       @unique(map: "users_username_unique")
+  operating_code             String?
+  phong_ban                  Int?
+  bo_phan                    Int?
+  thoi_gian_lv               Int?
+  salary_status              Int?
+  user_kpi                   Int?
+  email                      String?
+  password                   String
+  language                   String                       @default("vi") @db.Char(4)
+  contact_no                 String?                      @db.Char(15)
+  address                    String?                      @db.Text
+  remember_token             String?                      @db.VarChar(100)
+  business_id                Int?                         @db.UnsignedInt
+  status                     users_status                 @default(active)
+  is_cmmsn_agnt              Boolean                      @default(false)
+  cmmsn_percent              Decimal                      @default(0.00) @db.Decimal(4, 2)
+  selected_contacts          Boolean                      @default(false)
+  dob                        DateTime?                    @db.Date
+  marital_status             users_marital_status?
+  blood_group                String?                      @db.Char(10)
+  contact_number             String?                      @db.Char(20)
+  fb_link                    String?
+  twitter_link               String?
+  social_media_1             String?
+  social_media_2             String?
+  permanent_address          String?                      @db.Text
+  current_address            String?                      @db.Text
+  guardian_name              String?
+  so_hoa_don                 Int?
+  date_of_birth              DateTime                     @db.Date
+  user_type                  String?
+  phan_quyen                 String                       @default("nv")
+  user_group_id              Int?
+  ngay_nghi_phep             Float                        @default(7) @db.Float
+  lan_nghi_sai_qd            Float                        @default(0) @db.Float
+  gender                     String?
+  id_proof_date              DateTime?                    @db.Date
+  id_proof_position          String?                      @db.Text
+  end_at                     DateTime?                    @db.Date
+  operating_available        Int                          @default(1)
+  training_status            Int                          @default(0)
+  custom_field_1             DateTime?                    @db.Date
+  custom_field_2             String?
+  custom_field_3             Float?                       @default(26) @db.Float
+  custom_field_4             DateTime?                    @db.Date
+  bank_account_number        String?
+  bank_name                  String?
+  bank_account_name          String?
+  cookie_first_device        String?
+  cookie_second_device       String?
+  bank_details               String?                      @db.LongText
+  id_proof_name              String?
+  id_proof_number            String?
+  deleted_at                 DateTime?                    @db.Timestamp(0)
+  tg_bat_dau_lv              DateTime?                    @db.Date
+  tg_ket_thuc_lv             DateTime?                    @db.Date
+  chiet_khau_vuot            Int                          @default(0)
+  last_seen                  DateTime?                    @db.Timestamp(0)
+  phu_cap                    Int                          @default(0)
+  start_at                   DateTime?                    @db.Date
+  login_failed               Int                          @default(0)
+  ip_address_login_failed    String?
+  company_ip_address         String?
+  last_sessid                String?
+  created_at                 DateTime?                    @db.Timestamp(0)
+  updated_at                 DateTime?                    @db.Timestamp(0)
+  Keys                       Keys[]
+  order_histories            order_histories[]
+  variation_location_details variation_location_details[]
 
   // @@index([business_id], map: "users_business_id_foreign")
   roles   roles? @relation(fields: [rolesId], references: [id])
@@ -466,6 +467,7 @@ model cham_cong_users {
   id          Int       @id @default(autoincrement()) @db.UnsignedInt
   business_id Int
   user_id     Int
+  day         String
   vao_sang    DateTime? @db.Time(0)
   ra_sang     DateTime? @db.Time(0)
   vao_chieu   DateTime? @db.Time(0)
@@ -537,7 +539,9 @@ model contacts {
   updated_at             DateTime?               @db.Timestamp(0)
   // @@index([mobile, formatted_address], map: "mobile")
 
-  orders orders[]
+  orders               orders[]
+  transactions         transactions[]
+  transaction_payments transaction_payments[]
 
   order_histories        order_histories[]
   transaction_sell_lines transaction_sell_lines[]
@@ -1827,41 +1831,42 @@ model product_variations {
 }
 
 model products {
-  id                     Int                          @id @default(autoincrement())
-  name                   String
-  business_id            Int                          @db.UnsignedInt
-  type                   products_type?
-  unit_id                Int?                         @db.UnsignedInt
-  sub_unit_ids           String?                      @db.Text
-  brand_id               Int?                         @db.UnsignedInt
-  category_id            Int?                         @db.UnsignedInt
-  sub_category_id        Int?                         @db.UnsignedInt
-  tax                    Int?                         @db.UnsignedInt
-  tax_type               products_tax_type
-  enable_stock           Boolean                      @default(false)
-  alert_quantity         Int                          @default(0)
-  sku                    String
-  price                  Int
-  barcode_type           products_barcode_type?       @default(C128)
-  expiry_period          Decimal?                     @db.Decimal(4, 2)
-  expiry_period_type     products_expiry_period_type?
-  enable_sr_no           Boolean                      @default(false)
-  weight                 String?
-  kt_cskh_tv1            Int?                         @default(0)
-  kt_cskh_tv2            Int?                         @default(0)
-  kt_cskh_ct             Int?                         @default(0)
-  kt_kd_tv1              Int?                         @default(0)
-  kt_kd_tv2              Int?                         @default(0)
-  kt_kd_ct               Int?                         @default(0)
-  image                  String?
-  product_description    String?                      @db.Text
-  product_check          String                       @default("sp") @db.VarChar(11)
-  created_by             Int                          @db.UnsignedInt
-  is_inactive            Boolean                      @default(false)
-  not_for_selling        Boolean                      @default(false)
-  created_at             DateTime?                    @db.Timestamp(0)
-  updated_at             DateTime?                    @db.Timestamp(0)
-  transaction_sell_lines transaction_sell_lines[]
+  id                         Int                          @id @default(autoincrement())
+  name                       String
+  business_id                Int                          @db.UnsignedInt
+  type                       products_type?
+  unit_id                    Int?                         @db.UnsignedInt
+  sub_unit_ids               String?                      @db.Text
+  brand_id                   Int?                         @db.UnsignedInt
+  category_id                Int?                         @db.UnsignedInt
+  sub_category_id            Int?                         @db.UnsignedInt
+  tax                        Int?                         @db.UnsignedInt
+  tax_type                   products_tax_type
+  enable_stock               Boolean                      @default(false)
+  alert_quantity             Int                          @default(0)
+  sku                        String
+  price                      Int
+  barcode_type               products_barcode_type?       @default(C128)
+  expiry_period              Decimal?                     @db.Decimal(4, 2)
+  expiry_period_type         products_expiry_period_type?
+  enable_sr_no               Boolean                      @default(false)
+  weight                     String?
+  kt_cskh_tv1                Int?                         @default(0)
+  kt_cskh_tv2                Int?                         @default(0)
+  kt_cskh_ct                 Int?                         @default(0)
+  kt_kd_tv1                  Int?                         @default(0)
+  kt_kd_tv2                  Int?                         @default(0)
+  kt_kd_ct                   Int?                         @default(0)
+  image                      String?
+  product_description        String?                      @db.Text
+  product_check              String                       @default("sp") @db.VarChar(11)
+  created_by                 Int                          @db.UnsignedInt
+  is_inactive                Boolean                      @default(false)
+  not_for_selling            Boolean                      @default(false)
+  created_at                 DateTime?                    @db.Timestamp(0)
+  updated_at                 DateTime?                    @db.Timestamp(0)
+  transaction_sell_lines     transaction_sell_lines[]
+  variation_location_details variation_location_details[]
 
   @@index([brand_id], map: "products_brand_id_foreign")
   @@index([business_id], map: "products_business_id_index")
@@ -2310,7 +2315,6 @@ model time_books {
 
 model transaction_payments {
   id                      Int                          @id @default(autoincrement()) @db.UnsignedInt
-  transaction_id          Int?                         @db.UnsignedInt
   business_id             Int?
   is_return               Boolean                      @default(false)
   amount                  Decimal                      @default(0.0000) @db.Decimal(22, 4)
@@ -2346,6 +2350,10 @@ model transaction_payments {
   account_id              Int?
   created_at              DateTime?                    @db.Timestamp(0)
   updated_at              DateTime?                    @db.Timestamp(0)
+  transactions            transactions?                @relation(fields: [transaction_id], references: [id])
+  transaction_id          Int?                         @db.UnsignedInt
+  contacts                contacts?                    @relation(fields: [contactsId], references: [id])
+  contactsId              Int?                         @db.UnsignedInt
 
   @@index([created_by], map: "transaction_payments_created_by_index")
   @@index([parent_id], map: "transaction_payments_parent_id_index")
@@ -2425,7 +2433,7 @@ model transactions {
   is_quotation             Boolean                           @default(false)
   payment_status           transactions_payment_status?
   adjustment_type          transactions_adjustment_type?
-  contact_id               Int?                              @db.UnsignedInt
+  // contact_id               Int?                              @db.UnsignedInt
   customer_group_id        Int?
   invoice_no               String?
   ref_no                   String?
@@ -2503,6 +2511,9 @@ model transactions {
   updated_at               DateTime?                         @db.Timestamp(0)
   transaction_sell_lines   transaction_sell_lines[]
   order_histories          order_histories[]
+  contacts                 contacts?                         @relation(fields: [contact_id], references: [id])
+  contact_id               Int?                              @db.UnsignedInt
+  transaction_payments     transaction_payments[]
 
   @@index([business_id], map: "transactions_business_id_index")
   @@index([contact_id], map: "transactions_contact_id_index")
@@ -2698,7 +2709,7 @@ model variation_group_prices {
 
 model variation_location_details {
   id                   Int       @id @default(autoincrement())
-  product_id           Int       @db.UnsignedInt
+  // product_id           Int       @db.UnsignedInt
   product_variation_id Int       @db.UnsignedInt
   variation_id         Int       @db.UnsignedInt
   location_id          Int       @db.UnsignedInt
@@ -2709,13 +2720,17 @@ model variation_location_details {
   loai_4               Int       @default(0)
   created_at           DateTime? @db.Timestamp(0)
   updated_at           DateTime? @db.Timestamp(0)
+  // @@index([location_id], map: "variation_location_details_location_id_foreign")
+  // @@index([product_id], map: "variation_location_details_product_id_index")
+  // @@index([product_variation_id], map: "variation_location_details_product_variation_id_index")
+  // @@index([variation_id], map: "variation_location_details_variation_id_index")
+  products             products? @relation(fields: [products_id], references: [id])
+  products_id          Int?
+  users                users?    @relation(fields: [usersId], references: [id])
+  usersId              Int?      @db.UnsignedInt
 
   @@index([id], map: "id")
   @@index([id], map: "id_2")
-  @@index([location_id], map: "variation_location_details_location_id_foreign")
-  @@index([product_id], map: "variation_location_details_product_id_index")
-  @@index([product_variation_id], map: "variation_location_details_product_variation_id_index")
-  @@index([variation_id], map: "variation_location_details_variation_id_index")
 }
 
 model variation_templates {

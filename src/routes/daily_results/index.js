@@ -13,6 +13,11 @@ router.use(authenticationV2)
 
 router.post('/create', asyncHandler(DailyResultsControllers.createDailyResults))
 router.post('/get/:id', asyncHandler(DailyResultsControllers.getDailyResults))
+router.post('/update/donvesinh', asyncHandler(DailyResultsControllers.updateDonVeSinh))
+router.post('/update/donphatsinh', asyncHandler(DailyResultsControllers.updateDonPhatSinh))
+router.post('/update/chamcong', asyncHandler(DailyResultsControllers.updateChamCong))
+
+
 
 
 

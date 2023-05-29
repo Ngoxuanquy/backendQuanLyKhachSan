@@ -496,6 +496,7 @@ CREATE TABLE `cham_cong_users` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     `business_id` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
+    `day` VARCHAR(191) NOT NULL,
     `vao_sang` TIME(0) NULL,
     `ra_sang` TIME(0) NULL,
     `vao_chieu` TIME(0) NULL,
@@ -2524,7 +2525,6 @@ CREATE TABLE `time_books` (
 -- CreateTable
 CREATE TABLE `transaction_payments` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    `transaction_id` INTEGER UNSIGNED NULL,
     `business_id` INTEGER NULL,
     `is_return` BOOLEAN NOT NULL DEFAULT false,
     `amount` DECIMAL(22, 4) NOT NULL DEFAULT 0.0000,
@@ -2560,6 +2560,8 @@ CREATE TABLE `transaction_payments` (
     `account_id` INTEGER NULL,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `transaction_id` INTEGER UNSIGNED NULL,
+    `contactsId` INTEGER UNSIGNED NULL,
 
     INDEX `transaction_payments_created_by_index`(`created_by`),
     INDEX `transaction_payments_parent_id_index`(`parent_id`),
@@ -2641,7 +2643,6 @@ CREATE TABLE `transactions` (
     `is_quotation` BOOLEAN NOT NULL DEFAULT false,
     `payment_status` ENUM('paid', 'due', 'partial') NULL,
     `adjustment_type` ENUM('normal', 'abnormal') NULL,
-    `contact_id` INTEGER UNSIGNED NULL,
     `customer_group_id` INTEGER NULL,
     `invoice_no` VARCHAR(191) NULL,
     `ref_no` VARCHAR(191) NULL,
@@ -2717,6 +2718,7 @@ CREATE TABLE `transactions` (
     `ktnb_accept_time` DATETIME(0) NULL,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `contact_id` INTEGER UNSIGNED NULL,
 
     INDEX `transactions_business_id_index`(`business_id`),
     INDEX `transactions_contact_id_index`(`contact_id`),
@@ -2945,7 +2947,6 @@ CREATE TABLE `variation_group_prices` (
 -- CreateTable
 CREATE TABLE `variation_location_details` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `product_id` INTEGER UNSIGNED NOT NULL,
     `product_variation_id` INTEGER UNSIGNED NOT NULL,
     `variation_id` INTEGER UNSIGNED NOT NULL,
     `location_id` INTEGER UNSIGNED NOT NULL,
@@ -2956,13 +2957,11 @@ CREATE TABLE `variation_location_details` (
     `loai_4` INTEGER NOT NULL DEFAULT 0,
     `created_at` TIMESTAMP(0) NULL,
     `updated_at` TIMESTAMP(0) NULL,
+    `products_id` INTEGER NULL,
+    `usersId` INTEGER UNSIGNED NULL,
 
     INDEX `id`(`id`),
     INDEX `id_2`(`id`),
-    INDEX `variation_location_details_location_id_foreign`(`location_id`),
-    INDEX `variation_location_details_product_id_index`(`product_id`),
-    INDEX `variation_location_details_product_variation_id_index`(`product_variation_id`),
-    INDEX `variation_location_details_variation_id_index`(`variation_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -3084,6 +3083,12 @@ ALTER TABLE `order_histories` ADD CONSTRAINT `order_histories_contactsId_fkey` F
 ALTER TABLE `orders` ADD CONSTRAINT `orders_contactsId_fkey` FOREIGN KEY (`contactsId`) REFERENCES `contacts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `transaction_payments` ADD CONSTRAINT `transaction_payments_transaction_id_fkey` FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transaction_payments` ADD CONSTRAINT `transaction_payments_contactsId_fkey` FOREIGN KEY (`contactsId`) REFERENCES `contacts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `transaction_sell_lines` ADD CONSTRAINT `transaction_sell_lines_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -3091,6 +3096,15 @@ ALTER TABLE `transaction_sell_lines` ADD CONSTRAINT `transaction_sell_lines_tran
 
 -- AddForeignKey
 ALTER TABLE `transaction_sell_lines` ADD CONSTRAINT `transaction_sell_lines_contactsId_fkey` FOREIGN KEY (`contactsId`) REFERENCES `contacts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `variation_location_details` ADD CONSTRAINT `variation_location_details_products_id_fkey` FOREIGN KEY (`products_id`) REFERENCES `products`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `variation_location_details` ADD CONSTRAINT `variation_location_details_usersId_fkey` FOREIGN KEY (`usersId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_order_historiesTousers` ADD CONSTRAINT `_order_historiesTousers_A_fkey` FOREIGN KEY (`A`) REFERENCES `order_histories`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

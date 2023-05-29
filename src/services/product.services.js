@@ -25,7 +25,7 @@ class ProductFactory {
 
     // }
 
-    static async getProduct(decode) {
+    static async getProduct(payload) {
 
         const pageNumber = 1; // Số trang muốn lấy
         const perPage = 2; // Số bản ghi trên mỗi trang
@@ -40,6 +40,39 @@ class ProductFactory {
         })
 
         return Get_product;
+
+        // try {
+        //     const product = await prisma.product.findUnique({
+        //         where: {
+        //             id: Number(payload.id),
+        //         },
+        //         select: {
+        //             qty_available: true,
+        //         },
+        //     });
+
+        //     if (product) {
+        //         return product.qty_available;
+        //     } else {
+        //         return null; // or handle the case when the product with the given ID is not found
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        //     throw error;
+        // } finally {
+        //     await prisma.$disconnect();
+        // }
+
+
+        // // Usage:
+        // const productId = 1; // Replace with the desired product ID
+        // getProductQtyAvailable(productId)
+        //   .then((qtyAvailable) => {
+        //     console.log(`The qty_available for product ${productId} is: ${qtyAvailable}`);
+        //   })
+        //   .catch((error) => {
+        //     console.error('Error retrieving qty_available:', error);
+        //   });
 
     }
 

@@ -18,6 +18,15 @@ class UserControllers {
     }
 
 
+    getUserId = async (req, res, next) => {
+
+        new SuccessResponse({
+            message: 'Update product success',
+            metadata: await UserService.GetUsers(req.body)
+        }).send(res)
+    }
+
+
 }
 
 module.exports = new UserControllers()

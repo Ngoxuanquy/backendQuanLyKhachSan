@@ -28,6 +28,13 @@ class CommentControllers {
             metadata: await ContactServices.getOrderContacts(req.params)
         }).send(res)
     }
+
+    getOrderContactByHTTT = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Get concats success',
+            metadata: await ContactServices.getOrderContactsWithCashPayment(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new CommentControllers()
