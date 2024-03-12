@@ -1,132 +1,54 @@
 const JWT = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const { users } = new PrismaClient();
-const { findByUserId } = require('../services/KeyToken.services')
-const asyncHandler = require('../helpers/asyncHandle')
-const { AuthFailureError, NotFoundError } = require('../core/error.response')
+const { findByUserId } = require('../services/KeyToken.services');
+const asyncHandler = require('../helpers/asyncHandle');
+const { AuthFailureError, NotFoundError } = require('../core/error.response');
 
 const HEADER = {
     API_KEY: 'x-api-key',
     CLIENT_ID: 'x-client-id',
     AUTHORIZATION: 'authorization',
-    REFESHTOKEN: 'refeshtoken'
-}
+    REFESHTOKEN: 'refeshtoken',
+};
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
-
     try {
         //accessToken
         const accessToken = await JWT.sign(payload, publicKey, {
-            expiresIn: '1 h'
-        })
+            expiresIn: '1 h',
+        });
 
-        console.log(Math.floor(Date.now() / 1000))
-
+        console.log(Math.floor(Date.now() / 1000));
 
         //refeshToken
         const refeshToken = await JWT.sign(payload, privateKey, {
             expiresIn: '7 days',
-        })
+        });
 
-        const decode = JWT.verify(accessToken, publicKey)
-
+        const decode = JWT.verify(accessToken, publicKey);
 
         //
         JWT.verify(accessToken, publicKey, (err, decode) => {
             if (err) {
-                console.log(err)
+                console.log(err);
+            } else {
+                console.log('decode verify: ', decode);
             }
-            else {
-                console.log('decode verify: ', decode)
+        });
 
-            }
-        })
-
-        return { accessToken, refeshToken, timeExp: decode.exp }
+        return { accessToken, refeshToken, timeExp: decode.exp };
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
-
-
-const authenticationV2 = asyncHandler(async (req, res, next) => {
-
-
-    const userId = req.headers[HEADER.CLIENT_ID]
-
-    console.log(userId)
-
-
-    if (!userId) throw new AuthFailureError('Invalid Request')
-
-    const keyStore = findByUserId(userId)
-    if (!keyStore) throw new NotFoundError('Not Found KeyStore')
-
-    let promise = new Promise((resolve, reject) => {
-        // Do some asynchronous operation
-        resolve(keyStore);
-    });
-
-    let data = await promise;
-
-    // console.log(data)
-
-
-    if (req.headers[HEADER.REFESHTOKEN]) {
-        try {
-            const refeshToken = req.headers[HEADER.REFESHTOKEN]
-
-            console.log(refeshToken)
-            const decodeUser = JWT.verify(refeshToken, data[0].privateKey)
-
-
-            if (userId != decodeUser.id) throw new AuthFailureError('Invalid userID')
-
-
-            req.keyStore = data
-            req.user = decodeUser
-            req.refeshToken = refeshToken
-
-            return next()
-
-
-        } catch (error) {
-            throw error
-        }
-    }
-
-    const accessToken = req.headers[HEADER.AUTHORIZATION]
-    console.log({ accessToken })
-
-    if (!accessToken) throw new AuthFailureError('Invalid Request')
-
-    try {
-
-        const decodeUser = JWT.verify(accessToken, data[0].publicKey)
-        console.log(decodeUser)
-
-        if (userId != decodeUser.id) throw new AuthFailureError('Invalid Request')
-
-        req.keyStore = data
-        req.user = decodeUser
-
-        return next()
-    } catch (error) {
-        console.log(error)
-        throw error
-    }
-})
-
+};
 
 const verifyJWT = async (token, keySecret) => {
-    return await JWT.verify(token, keySecret)
-}
-
-
+    return await JWT.verify(token, keySecret);
+};
 
 module.exports = {
     // authentication,
     createTokenPair,
-    authenticationV2,
-    verifyJWT
-}
+    verifyJWT,
+};

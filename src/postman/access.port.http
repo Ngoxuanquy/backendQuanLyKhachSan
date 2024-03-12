@@ -1,13 +1,18 @@
 ### signup
 
-POST  http://localhost:3000/v1/api/signup
+POST  http://localhost:3056/v1/api/signup
 Content-Type: application/json
 x-api-key: d420e946ae282dfadafede6b060ae66e3ffd2a9cddfe3dc9b4cd070f98ad4985aeab65e2751677f21f91f34c2a22a1f95bf0b330fd2eb0dfb2c1fb53a7c8d97a
 
 {
-    "username": "1212",
+    "username": "21131q",
     "password": "1"
 }
+
+###
+
+GET  http://localhost:3056/v1/api/phong/getFullPhongs
+Content-Type: application/json
 
 ###
 POST  http://localhost:3000/v1/api/login
