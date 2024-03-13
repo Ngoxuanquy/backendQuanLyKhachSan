@@ -6,6 +6,8 @@ var connection = mysql.createConnection({
     database: 'quanlykhachsan',
 });
 
-connection.connect();
+connection.connect(() => {
+    console.log('connection');
+});
 
 module.exports = { connection };

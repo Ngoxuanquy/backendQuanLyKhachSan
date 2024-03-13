@@ -6,6 +6,7 @@ const {
 const { PrismaClient } = require('@prisma/client');
 const { users } = new PrismaClient();
 const { removeUndefinedObject } = require('../utils/index.js');
+const { connection } = require('../dbs/init.sql.js');
 // define Factory class to create product
 class UserFactory {
     static async UpdateUsers(payload) {
@@ -28,7 +29,6 @@ class UserFactory {
 
     static async getPhong(payload) {
         try {
-            console.log('ababab');
             connection.query(
                 'SELECT * FROM phong',
                 (error, results, fields) => {
@@ -38,6 +38,7 @@ class UserFactory {
                         return;
                     }
                     console.log('Query results:', results);
+                    return results;
                 },
             );
         } catch (error) {

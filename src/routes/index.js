@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.use('/v1/api', require('./access'));
 
-router.get('/getFullPhongs', PhongControllers.getPhong);
-router.use('/v1/api/phong', PhongControllers.getPhong);
+router.use('/v1/api/phong', require('./phongs'));
+
 // router.use('/v1/api/user', require('./users'));
 
 module.exports = router;
