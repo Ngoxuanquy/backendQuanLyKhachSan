@@ -8,6 +8,6 @@ const router = express.Router();
 // router.use(authenticationV2)
 
 router.get('/getFullPhongs', phongControllers.getPhong);
-router.post('/update/:id', phongControllers.UpdateUser);
+router.get('/getPhongId/:id', phongControllers.getPhongId);
 
 module.exports = router;

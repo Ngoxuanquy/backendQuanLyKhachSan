@@ -2,10 +2,10 @@ const { CREATED, SuccessResponse } = require('../core/success.response');
 const PhongService = require('../services/phongs.service');
 
 class phongControllers {
-    UpdateUser = async (req, res, next) => {
+    getPhongId = async (req, res, next) => {
         new SuccessResponse({
-            message: 'Update product success',
-            metadata: await PhongService.UpdateUsers(req.body),
+            message: 'get phong success',
+            metadata: await PhongService.getPhongId(req.params),
         }).send(res);
     };
 

@@ -9,7 +9,7 @@ class phongControllers {
         }).send(res);
     };
 
-    getPhong = async (req, res, next) => {
+    getNhanVien = async (req, res, next) => {
         new SuccessResponse({
             message: 'gett product success',
             metadata: await PhongService.getPhong(req.body),
