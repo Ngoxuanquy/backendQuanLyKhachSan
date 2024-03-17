@@ -10,6 +10,6 @@ const router = express.Router();
 // router.use(authenticationV2)
 
 // router.post('/update/:id', asyncHandler(UserControllers.UpdateUser));
-// router.post('/get', asyncHandler(UserControllers.getUserId));
+router.post('/create', UserControllers.create);
 
 module.exports = router;

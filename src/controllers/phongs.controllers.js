@@ -15,6 +15,13 @@ class phongControllers {
             metadata: await PhongService.getPhong(req.body),
         }).send(res);
     };
+
+    updatePhongId = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'gett product success',
+            metadata: await PhongService.updatePhongId(req.body),
+        }).send(res);
+    };
 }
 
 module.exports = new phongControllers();

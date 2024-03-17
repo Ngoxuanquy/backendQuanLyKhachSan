@@ -54,6 +54,28 @@ class UserFactory {
             throw error; // Re-throw the error to handle it elsewhere if needed
         }
     }
+
+    static async updatePhongId(payload) {
+        try {
+            const results = await new Promise((resolve, reject) => {
+                connection.query(
+                    `UPDATE phong  SET phong.TinhTrang = ${payload.TinhTrang} where phong.MaPhong = ${payload.id} `,
+                    (error, results, fields) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            reject(error);
+                            return;
+                        }
+                        resolve(results);
+                    },
+                );
+            });
+            return results;
+        } catch (error) {
+            console.error('Error executing query:', error);
+            throw error; // Re-throw the error to handle it elsewhere if needed
+        }
+    }
 }
 
 module.exports = UserFactory;

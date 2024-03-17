@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:3056/v1/api/phong/getPhongId/1
+GET  http://localhost:3056/v1/api/phong/getPhongId/3
 Content-Type: application/json
 
 ###

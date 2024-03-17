@@ -13,6 +13,6 @@ router.use('/v1/api', require('./access'));
 
 router.use('/v1/api/phong', require('./phongs'));
 
-// router.use('/v1/api/user', require('./users'));
+router.use('/v1/api/user', require('./users'));
 
 module.exports = router;

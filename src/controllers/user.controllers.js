@@ -1,32 +1,20 @@
-
-const { CREATED, SuccessResponse } = require("../core/success.response")
-const UserService = require("../services/users.service")
-
-
+const { CREATED, SuccessResponse } = require('../core/success.response');
+const UserService = require('../services/users.service');
 
 class UserControllers {
-
-
-    UpdateUser = async (req, res, next) => {
-
-        console.log('aaa')
-
+    create = async (req, res, next) => {
         new SuccessResponse({
-            message: 'Update product success',
-            metadata: await UserService.UpdateUsers(req.body)
-        }).send(res)
-    }
-
+            message: 'create product success',
+            metadata: await UserService.create(req.body),
+        }).send(res);
+    };
 
     getUserId = async (req, res, next) => {
-
         new SuccessResponse({
             message: 'Update product success',
-            metadata: await UserService.GetUsers(req.body)
-        }).send(res)
-    }
-
-
+            metadata: await UserService.GetUsers(req.body),
+        }).send(res);
+    };
 }
 
-module.exports = new UserControllers()
+module.exports = new UserControllers();

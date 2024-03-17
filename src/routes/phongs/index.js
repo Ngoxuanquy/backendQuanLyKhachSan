@@ -10,4 +10,6 @@ const router = express.Router();
 router.get('/getFullPhongs', phongControllers.getPhong);
 router.get('/getPhongId/:id', phongControllers.getPhongId);
 
+router.post('/updatePhongId', phongControllers.updatePhongId);
+
 module.exports = router;
